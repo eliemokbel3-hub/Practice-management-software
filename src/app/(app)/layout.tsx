@@ -1,9 +1,17 @@
 import Link from "next/link";
-import { Activity } from "lucide-react";
+import { Activity, LogOut } from "lucide-react";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { getCurrentProfile } from "@/lib/supabase/server";
+import { signOutAction } from "./sign-out-action";
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const profile = await getCurrentProfile();
+
   return (
     <div className="flex min-h-screen">
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-60 flex-col border-r border-border bg-surface px-4 py-5 md:flex">
@@ -16,13 +24,30 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </span>
         </Link>
         <SidebarNav />
-        <div className="mt-auto flex flex-col gap-3">
-          <div className="rounded-lg bg-warning-soft px-3 py-2 text-xs font-medium text-warning-soft-foreground">
-            Demo mode — sample data only
-          </div>
+        <div className="mt-auto flex flex-col gap-4">
           <div className="flex items-center justify-between px-1">
             <span className="text-xs text-faint">Theme</span>
             <ThemeToggle />
+          </div>
+          <div className="flex items-center justify-between gap-2 border-t border-border pt-4">
+            <div className="min-w-0 px-1">
+              <p className="truncate text-sm font-medium">
+                {profile ? `${profile.first_name} ${profile.last_name}` : "Signed in"}
+              </p>
+              {profile?.title && (
+                <p className="truncate text-xs text-faint">{profile.title}</p>
+              )}
+            </div>
+            <form action={signOutAction}>
+              <button
+                type="submit"
+                title="Sign out"
+                aria-label="Sign out"
+                className="rounded-lg p-2 text-faint transition-colors hover:bg-surface-hover hover:text-foreground"
+              >
+                <LogOut size={16} />
+              </button>
+            </form>
           </div>
         </div>
       </aside>

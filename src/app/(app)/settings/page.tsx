@@ -6,7 +6,7 @@ export default function SettingsPage() {
     <ComingSoon
       icon={Settings}
       title="Settings"
-      phase="Unlocks once the database is connected"
+      phase="Coming with Phase 2"
       description="Clinic details, practitioner profile, appointment types and templates will live here."
     />
   );

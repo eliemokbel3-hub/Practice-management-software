@@ -1,8 +1,40 @@
-import Link from "next/link";
-import { Activity, ArrowRight } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Activity } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      setError(
+        error.message === "Invalid login credentials"
+          ? "Email or password doesn't match. Please try again."
+          : error.message
+      );
+      setBusy(false);
+      return;
+    }
+    router.push("/patients");
+    router.refresh();
+  }
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-4">
       <div className="absolute right-5 top-5">
@@ -18,7 +50,7 @@ export default function LoginPage() {
         </p>
       </div>
       <div className="w-full max-w-sm rounded-xl border border-border bg-surface p-6 shadow-sm">
-        <form className="flex flex-col gap-4">
+        <form onSubmit={onSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="email" className="text-sm font-medium">
               Email
@@ -26,9 +58,12 @@ export default function LoginPage() {
             <input
               id="email"
               type="email"
-              disabled
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="you@clinic.com.au"
-              className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring disabled:opacity-50"
+              className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
             />
           </div>
           <div className="flex flex-col gap-1.5">
@@ -38,29 +73,26 @@ export default function LoginPage() {
             <input
               id="password"
               type="password"
-              disabled
-              placeholder="••••••••"
-              className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring disabled:opacity-50"
+              required
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
             />
           </div>
+          {error && (
+            <p className="rounded-lg bg-danger-soft px-3 py-2 text-sm text-danger">
+              {error}
+            </p>
+          )}
           <button
-            type="button"
-            disabled
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground opacity-50"
+            type="submit"
+            disabled={busy}
+            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
           >
-            Sign in
+            {busy ? "Signing in…" : "Sign in"}
           </button>
         </form>
-        <div className="mt-4 rounded-lg bg-warning-soft px-3 py-2 text-xs text-warning-soft-foreground">
-          Sign-in unlocks once the database is connected. Until then, explore
-          the demo with sample data.
-        </div>
-        <Link
-          href="/patients"
-          className="mt-4 flex items-center justify-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
-        >
-          Continue in demo mode <ArrowRight size={15} />
-        </Link>
       </div>
     </div>
   );
