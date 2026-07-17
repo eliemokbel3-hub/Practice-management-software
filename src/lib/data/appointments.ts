@@ -109,7 +109,7 @@ export async function createAppointment(
   const { data, error } = await supabase
     .from("appointments")
     .insert(rows)
-    .select("id")
+    .select("id, starts_at")
     .order("starts_at")
     .limit(1);
   if (error) throw new Error(`Couldn't book appointment: ${error.message}`);
