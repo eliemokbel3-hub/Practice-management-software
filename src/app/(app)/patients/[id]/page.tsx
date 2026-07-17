@@ -10,6 +10,9 @@ import {
 } from "lucide-react";
 import { getPatient } from "@/lib/data/patients";
 import { listUpcomingForPatient } from "@/lib/data/appointments";
+import { listNotesForPatient } from "@/lib/data/clinical-notes";
+import { listNoteTemplates } from "@/lib/data/note-templates";
+import { createNoteForPatientAction } from "@/app/(app)/notes/actions";
 import { formatLongDate, formatTime } from "@/lib/calendar-utils";
 import { ageFromDob, fullName } from "@/lib/types";
 import { setArchivedAction } from "../actions";
@@ -48,7 +51,12 @@ export default async function PatientPage({
   const { id } = await params;
   const patient = await getPatient(id);
   if (!patient) notFound();
-  const upcoming = await listUpcomingForPatient(id);
+  const [upcoming, notes, templates] = await Promise.all([
+    listUpcomingForPatient(id),
+    listNotesForPatient(id),
+    listNoteTemplates(),
+  ]);
+  const newNoteAction = createNoteForPatientAction.bind(null, id);
 
   const age = ageFromDob(patient.dateOfBirth);
   const dob = patient.dateOfBirth
@@ -196,6 +204,57 @@ export default async function PatientPage({
                 <span className="text-faint">Nothing recorded yet.</span>
               )}
             </p>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-2">
+          <Card title="Treatment notes">
+            <div className="flex flex-col gap-4">
+              {notes.length === 0 ? (
+                <p className="text-sm text-faint">No treatment notes yet.</p>
+              ) : (
+                <ul className="flex flex-col divide-y divide-border">
+                  {notes.map((n) => (
+                    <li key={n.id} className="py-2 first:pt-0 last:pb-0">
+                      <Link
+                        href={`/notes/${n.id}`}
+                        className="flex items-center justify-between gap-3 text-sm hover:underline"
+                      >
+                        <span>
+                          {formatLongDate(new Date(n.createdAt))} ·{" "}
+                          {n.practitionerName}
+                        </span>
+                        <span
+                          className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                            n.status === "draft"
+                              ? "bg-warning-soft text-warning-soft-foreground"
+                              : "bg-primary-soft text-primary-soft-foreground"
+                          }`}
+                        >
+                          {n.status === "draft" ? "Draft" : "Finalised"}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <form action={newNoteAction} className="flex items-center gap-2">
+                <select
+                  name="templateId"
+                  className="rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none focus:border-ring"
+                  defaultValue={templates.find((t) => t.isDefault)?.id}
+                >
+                  {templates.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.name}
+                    </option>
+                  ))}
+                </select>
+                <button className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+                  New note
+                </button>
+              </form>
+            </div>
           </Card>
         </div>
 

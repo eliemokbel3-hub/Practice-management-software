@@ -18,6 +18,7 @@ function rowToType(row: any): AppointmentType {
     isActive: row.is_active,
     maxPatients: row.max_patients,
     sortOrder: row.sort_order,
+    defaultNoteTemplateId: row.default_note_template_id,
   };
 }
 

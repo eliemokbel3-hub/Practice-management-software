@@ -51,9 +51,13 @@ export interface AppointmentType {
   isActive: boolean;
   maxPatients: number;
   sortOrder: number;
+  defaultNoteTemplateId: string | null;
 }
 
-export type AppointmentTypeInput = Omit<AppointmentType, "id" | "clinicId">;
+export type AppointmentTypeInput = Omit<
+  AppointmentType,
+  "id" | "clinicId" | "defaultNoteTemplateId"
+>;
 
 export type AppointmentStatus =
   | "booked"
@@ -94,6 +98,63 @@ export interface BlockedTime {
   startsAt: string;
   endsAt: string;
   reason: string | null;
+}
+
+export type NoteQuestionType = "text" | "paragraph" | "checkbox" | "date";
+
+export interface NoteQuestion {
+  key: string;
+  label: string;
+  type: NoteQuestionType;
+  /** Pre-filled starting text for paragraph questions (e.g. "Site - \nChron - "). */
+  prefill?: string;
+  /** The statement being agreed to, for checkbox questions. */
+  text?: string;
+}
+
+export interface NoteSection {
+  key: string;
+  label: string;
+  description?: string;
+  questions: NoteQuestion[];
+}
+
+export interface NoteTemplate {
+  id: string;
+  clinicId: string;
+  name: string;
+  sections: NoteSection[];
+  isDefault: boolean;
+  isActive: boolean;
+}
+
+/**
+ * A note stores its own copy of the template structure plus the answers,
+ * so later template edits never change what an existing note says.
+ * Answer keys are "sectionKey.questionKey".
+ */
+export interface NoteContent {
+  sections: NoteSection[];
+  answers: Record<string, string | boolean>;
+}
+
+export type NoteStatus = "draft" | "final";
+
+export interface ClinicalNote {
+  id: string;
+  clinicId: string;
+  patientId: string;
+  practitionerId: string;
+  appointmentId: string | null;
+  templateId: string | null;
+  content: NoteContent;
+  status: NoteStatus;
+  finalisedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  patientName?: string;
+  practitionerName?: string;
+  revisionCount?: number;
 }
 
 export function formatPrice(cents: number): string {

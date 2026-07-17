@@ -1,7 +1,14 @@
 import Link from "next/link";
-import { CalendarClock, Tags, ChevronRight } from "lucide-react";
+import { CalendarClock, Tags, ChevronRight, FileText } from "lucide-react";
 
 const sections = [
+  {
+    href: "/settings/note-templates",
+    icon: FileText,
+    title: "Note templates",
+    description:
+      "The structure of your treatment notes — sections, questions and pre-filled prompts.",
+  },
   {
     href: "/settings/appointment-types",
     icon: Tags,

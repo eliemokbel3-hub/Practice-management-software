@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check, UserCheck, UserX, XCircle } from "lucide-react";
+import { ArrowLeft, Check, FileText, UserCheck, UserX, XCircle } from "lucide-react";
 import { getAppointment } from "@/lib/data/appointments";
 import { getAppointmentType } from "@/lib/data/appointment-types";
+import { getNoteForAppointment } from "@/lib/data/clinical-notes";
+import { openNoteForAppointmentAction } from "@/app/(app)/notes/actions";
 import { dateKey, formatLongDate, formatTime } from "@/lib/calendar-utils";
 import {
   cancelAppointmentAction,
@@ -32,6 +34,7 @@ export default async function AppointmentPage({
   const type = appointment.appointmentTypeId
     ? await getAppointmentType(appointment.appointmentTypeId)
     : null;
+  const note = await getNoteForAppointment(appointment.id);
   const starts = new Date(appointment.startsAt);
   const durationMinutes = Math.round(
     (new Date(appointment.endsAt).getTime() - starts.getTime()) / 60_000
@@ -86,6 +89,27 @@ export default async function AppointmentPage({
 
       {appointment.status !== "cancelled" && (
         <>
+          <section className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface p-5">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
+              Treatment note
+            </h2>
+            {note ? (
+              <Link
+                href={`/notes/${note.id}`}
+                className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+              >
+                <FileText size={15} />
+                {note.status === "draft" ? "Continue draft note" : "View note"}
+              </Link>
+            ) : (
+              <form action={openNoteForAppointmentAction.bind(null, appointment.id)}>
+                <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+                  <FileText size={15} /> Write treatment note
+                </button>
+              </form>
+            )}
+          </section>
+
           <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
               On the day
