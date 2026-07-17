@@ -36,6 +36,73 @@ export type PatientInput = Omit<
   "id" | "clinicId" | "archivedAt" | "createdAt" | "updatedAt"
 >;
 
+export interface AppointmentType {
+  id: string;
+  clinicId: string;
+  name: string;
+  description: string | null;
+  category: string | null;
+  durationMinutes: number;
+  priceCents: number;
+  color: string;
+  bufferBeforeMinutes: number;
+  bufferAfterMinutes: number;
+  bookableOnline: boolean;
+  isActive: boolean;
+  maxPatients: number;
+  sortOrder: number;
+}
+
+export type AppointmentTypeInput = Omit<AppointmentType, "id" | "clinicId">;
+
+export type AppointmentStatus =
+  | "booked"
+  | "arrived"
+  | "completed"
+  | "cancelled"
+  | "did_not_arrive";
+
+export interface Appointment {
+  id: string;
+  clinicId: string;
+  patientId: string;
+  practitionerId: string;
+  appointmentTypeId: string | null;
+  startsAt: string; // ISO timestamp
+  endsAt: string;
+  status: AppointmentStatus;
+  cancellationReason: string | null;
+  adminNotes: string | null;
+  recurrenceGroup: string | null;
+  // joined for display
+  patientName?: string;
+  typeName?: string;
+  typeColor?: string;
+}
+
+export interface WorkingHours {
+  id: string;
+  practitionerId: string;
+  weekday: number; // 0 = Sunday
+  startTime: string; // "09:00:00"
+  endTime: string;
+}
+
+export interface BlockedTime {
+  id: string;
+  practitionerId: string;
+  startsAt: string;
+  endsAt: string;
+  reason: string | null;
+}
+
+export function formatPrice(cents: number): string {
+  return (cents / 100).toLocaleString("en-AU", {
+    style: "currency",
+    currency: "AUD",
+  });
+}
+
 export function fullName(p: Patient): string {
   const base = `${p.firstName} ${p.lastName}`;
   return p.preferredName ? `${base} (${p.preferredName})` : base;

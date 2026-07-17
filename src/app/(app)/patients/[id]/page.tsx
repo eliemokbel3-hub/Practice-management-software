@@ -9,6 +9,8 @@ import {
   MapPin,
 } from "lucide-react";
 import { getPatient } from "@/lib/data/patients";
+import { listUpcomingForPatient } from "@/lib/data/appointments";
+import { formatLongDate, formatTime } from "@/lib/calendar-utils";
 import { ageFromDob, fullName } from "@/lib/types";
 import { setArchivedAction } from "../actions";
 
@@ -46,6 +48,7 @@ export default async function PatientPage({
   const { id } = await params;
   const patient = await getPatient(id);
   if (!patient) notFound();
+  const upcoming = await listUpcomingForPatient(id);
 
   const age = ageFromDob(patient.dateOfBirth);
   const dob = patient.dateOfBirth
@@ -193,6 +196,32 @@ export default async function PatientPage({
                 <span className="text-faint">Nothing recorded yet.</span>
               )}
             </p>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-2">
+          <Card title="Upcoming appointments">
+            {upcoming.length === 0 ? (
+              <p className="text-sm text-faint">No upcoming appointments.</p>
+            ) : (
+              <ul className="flex flex-col gap-2">
+                {upcoming.map((a) => (
+                  <li key={a.id}>
+                    <Link
+                      href={`/calendar/appointments/${a.id}`}
+                      className="flex items-center gap-2.5 text-sm hover:underline"
+                    >
+                      <span
+                        className="h-3 w-3 shrink-0 rounded"
+                        style={{ backgroundColor: a.typeColor ?? "#7edcd2" }}
+                      />
+                      {formatLongDate(new Date(a.startsAt))} ·{" "}
+                      {formatTime(a.startsAt)} — {a.typeName}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </Card>
         </div>
       </div>

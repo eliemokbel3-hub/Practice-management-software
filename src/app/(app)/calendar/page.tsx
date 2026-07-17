@@ -1,13 +1,176 @@
-import { CalendarDays } from "lucide-react";
-import { ComingSoon } from "@/components/coming-soon";
+import Link from "next/link";
+import { CalendarOff, ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { DayColumn } from "@/components/calendar/day-column";
+import { listAppointmentsInRange } from "@/lib/data/appointments";
+import { listBlockedTimesInRange, listWorkingHours } from "@/lib/data/schedule";
+import {
+  DAY_END_HOUR,
+  DAY_START_HOUR,
+  PX_PER_MINUTE,
+  addDays,
+  dateKey,
+  formatDayHeading,
+  formatLongDate,
+  isSameDay,
+  parseDateKey,
+  startOfWeek,
+} from "@/lib/calendar-utils";
 
-export default function CalendarPage() {
+export default async function CalendarPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ date?: string; view?: string }>;
+}) {
+  const params = await searchParams;
+  const view = params.view === "day" ? "day" : "week";
+  const focus = parseDateKey(params.date);
+  const rangeStart = view === "week" ? startOfWeek(focus) : focus;
+  const dayCount = view === "week" ? 7 : 1;
+  const rangeEnd = addDays(rangeStart, dayCount);
+  const today = new Date();
+
+  const [appointments, blockedTimes, workingHours] = await Promise.all([
+    listAppointmentsInRange(rangeStart.toISOString(), rangeEnd.toISOString()),
+    listBlockedTimesInRange(rangeStart.toISOString(), rangeEnd.toISOString()),
+    listWorkingHours(),
+  ]);
+
+  const days = Array.from({ length: dayCount }, (_, i) => addDays(rangeStart, i));
+  const step = view === "week" ? 7 : 1;
+  const navHref = (offsetDays: number) =>
+    `/calendar?view=${view}&date=${dateKey(addDays(focus, offsetDays))}`;
+  const hours = Array.from(
+    { length: DAY_END_HOUR - DAY_START_HOUR },
+    (_, i) => DAY_START_HOUR + i
+  );
+
   return (
-    <ComingSoon
-      icon={CalendarDays}
-      title="Calendar & appointments"
-      phase="Coming in Phase 2"
-      description="Your diary: book, reschedule and cancel appointments, with fully customizable appointment types, working hours and blocked time."
-    />
+    <div className="flex flex-col gap-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-xl font-semibold tracking-tight">
+          {view === "week"
+            ? `Week of ${formatDayHeading(rangeStart)}`
+            : formatLongDate(focus)}
+        </h1>
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/calendar/block/new?date=${dateKey(focus)}`}
+            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+          >
+            <CalendarOff size={15} /> Block time
+          </Link>
+          <Link
+            href={`/calendar/new?date=${dateKey(focus)}`}
+            className="flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+          >
+            <Plus size={15} /> New appointment
+          </Link>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-1">
+          <Link
+            href={navHref(-step)}
+            aria-label="Previous"
+            className="rounded-lg border border-border p-2 transition-colors hover:bg-surface-hover"
+          >
+            <ChevronLeft size={15} />
+          </Link>
+          <Link
+            href={`/calendar?view=${view}`}
+            className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-surface-hover"
+          >
+            Today
+          </Link>
+          <Link
+            href={navHref(step)}
+            aria-label="Next"
+            className="rounded-lg border border-border p-2 transition-colors hover:bg-surface-hover"
+          >
+            <ChevronRight size={15} />
+          </Link>
+        </div>
+        <div className="flex items-center gap-0.5 rounded-lg border border-border p-0.5 text-sm font-medium">
+          {(["day", "week"] as const).map((v) => (
+            <Link
+              key={v}
+              href={`/calendar?view=${v}&date=${dateKey(focus)}`}
+              className={`rounded-md px-3 py-1 capitalize transition-colors ${
+                view === v
+                  ? "bg-primary-soft text-primary-soft-foreground"
+                  : "text-muted hover:text-foreground"
+              }`}
+            >
+              {v}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="overflow-x-auto rounded-xl border border-border bg-surface">
+        <div className="min-w-[640px]">
+          <div
+            className="grid border-b border-border"
+            style={{
+              gridTemplateColumns: `56px repeat(${dayCount}, minmax(0, 1fr))`,
+            }}
+          >
+            <div />
+            {days.map((d) => (
+              <Link
+                key={dateKey(d)}
+                href={`/calendar?view=day&date=${dateKey(d)}`}
+                className={`border-l border-border px-2 py-2 text-center text-sm font-medium ${
+                  isSameDay(d, today)
+                    ? "text-primary"
+                    : "text-muted hover:text-foreground"
+                }`}
+              >
+                {formatDayHeading(d)}
+              </Link>
+            ))}
+          </div>
+          <div
+            className="grid"
+            style={{
+              gridTemplateColumns: `56px repeat(${dayCount}, minmax(0, 1fr))`,
+            }}
+          >
+            <div className="relative">
+              {hours.map((h) => (
+                <div
+                  key={h}
+                  className="pr-2 text-right text-xs text-faint"
+                  style={{ height: 60 * PX_PER_MINUTE }}
+                >
+                  <span className="relative -top-1.5">
+                    {h > 12 ? `${h - 12}pm` : h === 12 ? "12pm" : `${h}am`}
+                  </span>
+                </div>
+              ))}
+            </div>
+            {days.map((d) => (
+              <DayColumn
+                key={dateKey(d)}
+                day={d}
+                isToday={isSameDay(d, today)}
+                appointments={appointments.filter((a) =>
+                  isSameDay(new Date(a.startsAt), d)
+                )}
+                blockedTimes={blockedTimes.filter((b) =>
+                  isSameDay(new Date(b.startsAt), d)
+                )}
+                workingHours={workingHours}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      <p className="text-xs text-faint">
+        Click an empty slot to book it · click an appointment to manage it ·
+        shaded areas are outside your working hours.
+      </p>
+    </div>
   );
 }
