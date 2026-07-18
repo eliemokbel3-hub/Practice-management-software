@@ -29,6 +29,8 @@ function typeInputFromForm(form: FormData): AppointmentTypeInput {
     isActive: true,
     maxPatients: Math.max(1, num("maxPatients", 1)),
     sortOrder: num("sortOrder", 0),
+    defaultNoteTemplateId: String(form.get("defaultNoteTemplateId") ?? "") || null,
+    defaultServiceItemId: String(form.get("defaultServiceItemId") ?? "") || null,
   };
 }
 

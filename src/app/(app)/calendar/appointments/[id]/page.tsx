@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check, FileText, UserCheck, UserX, XCircle } from "lucide-react";
+import { ArrowLeft, Check, FileText, Receipt, UserCheck, UserX, XCircle } from "lucide-react";
 import { getAppointment } from "@/lib/data/appointments";
 import { getAppointmentType } from "@/lib/data/appointment-types";
 import { getNoteForAppointment } from "@/lib/data/clinical-notes";
 import { openNoteForAppointmentAction } from "@/app/(app)/notes/actions";
+import { createInvoiceForAppointmentAction } from "@/app/(app)/invoices/actions";
 import { dateKey, formatLongDate, formatTime } from "@/lib/calendar-utils";
 import {
   cancelAppointmentAction,
@@ -108,6 +109,17 @@ export default async function AppointmentPage({
                 </button>
               </form>
             )}
+          </section>
+
+          <section className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface p-5">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
+              Billing
+            </h2>
+            <form action={createInvoiceForAppointmentAction.bind(null, appointment.id)}>
+              <button className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+                <Receipt size={15} /> Create invoice
+              </button>
+            </form>
           </section>
 
           <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">

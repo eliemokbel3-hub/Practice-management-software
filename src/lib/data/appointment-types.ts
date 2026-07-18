@@ -19,6 +19,7 @@ function rowToType(row: any): AppointmentType {
     maxPatients: row.max_patients,
     sortOrder: row.sort_order,
     defaultNoteTemplateId: row.default_note_template_id,
+    defaultServiceItemId: row.default_service_item_id,
   };
 }
 
@@ -36,6 +37,8 @@ function inputToRow(input: AppointmentTypeInput) {
     is_active: input.isActive,
     max_patients: input.maxPatients,
     sort_order: input.sortOrder,
+    default_note_template_id: input.defaultNoteTemplateId,
+    default_service_item_id: input.defaultServiceItemId,
   };
 }
 

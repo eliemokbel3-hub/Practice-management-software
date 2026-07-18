@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { AppointmentTypeForm } from "@/components/appointment-type-form";
+import { listNoteTemplates } from "@/lib/data/note-templates";
+import { listServiceItems } from "@/lib/data/service-items";
 import { createAppointmentTypeAction } from "../actions";
 
-export default function NewAppointmentTypePage() {
+export default async function NewAppointmentTypePage() {
+  const [noteTemplates, serviceItems] = await Promise.all([
+    listNoteTemplates(),
+    listServiceItems(),
+  ]);
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -20,6 +26,8 @@ export default function NewAppointmentTypePage() {
       <AppointmentTypeForm
         action={createAppointmentTypeAction}
         submitLabel="Create appointment type"
+        noteTemplates={noteTemplates}
+        serviceItems={serviceItems}
       />
     </div>
   );

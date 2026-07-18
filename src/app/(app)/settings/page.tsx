@@ -1,7 +1,35 @@
 import Link from "next/link";
-import { CalendarClock, Tags, ChevronRight, FileText } from "lucide-react";
+import {
+  CalendarClock,
+  Tags,
+  ChevronRight,
+  FileText,
+  Building2,
+  Receipt,
+  CreditCard,
+} from "lucide-react";
 
 const sections = [
+  {
+    href: "/settings/clinic",
+    icon: Building2,
+    title: "Clinic details",
+    description:
+      "Name, ABN, address and contact details shown on invoices — plus your GST rate.",
+  },
+  {
+    href: "/settings/billable-items",
+    icon: Receipt,
+    title: "Billable items",
+    description:
+      "Services you invoice, with the item codes health funds expect on receipts.",
+  },
+  {
+    href: "/settings/payment-types",
+    icon: CreditCard,
+    title: "Payment types",
+    description: "The ways patients pay — HICAPS, EFTPOS, cash, or your own.",
+  },
   {
     href: "/settings/note-templates",
     icon: FileText,

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { AppointmentTypeForm } from "@/components/appointment-type-form";
 import { getAppointmentType } from "@/lib/data/appointment-types";
+import { listNoteTemplates } from "@/lib/data/note-templates";
+import { listServiceItems } from "@/lib/data/service-items";
 import { updateAppointmentTypeAction } from "../../actions";
 
 export default async function EditAppointmentTypePage({
@@ -11,7 +13,11 @@ export default async function EditAppointmentTypePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const type = await getAppointmentType(id);
+  const [type, noteTemplates, serviceItems] = await Promise.all([
+    getAppointmentType(id),
+    listNoteTemplates(),
+    listServiceItems(),
+  ]);
   if (!type) notFound();
 
   return (
@@ -31,6 +37,8 @@ export default async function EditAppointmentTypePage({
         type={type}
         action={updateAppointmentTypeAction.bind(null, type.id)}
         submitLabel="Save changes"
+        noteTemplates={noteTemplates}
+        serviceItems={serviceItems}
       />
     </div>
   );

@@ -12,7 +12,10 @@ import { getPatient } from "@/lib/data/patients";
 import { listUpcomingForPatient } from "@/lib/data/appointments";
 import { listNotesForPatient } from "@/lib/data/clinical-notes";
 import { listNoteTemplates } from "@/lib/data/note-templates";
+import { listInvoicesForPatient } from "@/lib/data/invoices";
 import { createNoteForPatientAction } from "@/app/(app)/notes/actions";
+import { createInvoiceForPatientAction } from "@/app/(app)/invoices/actions";
+import { formatPrice } from "@/lib/types";
 import { formatLongDate, formatTime } from "@/lib/calendar-utils";
 import { ageFromDob, fullName } from "@/lib/types";
 import { setArchivedAction } from "../actions";
@@ -51,12 +54,14 @@ export default async function PatientPage({
   const { id } = await params;
   const patient = await getPatient(id);
   if (!patient) notFound();
-  const [upcoming, notes, templates] = await Promise.all([
+  const [upcoming, notes, templates, invoices] = await Promise.all([
     listUpcomingForPatient(id),
     listNotesForPatient(id),
     listNoteTemplates(),
+    listInvoicesForPatient(id),
   ]);
   const newNoteAction = createNoteForPatientAction.bind(null, id);
+  const newInvoiceAction = createInvoiceForPatientAction.bind(null, id);
 
   const age = ageFromDob(patient.dateOfBirth);
   const dob = patient.dateOfBirth
@@ -252,6 +257,41 @@ export default async function PatientPage({
                 </select>
                 <button className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
                   New note
+                </button>
+              </form>
+            </div>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-2">
+          <Card title="Invoices">
+            <div className="flex flex-col gap-4">
+              {invoices.length === 0 ? (
+                <p className="text-sm text-faint">No invoices yet.</p>
+              ) : (
+                <ul className="flex flex-col divide-y divide-border">
+                  {invoices.map((inv) => (
+                    <li key={inv.id} className="py-2 first:pt-0 last:pb-0">
+                      <Link
+                        href={`/invoices/${inv.id}`}
+                        className="flex items-center justify-between gap-3 text-sm hover:underline"
+                      >
+                        <span>
+                          #{inv.invoiceNumber} ·{" "}
+                          {new Date(inv.createdAt).toLocaleDateString("en-AU")} ·{" "}
+                          {formatPrice(inv.totalCents)}
+                        </span>
+                        <span className="rounded-full bg-surface-hover px-2.5 py-0.5 text-xs font-medium capitalize text-muted">
+                          {inv.status}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <form action={newInvoiceAction}>
+                <button className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+                  New invoice
                 </button>
               </form>
             </div>

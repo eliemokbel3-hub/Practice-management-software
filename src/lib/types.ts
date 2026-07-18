@@ -52,12 +52,10 @@ export interface AppointmentType {
   maxPatients: number;
   sortOrder: number;
   defaultNoteTemplateId: string | null;
+  defaultServiceItemId: string | null;
 }
 
-export type AppointmentTypeInput = Omit<
-  AppointmentType,
-  "id" | "clinicId" | "defaultNoteTemplateId"
->;
+export type AppointmentTypeInput = Omit<AppointmentType, "id" | "clinicId">;
 
 export type AppointmentStatus =
   | "booked"
@@ -155,6 +153,85 @@ export interface ClinicalNote {
   patientName?: string;
   practitionerName?: string;
   revisionCount?: number;
+}
+
+export interface Clinic {
+  id: string;
+  name: string;
+  timezone: string;
+  phone: string | null;
+  email: string | null;
+  abn: string | null;
+  address: string | null;
+  suburb: string | null;
+  state: string | null;
+  postcode: string | null;
+  /** Percent-free decimal, e.g. 0.10 for 10% GST. */
+  gstRate: number;
+  invoiceTitle: string;
+}
+
+export interface ServiceItem {
+  id: string;
+  clinicId: string;
+  code: string;
+  name: string;
+  priceCents: number;
+  gstApplies: boolean;
+  isActive: boolean;
+}
+
+export type ServiceItemInput = Omit<ServiceItem, "id" | "clinicId">;
+
+export interface PaymentType {
+  id: string;
+  clinicId: string;
+  name: string;
+  isActive: boolean;
+  sortOrder: number;
+}
+
+export type InvoiceStatus = "draft" | "issued" | "paid" | "void";
+
+export interface InvoiceLine {
+  id: string;
+  invoiceId: string;
+  serviceItemId: string | null;
+  appointmentId: string | null;
+  description: string;
+  code: string | null;
+  quantity: number;
+  unitPriceCents: number;
+  gstCents: number;
+}
+
+export interface Payment {
+  id: string;
+  invoiceId: string;
+  amountCents: number;
+  paymentTypeId: string | null;
+  paymentTypeName?: string;
+  paidAt: string;
+  reference: string | null;
+}
+
+export interface Invoice {
+  id: string;
+  clinicId: string;
+  patientId: string;
+  practitionerId: string | null;
+  invoiceNumber: number;
+  status: InvoiceStatus;
+  issuedDate: string | null;
+  subtotalCents: number;
+  gstCents: number;
+  totalCents: number;
+  notes: string | null;
+  createdAt: string;
+  patientName?: string;
+  paidCents?: number;
+  lines?: InvoiceLine[];
+  payments?: Payment[];
 }
 
 export function formatPrice(cents: number): string {

@@ -1,4 +1,9 @@
-import type { AppointmentType } from "@/lib/types";
+import type {
+  AppointmentType,
+  NoteTemplate,
+  ServiceItem,
+} from "@/lib/types";
+import { formatPrice } from "@/lib/types";
 
 const PALETTE = [
   "#FFA3A3", "#FDCA86", "#feffb8", "#bcffb8", "#a8f0e4", "#7edcd2",
@@ -34,10 +39,14 @@ export function AppointmentTypeForm({
   type,
   action,
   submitLabel,
+  noteTemplates,
+  serviceItems,
 }: {
   type?: AppointmentType;
   action: (form: FormData) => Promise<void>;
   submitLabel: string;
+  noteTemplates: NoteTemplate[];
+  serviceItems: ServiceItem[];
 }) {
   const colours =
     type && !PALETTE.includes(type.color)
@@ -176,6 +185,45 @@ export function AppointmentTypeForm({
             ))}
           </div>
         </div>
+        <Field
+          label="Default note template"
+          name="defaultNoteTemplateId"
+          hint="Which treatment note opens for this appointment type."
+        >
+          <select
+            id="defaultNoteTemplateId"
+            name="defaultNoteTemplateId"
+            defaultValue={type?.defaultNoteTemplateId ?? ""}
+            className={inputCls}
+          >
+            <option value="">— None —</option>
+            {noteTemplates.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field
+          label="Default billable item"
+          name="defaultServiceItemId"
+          hint="Pre-fills invoices created from this appointment type."
+        >
+          <select
+            id="defaultServiceItemId"
+            name="defaultServiceItemId"
+            defaultValue={type?.defaultServiceItemId ?? ""}
+            className={inputCls}
+          >
+            <option value="">— None —</option>
+            {serviceItems.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.code ? `(${s.code}) ` : ""}
+                {s.name} — {formatPrice(s.priceCents)}
+              </option>
+            ))}
+          </select>
+        </Field>
         <label className="flex items-center gap-2 text-sm sm:col-span-2">
           <input
             type="checkbox"
