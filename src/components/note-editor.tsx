@@ -1,13 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
-import { Check, CloudUpload, Lock } from "lucide-react";
+import { Check, CloudUpload, Lock, Mic, Sparkles, X } from "lucide-react";
 import type { NoteSection } from "@/lib/types";
 import {
   amendNoteAction,
   finaliseNoteAction,
   saveDraftAction,
 } from "@/app/(app)/notes/actions";
+import { tidyNoteAction } from "@/app/(app)/notes/ai-actions";
 
 const inputCls =
   "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
@@ -74,6 +75,49 @@ export function NoteEditor({
     });
   };
 
+  const [proposal, setProposal] = useState<Record<string, string> | null>(null);
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+
+  const tidy = () => {
+    setAiBusy(true);
+    setAiError(null);
+    tidyNoteAction(noteId, latest.current)
+      .then((result) => {
+        if (result.error) setAiError(result.error);
+        else setProposal(result.answers ?? null);
+      })
+      .catch(() => setAiError("Something went wrong — try again."))
+      .finally(() => setAiBusy(false));
+  };
+
+  const changedKeys = proposal
+    ? Object.keys(proposal).filter(
+        (key) => proposal[key] !== String(answers[key] ?? "")
+      )
+    : [];
+
+  const applyProposal = () => {
+    if (!proposal) return;
+    latest.current = { ...latest.current, ...proposal };
+    setAnswers(latest.current);
+    setProposal(null);
+    if (mode === "draft") {
+      setSaveState("dirty");
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = setTimeout(autosave, 400);
+    }
+  };
+
+  const labelFor = (key: string): string => {
+    for (const section of sections) {
+      for (const q of section.questions) {
+        if (`${section.key}.${q.key}` === key) return `${section.label} · ${q.label}`;
+      }
+    }
+    return key;
+  };
+
   const saveLabel = {
     idle: "",
     dirty: "Unsaved changes…",
@@ -84,6 +128,85 @@ export function NoteEditor({
 
   return (
     <div className="flex flex-col gap-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          type="button"
+          disabled
+          title="Coming soon — record the consult and have a draft note written for you"
+          className="flex cursor-not-allowed items-center gap-1.5 rounded-lg border border-dashed border-border px-3 py-2 text-sm font-medium text-faint"
+        >
+          <Mic size={14} /> Record consult
+          <span className="rounded-full bg-surface-hover px-2 py-0.5 text-[10px] uppercase tracking-wide">
+            Soon
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={tidy}
+          disabled={aiBusy}
+          className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover disabled:opacity-60"
+        >
+          <Sparkles size={14} />
+          {aiBusy ? "Tidying…" : "Tidy this note"}
+        </button>
+        {aiError && <span className="text-xs text-danger">{aiError}</span>}
+      </div>
+
+      {proposal && (
+        <div className="flex flex-col gap-3 rounded-xl border-2 border-primary/40 bg-surface p-5">
+          <div className="flex items-center justify-between">
+            <h2 className="flex items-center gap-2 text-sm font-semibold">
+              <Sparkles size={15} className="text-primary" /> Suggested tidy-up
+              — nothing is changed until you apply it
+            </h2>
+            <button
+              type="button"
+              onClick={() => setProposal(null)}
+              aria-label="Discard suggestion"
+              className="rounded-lg p-1.5 text-faint hover:bg-surface-hover hover:text-foreground"
+            >
+              <X size={15} />
+            </button>
+          </div>
+          {changedKeys.length === 0 ? (
+            <p className="text-sm text-muted">
+              Nothing to tidy — the note already reads well.
+            </p>
+          ) : (
+            <div className="flex flex-col gap-3">
+              {changedKeys.map((key) => (
+                <div key={key}>
+                  <p className="text-xs uppercase tracking-wide text-faint">
+                    {labelFor(key)}
+                  </p>
+                  <p className="mt-1 whitespace-pre-wrap rounded-lg bg-primary-soft/30 px-3 py-2 text-sm leading-relaxed">
+                    {proposal[key]}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => setProposal(null)}
+              className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+            >
+              Discard
+            </button>
+            {changedKeys.length > 0 && (
+              <button
+                type="button"
+                onClick={applyProposal}
+                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+              >
+                Apply tidy-up
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
       {sections.map((section) => (
         <section
           key={section.key}
