@@ -2,6 +2,14 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
+  // Patient-facing pages and the cron endpoint work without a login: the
+  // public booking flow, emailed manage links, and reminder triggering.
+  // Their server code uses the service role and does its own checks.
+  const { pathname } = request.nextUrl;
+  if (pathname.startsWith("/book") || pathname.startsWith("/api/reminders")) {
+    return NextResponse.next({ request });
+  }
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(

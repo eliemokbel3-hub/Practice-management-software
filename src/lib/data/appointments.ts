@@ -15,6 +15,7 @@ function rowToAppointment(row: any): Appointment {
     cancellationReason: row.cancellation_reason,
     adminNotes: row.admin_notes,
     recurrenceGroup: row.recurrence_group,
+    bookedOnline: row.booked_online ?? false,
     patientName: row.patients
       ? `${row.patients.first_name} ${row.patients.last_name}`
       : undefined,

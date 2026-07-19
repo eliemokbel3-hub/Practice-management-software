@@ -7,6 +7,7 @@ import {
   Building2,
   Receipt,
   CreditCard,
+  Globe,
 } from "lucide-react";
 
 const sections = [
@@ -49,6 +50,13 @@ const sections = [
     icon: CalendarClock,
     title: "Working hours",
     description: "Your regular weekly hours — the calendar shades time outside them.",
+  },
+  {
+    href: "/settings/online-bookings",
+    icon: Globe,
+    title: "Online bookings",
+    description:
+      "Your public booking page, its rules, and confirmation and reminder emails.",
   },
 ];
 

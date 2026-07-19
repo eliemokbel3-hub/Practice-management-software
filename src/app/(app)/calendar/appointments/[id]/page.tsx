@@ -78,6 +78,9 @@ export default async function AppointmentPage({
         {appointment.adminNotes && (
           <p className="text-sm text-muted">{appointment.adminNotes}</p>
         )}
+        {appointment.bookedOnline && (
+          <p className="text-xs text-faint">Booked online by the patient.</p>
+        )}
         {appointment.recurrenceGroup && (
           <p className="text-xs text-faint">Part of a repeating series.</p>
         )}

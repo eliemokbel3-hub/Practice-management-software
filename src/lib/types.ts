@@ -76,6 +76,7 @@ export interface Appointment {
   cancellationReason: string | null;
   adminNotes: string | null;
   recurrenceGroup: string | null;
+  bookedOnline: boolean;
   // joined for display
   patientName?: string;
   typeName?: string;
