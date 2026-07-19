@@ -1,0 +1,371 @@
+[
+  {
+    "code": "odi",
+    "name": "Oswestry Disability Index (ODI)",
+    "description": "Low back pain — how back pain affects everyday life. 10 sections, scored 0–100%.",
+    "definition": {
+      "kind": "questionnaire",
+      "instructions": "This questionnaire is designed to give us information as to how your back (or leg) trouble affects your ability to manage in everyday life. Please answer every section by choosing the ONE statement that best describes you today.",
+      "questions": [
+        {
+          "key": "pain",
+          "text": "Pain intensity",
+          "options": [
+            { "label": "I have no pain at the moment", "score": 0 },
+            { "label": "The pain is very mild at the moment", "score": 1 },
+            { "label": "The pain is moderate at the moment", "score": 2 },
+            { "label": "The pain is fairly severe at the moment", "score": 3 },
+            { "label": "The pain is very severe at the moment", "score": 4 },
+            { "label": "The pain is the worst imaginable at the moment", "score": 5 }
+          ]
+        },
+        {
+          "key": "personal_care",
+          "text": "Personal care (washing, dressing, etc.)",
+          "options": [
+            { "label": "I can look after myself normally without causing extra pain", "score": 0 },
+            { "label": "I can look after myself normally but it causes extra pain", "score": 1 },
+            { "label": "It is painful to look after myself and I am slow and careful", "score": 2 },
+            { "label": "I need some help but manage most of my personal care", "score": 3 },
+            { "label": "I need help every day in most aspects of self-care", "score": 4 },
+            { "label": "I do not get dressed, wash with difficulty and stay in bed", "score": 5 }
+          ]
+        },
+        {
+          "key": "lifting",
+          "text": "Lifting",
+          "options": [
+            { "label": "I can lift heavy weights without extra pain", "score": 0 },
+            { "label": "I can lift heavy weights but it gives extra pain", "score": 1 },
+            { "label": "Pain prevents me lifting heavy weights off the floor, but I can manage if they are conveniently placed (e.g. on a table)", "score": 2 },
+            { "label": "Pain prevents me lifting heavy weights, but I can manage light to medium weights if they are conveniently placed", "score": 3 },
+            { "label": "I can only lift very light weights", "score": 4 },
+            { "label": "I cannot lift or carry anything", "score": 5 }
+          ]
+        },
+        {
+          "key": "walking",
+          "text": "Walking",
+          "options": [
+            { "label": "Pain does not prevent me walking any distance", "score": 0 },
+            { "label": "Pain prevents me from walking more than 2 km", "score": 1 },
+            { "label": "Pain prevents me from walking more than 1 km", "score": 2 },
+            { "label": "Pain prevents me from walking more than 500 m", "score": 3 },
+            { "label": "I can only walk using a stick or crutches", "score": 4 },
+            { "label": "I am in bed most of the time and have to crawl to the toilet", "score": 5 }
+          ]
+        },
+        {
+          "key": "sitting",
+          "text": "Sitting",
+          "options": [
+            { "label": "I can sit in any chair as long as I like", "score": 0 },
+            { "label": "I can sit in my favourite chair as long as I like", "score": 1 },
+            { "label": "Pain prevents me from sitting for more than 1 hour", "score": 2 },
+            { "label": "Pain prevents me from sitting for more than half an hour", "score": 3 },
+            { "label": "Pain prevents me from sitting for more than 10 minutes", "score": 4 },
+            { "label": "Pain prevents me from sitting at all", "score": 5 }
+          ]
+        },
+        {
+          "key": "standing",
+          "text": "Standing",
+          "options": [
+            { "label": "I can stand as long as I want without extra pain", "score": 0 },
+            { "label": "I can stand as long as I want but it gives me extra pain", "score": 1 },
+            { "label": "Pain prevents me from standing for more than 1 hour", "score": 2 },
+            { "label": "Pain prevents me from standing for more than half an hour", "score": 3 },
+            { "label": "Pain prevents me from standing for more than 10 minutes", "score": 4 },
+            { "label": "Pain prevents me from standing at all", "score": 5 }
+          ]
+        },
+        {
+          "key": "sleeping",
+          "text": "Sleeping",
+          "options": [
+            { "label": "My sleep is never disturbed by pain", "score": 0 },
+            { "label": "My sleep is occasionally disturbed by pain", "score": 1 },
+            { "label": "Because of pain I have less than 6 hours sleep", "score": 2 },
+            { "label": "Because of pain I have less than 4 hours sleep", "score": 3 },
+            { "label": "Because of pain I have less than 2 hours sleep", "score": 4 },
+            { "label": "Pain prevents me from sleeping at all", "score": 5 }
+          ]
+        },
+        {
+          "key": "social",
+          "text": "Social life",
+          "options": [
+            { "label": "My social life is normal and gives me no extra pain", "score": 0 },
+            { "label": "My social life is normal but increases the degree of pain", "score": 1 },
+            { "label": "Pain has no significant effect on my social life apart from limiting my more energetic interests (e.g. sport)", "score": 2 },
+            { "label": "Pain has restricted my social life and I do not go out as often", "score": 3 },
+            { "label": "Pain has restricted my social life to my home", "score": 4 },
+            { "label": "I have no social life because of pain", "score": 5 }
+          ]
+        },
+        {
+          "key": "travelling",
+          "text": "Travelling",
+          "options": [
+            { "label": "I can travel anywhere without pain", "score": 0 },
+            { "label": "I can travel anywhere but it gives me extra pain", "score": 1 },
+            { "label": "Pain is bad but I manage journeys over 2 hours", "score": 2 },
+            { "label": "Pain restricts me to journeys of less than 1 hour", "score": 3 },
+            { "label": "Pain restricts me to short necessary journeys under 30 minutes", "score": 4 },
+            { "label": "Pain prevents me from travelling except to receive treatment", "score": 5 }
+          ]
+        },
+        {
+          "key": "work",
+          "text": "Employment / homemaking",
+          "options": [
+            { "label": "My normal work / homemaking activities do not cause pain", "score": 0 },
+            { "label": "My normal activities cause some pain, but I can still do all that is required of me", "score": 1 },
+            { "label": "I can perform most of my duties, but pain prevents more physically stressful activities (e.g. lifting, vacuuming)", "score": 2 },
+            { "label": "Pain prevents me from doing anything but light duties", "score": 3 },
+            { "label": "Pain prevents me from doing even light duties", "score": 4 },
+            { "label": "Pain prevents me from performing any job or homemaking chores", "score": 5 }
+          ]
+        }
+      ],
+      "scoring": {
+        "method": "percent_of_max",
+        "maxScore": 5,
+        "unit": "%",
+        "higherIsBetter": false,
+        "bands": [
+          { "upTo": 20, "label": "Minimal disability" },
+          { "upTo": 40, "label": "Moderate disability" },
+          { "upTo": 60, "label": "Severe disability" },
+          { "upTo": 80, "label": "Crippling back pain" },
+          { "upTo": 100, "label": "Bed-bound or exaggerating" }
+        ]
+      }
+    }
+  },
+  {
+    "code": "ndi",
+    "name": "Neck Disability Index (NDI)",
+    "description": "Neck pain — how neck pain affects everyday life. 10 sections, scored 0–100%.",
+    "definition": {
+      "kind": "questionnaire",
+      "instructions": "This questionnaire is designed to give us information as to how your neck pain affects your ability to manage in everyday life. Please answer every section by choosing the ONE statement that best describes you today.",
+      "questions": [
+        {
+          "key": "pain",
+          "text": "Pain intensity",
+          "options": [
+            { "label": "I have no pain at the moment", "score": 0 },
+            { "label": "The pain is very mild at the moment", "score": 1 },
+            { "label": "The pain is moderate at the moment", "score": 2 },
+            { "label": "The pain is fairly severe at the moment", "score": 3 },
+            { "label": "The pain is very severe at the moment", "score": 4 },
+            { "label": "The pain is the worst imaginable at the moment", "score": 5 }
+          ]
+        },
+        {
+          "key": "personal_care",
+          "text": "Personal care (washing, dressing, etc.)",
+          "options": [
+            { "label": "I can look after myself normally without causing extra pain", "score": 0 },
+            { "label": "I can look after myself normally but it causes extra pain", "score": 1 },
+            { "label": "It is painful to look after myself and I am slow and careful", "score": 2 },
+            { "label": "I need some help but manage most of my personal care", "score": 3 },
+            { "label": "I need help every day in most aspects of self-care", "score": 4 },
+            { "label": "I do not get dressed, I wash with difficulty and stay in bed", "score": 5 }
+          ]
+        },
+        {
+          "key": "lifting",
+          "text": "Lifting",
+          "options": [
+            { "label": "I can lift heavy weights without extra pain", "score": 0 },
+            { "label": "I can lift heavy weights but it gives extra pain", "score": 1 },
+            { "label": "Pain prevents me lifting heavy weights off the floor, but I can manage if they are conveniently positioned (e.g. on a table)", "score": 2 },
+            { "label": "Pain prevents me lifting heavy weights, but I can manage light to medium weights if they are conveniently positioned", "score": 3 },
+            { "label": "I can lift only very light weights", "score": 4 },
+            { "label": "I cannot lift or carry anything at all", "score": 5 }
+          ]
+        },
+        {
+          "key": "reading",
+          "text": "Reading",
+          "options": [
+            { "label": "I can read as much as I want with no neck pain", "score": 0 },
+            { "label": "I can read as much as I want with slight neck pain", "score": 1 },
+            { "label": "I can read as much as I want with moderate neck pain", "score": 2 },
+            { "label": "I cannot read as much as I want because of moderate neck pain", "score": 3 },
+            { "label": "I can hardly read at all because of severe neck pain", "score": 4 },
+            { "label": "I cannot read at all", "score": 5 }
+          ]
+        },
+        {
+          "key": "headaches",
+          "text": "Headaches",
+          "options": [
+            { "label": "I have no headaches at all", "score": 0 },
+            { "label": "I have slight headaches which come infrequently", "score": 1 },
+            { "label": "I have moderate headaches which come infrequently", "score": 2 },
+            { "label": "I have moderate headaches which come frequently", "score": 3 },
+            { "label": "I have severe headaches which come frequently", "score": 4 },
+            { "label": "I have headaches almost all the time", "score": 5 }
+          ]
+        },
+        {
+          "key": "concentration",
+          "text": "Concentration",
+          "options": [
+            { "label": "I can concentrate fully when I want with no difficulty", "score": 0 },
+            { "label": "I can concentrate fully when I want with slight difficulty", "score": 1 },
+            { "label": "I have a fair degree of difficulty concentrating when I want", "score": 2 },
+            { "label": "I have a lot of difficulty concentrating when I want", "score": 3 },
+            { "label": "I have a great deal of difficulty concentrating when I want", "score": 4 },
+            { "label": "I cannot concentrate at all", "score": 5 }
+          ]
+        },
+        {
+          "key": "work",
+          "text": "Work",
+          "options": [
+            { "label": "I can do as much work as I want", "score": 0 },
+            { "label": "I can only do my usual work, but no more", "score": 1 },
+            { "label": "I can do most of my usual work, but no more", "score": 2 },
+            { "label": "I cannot do my usual work", "score": 3 },
+            { "label": "I can hardly do any work at all", "score": 4 },
+            { "label": "I cannot do any work at all", "score": 5 }
+          ]
+        },
+        {
+          "key": "driving",
+          "text": "Driving",
+          "options": [
+            { "label": "I can drive my car without any neck pain", "score": 0 },
+            { "label": "I can drive my car as long as I want with slight neck pain", "score": 1 },
+            { "label": "I can drive my car as long as I want with moderate neck pain", "score": 2 },
+            { "label": "I cannot drive my car as long as I want because of moderate neck pain", "score": 3 },
+            { "label": "I can hardly drive at all because of severe neck pain", "score": 4 },
+            { "label": "I cannot drive my car at all", "score": 5 }
+          ]
+        },
+        {
+          "key": "sleeping",
+          "text": "Sleeping",
+          "options": [
+            { "label": "I have no trouble sleeping", "score": 0 },
+            { "label": "My sleep is slightly disturbed (less than 1 hour sleepless)", "score": 1 },
+            { "label": "My sleep is mildly disturbed (1–2 hours sleepless)", "score": 2 },
+            { "label": "My sleep is moderately disturbed (2–3 hours sleepless)", "score": 3 },
+            { "label": "My sleep is greatly disturbed (3–5 hours sleepless)", "score": 4 },
+            { "label": "My sleep is completely disturbed (5–7 hours sleepless)", "score": 5 }
+          ]
+        },
+        {
+          "key": "recreation",
+          "text": "Recreation",
+          "options": [
+            { "label": "I am able to engage in all my recreation activities with no neck pain at all", "score": 0 },
+            { "label": "I am able to engage in all my recreation activities with some pain in my neck", "score": 1 },
+            { "label": "I am able to engage in most, but not all, of my usual recreation activities because of pain in my neck", "score": 2 },
+            { "label": "I am able to engage in a few of my usual recreation activities because of pain in my neck", "score": 3 },
+            { "label": "I can hardly do any recreation activities because of pain in my neck", "score": 4 },
+            { "label": "I cannot do any recreation activities at all", "score": 5 }
+          ]
+        }
+      ],
+      "scoring": {
+        "method": "percent_of_max",
+        "maxScore": 5,
+        "unit": "%",
+        "higherIsBetter": false,
+        "bands": [
+          { "upTo": 8, "label": "No disability" },
+          { "upTo": 28, "label": "Mild disability" },
+          { "upTo": 48, "label": "Moderate disability" },
+          { "upTo": 68, "label": "Severe disability" },
+          { "upTo": 100, "label": "Complete disability" }
+        ]
+      }
+    }
+  },
+  {
+    "code": "lefs",
+    "name": "Lower Extremity Functional Scale (LEFS)",
+    "description": "Hip, knee, ankle or foot problems — difficulty with 20 everyday activities. Scored 0–80 (higher is better).",
+    "definition": {
+      "kind": "questionnaire",
+      "instructions": "We are interested in knowing whether you are having any difficulty at all with the activities listed below because of your lower limb problem. Please choose an answer for each activity — today, do you or would you have any difficulty at all with:",
+      "questions": [
+        { "key": "q1", "text": "Any of your usual work, housework, or school activities", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q2", "text": "Your usual hobbies, recreational or sporting activities", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q3", "text": "Getting into or out of the bath", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q4", "text": "Walking between rooms", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q5", "text": "Putting on your shoes or socks", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q6", "text": "Squatting", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q7", "text": "Lifting an object, like a bag of groceries, from the floor", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q8", "text": "Performing light activities around your home", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q9", "text": "Performing heavy activities around your home", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q10", "text": "Getting into or out of a car", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q11", "text": "Walking 2 blocks", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q12", "text": "Walking 1.5 km", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q13", "text": "Going up or down 10 stairs (about 1 flight)", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q14", "text": "Standing for 1 hour", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q15", "text": "Sitting for 1 hour", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q16", "text": "Running on even ground", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q17", "text": "Running on uneven ground", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q18", "text": "Making sharp turns while running fast", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q19", "text": "Hopping", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] },
+        { "key": "q20", "text": "Rolling over in bed", "options": [ { "label": "Extreme difficulty or unable to perform activity", "score": 0 }, { "label": "Quite a bit of difficulty", "score": 1 }, { "label": "Moderate difficulty", "score": 2 }, { "label": "A little bit of difficulty", "score": 3 }, { "label": "No difficulty", "score": 4 } ] }
+      ],
+      "scoring": {
+        "method": "sum",
+        "maxScore": 80,
+        "unit": "/ 80",
+        "higherIsBetter": true
+      }
+    }
+  },
+  {
+    "code": "quickdash",
+    "name": "QuickDASH",
+    "description": "Arm, shoulder or hand problems — 11 items, scored 0–100 (higher = more disability).",
+    "definition": {
+      "kind": "questionnaire",
+      "instructions": "Please rate your ability to do the following activities in the last week by choosing one answer for each item. It doesn't matter which hand or arm you use to perform the activity; please answer based on your ability regardless of how you perform the task.",
+      "questions": [
+        { "key": "q1", "text": "Open a tight or new jar", "options": [ { "label": "No difficulty", "score": 1 }, { "label": "Mild difficulty", "score": 2 }, { "label": "Moderate difficulty", "score": 3 }, { "label": "Severe difficulty", "score": 4 }, { "label": "Unable", "score": 5 } ] },
+        { "key": "q2", "text": "Do heavy household chores (e.g. wash walls, wash floors)", "options": [ { "label": "No difficulty", "score": 1 }, { "label": "Mild difficulty", "score": 2 }, { "label": "Moderate difficulty", "score": 3 }, { "label": "Severe difficulty", "score": 4 }, { "label": "Unable", "score": 5 } ] },
+        { "key": "q3", "text": "Carry a shopping bag or briefcase", "options": [ { "label": "No difficulty", "score": 1 }, { "label": "Mild difficulty", "score": 2 }, { "label": "Moderate difficulty", "score": 3 }, { "label": "Severe difficulty", "score": 4 }, { "label": "Unable", "score": 5 } ] },
+        { "key": "q4", "text": "Wash your back", "options": [ { "label": "No difficulty", "score": 1 }, { "label": "Mild difficulty", "score": 2 }, { "label": "Moderate difficulty", "score": 3 }, { "label": "Severe difficulty", "score": 4 }, { "label": "Unable", "score": 5 } ] },
+        { "key": "q5", "text": "Use a knife to cut food", "options": [ { "label": "No difficulty", "score": 1 }, { "label": "Mild difficulty", "score": 2 }, { "label": "Moderate difficulty", "score": 3 }, { "label": "Severe difficulty", "score": 4 }, { "label": "Unable", "score": 5 } ] },
+        { "key": "q6", "text": "Recreational activities in which you take some force or impact through your arm, shoulder or hand (e.g. golf, hammering, tennis)", "options": [ { "label": "No difficulty", "score": 1 }, { "label": "Mild difficulty", "score": 2 }, { "label": "Moderate difficulty", "score": 3 }, { "label": "Severe difficulty", "score": 4 }, { "label": "Unable", "score": 5 } ] },
+        { "key": "q7", "text": "During the past week, to what extent has your arm, shoulder or hand problem interfered with your normal social activities with family, friends, neighbours or groups?", "options": [ { "label": "Not at all", "score": 1 }, { "label": "Slightly", "score": 2 }, { "label": "Moderately", "score": 3 }, { "label": "Quite a bit", "score": 4 }, { "label": "Extremely", "score": 5 } ] },
+        { "key": "q8", "text": "During the past week, were you limited in your work or other regular daily activities as a result of your arm, shoulder or hand problem?", "options": [ { "label": "Not limited at all", "score": 1 }, { "label": "Slightly limited", "score": 2 }, { "label": "Moderately limited", "score": 3 }, { "label": "Very limited", "score": 4 }, { "label": "Unable", "score": 5 } ] },
+        { "key": "q9", "text": "Arm, shoulder or hand pain", "options": [ { "label": "None", "score": 1 }, { "label": "Mild", "score": 2 }, { "label": "Moderate", "score": 3 }, { "label": "Severe", "score": 4 }, { "label": "Extreme", "score": 5 } ] },
+        { "key": "q10", "text": "Tingling (pins and needles) in your arm, shoulder or hand", "options": [ { "label": "None", "score": 1 }, { "label": "Mild", "score": 2 }, { "label": "Moderate", "score": 3 }, { "label": "Severe", "score": 4 }, { "label": "Extreme", "score": 5 } ] },
+        { "key": "q11", "text": "During the past week, how much difficulty have you had sleeping because of the pain in your arm, shoulder or hand?", "options": [ { "label": "No difficulty", "score": 1 }, { "label": "Mild difficulty", "score": 2 }, { "label": "Moderate difficulty", "score": 3 }, { "label": "Severe difficulty", "score": 4 }, { "label": "So much difficulty that I can't sleep", "score": 5 } ] }
+      ],
+      "scoring": {
+        "method": "quickdash",
+        "unit": "%",
+        "higherIsBetter": false,
+        "minAnswered": 10
+      }
+    }
+  },
+  {
+    "code": "psfs",
+    "name": "Patient-Specific Functional Scale (PSFS)",
+    "description": "The patient names up to 3 activities they struggle with and rates each 0–10. Higher is better.",
+    "definition": {
+      "kind": "psfs",
+      "instructions": "Please list up to 3 important activities that you are unable to do, or are having difficulty with, as a result of your problem — then rate each one on a scale from 0 (unable to perform) to 10 (able to perform at the same level as before your problem).",
+      "questions": [],
+      "scoring": {
+        "method": "psfs_average",
+        "maxScore": 10,
+        "unit": "/ 10",
+        "higherIsBetter": true
+      }
+    }
+  }
+]

@@ -162,6 +162,28 @@ export function rescheduleEmail(
   };
 }
 
+export function outcomeMeasureEmail(
+  clinic: EmailClinic,
+  patientFirstName: string,
+  measureName: string,
+  url: string
+): { subject: string; html: string } {
+  return {
+    subject: `A short questionnaire from ${clinic.name}`,
+    html: layout(
+      clinic,
+      `
+  <p style="margin: 0;">Hi ${esc(patientFirstName)},</p>
+  <p style="margin: 12px 0 0;">As part of your care, we'd like you to fill in a short questionnaire — it helps us track how you're going between visits.</p>
+  <div style="background: #f1f6f5; border-radius: 10px; padding: 16px 18px; margin: 16px 0;">
+    <p style="margin: 0; font-weight: 600;">${esc(measureName)}</p>
+    <p style="margin: 10px 0 0;"><a href="${url}" style="color: #0d9488;">Fill it in here</a> — it only takes a few minutes.</p>
+  </div>
+  <p style="margin: 16px 0 0;">Thank you!</p>`
+    ),
+  };
+}
+
 export function clinicNotificationEmail(
   clinic: EmailClinic,
   action: "booked" | "cancelled" | "rescheduled",

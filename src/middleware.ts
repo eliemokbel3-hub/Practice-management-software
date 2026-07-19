@@ -6,7 +6,11 @@ export async function middleware(request: NextRequest) {
   // public booking flow, emailed manage links, and reminder triggering.
   // Their server code uses the service role and does its own checks.
   const { pathname } = request.nextUrl;
-  if (pathname.startsWith("/book") || pathname.startsWith("/api/reminders")) {
+  if (
+    pathname.startsWith("/book") ||
+    pathname.startsWith("/measure") ||
+    pathname.startsWith("/api/reminders")
+  ) {
     return NextResponse.next({ request });
   }
 

@@ -50,7 +50,8 @@ export type EmailType =
   | "reminder"
   | "cancellation"
   | "reschedule"
-  | "clinic_notification";
+  | "clinic_notification"
+  | "outcome_measure";
 
 export interface SendEmailInput {
   clinicId: string;

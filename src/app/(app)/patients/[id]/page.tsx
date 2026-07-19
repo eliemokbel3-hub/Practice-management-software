@@ -13,8 +13,12 @@ import { listUpcomingForPatient } from "@/lib/data/appointments";
 import { listNotesForPatient } from "@/lib/data/clinical-notes";
 import { listNoteTemplates } from "@/lib/data/note-templates";
 import { listInvoicesForPatient } from "@/lib/data/invoices";
+import { listMeasures, listRequestsForPatient } from "@/lib/data/outcomes";
 import { createNoteForPatientAction } from "@/app/(app)/notes/actions";
 import { createInvoiceForPatientAction } from "@/app/(app)/invoices/actions";
+import { sendMeasureAction } from "@/app/(app)/outcomes/actions";
+import { OutcomeProgress } from "@/components/outcome-progress";
+import { appBaseUrl } from "@/lib/email/templates";
 import { formatPrice } from "@/lib/types";
 import { formatLongDate, formatTime } from "@/lib/calendar-utils";
 import { ageFromDob, fullName } from "@/lib/types";
@@ -48,18 +52,44 @@ function Card({
 
 export default async function PatientPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ measureToken?: string; emailed?: string }>;
 }) {
   const { id } = await params;
+  const { measureToken, emailed } = await searchParams;
   const patient = await getPatient(id);
   if (!patient) notFound();
-  const [upcoming, notes, templates, invoices] = await Promise.all([
-    listUpcomingForPatient(id),
-    listNotesForPatient(id),
-    listNoteTemplates(),
-    listInvoicesForPatient(id),
-  ]);
+  const [upcoming, notes, templates, invoices, measures, measureRequests] =
+    await Promise.all([
+      listUpcomingForPatient(id),
+      listNotesForPatient(id),
+      listNoteTemplates(),
+      listInvoicesForPatient(id),
+      listMeasures(),
+      listRequestsForPatient(id),
+    ]);
+  const sendMeasure = sendMeasureAction.bind(null, id);
+
+  // One progress series per measure with at least two scored responses.
+  const progressByMeasure = new Map<
+    string,
+    { name: string; unit: string; higherIsBetter: boolean; points: { date: string; score: number }[] }
+  >();
+  for (const r of measureRequests) {
+    if (r.response?.score == null) continue;
+    const entry = progressByMeasure.get(r.measureCode) ?? {
+      name: r.measureName,
+      unit: r.unit,
+      higherIsBetter: r.higherIsBetter,
+      points: [],
+    };
+    entry.points.push({ date: r.response.completedAt, score: r.response.score });
+    progressByMeasure.set(r.measureCode, entry);
+  }
+  const chartMax = (unit: string) =>
+    unit.includes("80") ? 80 : unit.includes("10") ? 10 : 100;
   const newNoteAction = createNoteForPatientAction.bind(null, id);
   const newInvoiceAction = createInvoiceForPatientAction.bind(null, id);
 
@@ -294,6 +324,96 @@ export default async function PatientPage({
                   New invoice
                 </button>
               </form>
+            </div>
+          </Card>
+        </div>
+
+        <div className="lg:col-span-2">
+          <Card title="Outcome measures">
+            <div className="flex flex-col gap-4">
+              {measureToken && (
+                <div className="flex flex-col gap-2 rounded-lg bg-primary-soft p-4 text-sm text-primary-soft-foreground">
+                  <p className="font-medium">
+                    Questionnaire created
+                    {emailed === "1"
+                      ? " and emailed to the patient."
+                      : ". Share this link with the patient:"}
+                  </p>
+                  {emailed !== "1" && (
+                    <input
+                      readOnly
+                      value={`${appBaseUrl()}/measure/${measureToken}`}
+                      className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-xs text-foreground outline-none"
+                    />
+                  )}
+                </div>
+              )}
+
+              {[...progressByMeasure.values()]
+                .filter((m) => m.points.length >= 2)
+                .map((m) => (
+                  <div key={m.name} className="flex flex-col gap-1">
+                    <p className="text-sm font-medium">{m.name}</p>
+                    <OutcomeProgress
+                      points={m.points}
+                      maxScore={chartMax(m.unit)}
+                      higherIsBetter={m.higherIsBetter}
+                    />
+                  </div>
+                ))}
+
+              {measureRequests.length === 0 ? (
+                <p className="text-sm text-faint">
+                  Nothing sent yet. Choose a questionnaire below to send one by
+                  link.
+                </p>
+              ) : (
+                <ul className="flex flex-col divide-y divide-border">
+                  {measureRequests.map((r) => (
+                    <li
+                      key={r.id}
+                      className="flex items-center justify-between gap-3 py-2 text-sm first:pt-0 last:pb-0"
+                    >
+                      <span>
+                        {r.measureName.split(" (")[0]} ·{" "}
+                        {formatLongDate(new Date(r.createdAt))}
+                      </span>
+                      {r.response ? (
+                        <span className="rounded-full bg-primary-soft px-2.5 py-0.5 text-xs font-medium text-primary-soft-foreground">
+                          {r.response.display}
+                          {r.response.band ? ` · ${r.response.band}` : ""}
+                        </span>
+                      ) : (
+                        <span className="rounded-full bg-warning-soft px-2.5 py-0.5 text-xs font-medium text-warning-soft-foreground">
+                          Awaiting response
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <form action={sendMeasure} className="flex items-center gap-2">
+                <select
+                  name="measureId"
+                  className="min-w-0 flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none focus:border-ring sm:flex-none"
+                >
+                  {measures.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.name}
+                    </option>
+                  ))}
+                </select>
+                <button className="shrink-0 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+                  Send questionnaire
+                </button>
+              </form>
+              {!patient.email && (
+                <p className="text-xs text-faint">
+                  This patient has no email on file — you&apos;ll get a link to
+                  share instead.
+                </p>
+              )}
             </div>
           </Card>
         </div>
