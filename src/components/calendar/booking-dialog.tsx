@@ -1,9 +1,9 @@
 "use client";
 
-// In-calendar booking: clicking an empty slot (or "New appointment") opens a
-// dialog right over the diary. Everything is editable there — including the
-// date and time, so a mis-click is fixed in place — and Esc, the X, or
-// clicking outside closes it without leaving the calendar.
+// In-calendar creation: clicking an empty slot (or the header buttons) opens
+// one dialog right over the diary for both appointments and blocked time.
+// Everything is editable there — including the date and time, so a mis-click
+// is fixed in place — and Esc, the X, or clicking outside closes it.
 
 import {
   createContext,
@@ -14,9 +14,12 @@ import {
 } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Loader2, Plus, X } from "lucide-react";
+import { CalendarOff, Loader2, Plus, X } from "lucide-react";
 import { formatPrice } from "@/lib/types";
-import { createAppointmentInlineAction } from "@/app/(app)/calendar/actions";
+import {
+  createAppointmentInlineAction,
+  createBlockedTimeInlineAction,
+} from "@/app/(app)/calendar/actions";
 
 export interface DialogPatient {
   id: string;
@@ -30,7 +33,10 @@ export interface DialogAppointmentType {
   priceCents: number;
 }
 
+type Mode = "appointment" | "block";
+
 interface OpenAt {
+  mode: Mode;
   date: string; // "YYYY-MM-DD"
   time: string; // "HH:mm"
 }
@@ -41,6 +47,14 @@ const BookingDialogContext = createContext<{
 
 const inputCls =
   "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none focus:border-ring";
+
+function addMinutes(time: string, minutes: number): string {
+  const [h, m] = time.split(":").map(Number);
+  const total = Math.min(h * 60 + m + minutes, 23 * 60 + 59);
+  return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(
+    total % 60
+  ).padStart(2, "0")}`;
+}
 
 export function BookingDialogProvider({
   patients,
@@ -55,6 +69,11 @@ export function BookingDialogProvider({
   const [at, setAt] = useState<OpenAt | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const openAt = useCallback((next: OpenAt) => {
+    setAt(next);
+    setError(null);
+  }, []);
 
   const close = useCallback(() => {
     if (!submitting) {
@@ -74,21 +93,25 @@ export function BookingDialogProvider({
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!at) return;
     const form = new FormData(e.currentTarget);
     setSubmitting(true);
     setError(null);
-    const result = await createAppointmentInlineAction(form);
+    const result =
+      at.mode === "appointment"
+        ? await createAppointmentInlineAction(form)
+        : await createBlockedTimeInlineAction(form);
     setSubmitting(false);
     if (result.ok) {
       setAt(null);
       router.refresh();
     } else {
-      setError(result.error ?? "Couldn't book the appointment.");
+      setError(result.error ?? "Something went wrong — please try again.");
     }
   }
 
   return (
-    <BookingDialogContext.Provider value={{ openAt: setAt }}>
+    <BookingDialogContext.Provider value={{ openAt }}>
       {children}
 
       {at && (
@@ -101,13 +124,31 @@ export function BookingDialogProvider({
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="New appointment"
+            aria-label={at.mode === "appointment" ? "New appointment" : "Block time"}
             className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-border bg-surface p-5 shadow-xl"
           >
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold tracking-tight">
-                New appointment
-              </h2>
+              <div className="flex items-center gap-0.5 rounded-lg border border-border p-0.5 text-sm font-medium">
+                {(
+                  [
+                    ["appointment", "Appointment"],
+                    ["block", "Block time"],
+                  ] as const
+                ).map(([mode, label]) => (
+                  <button
+                    key={mode}
+                    type="button"
+                    onClick={() => openAt({ ...at, mode })}
+                    className={`rounded-md px-3 py-1 transition-colors ${
+                      at.mode === mode
+                        ? "bg-primary-soft text-primary-soft-foreground"
+                        : "text-muted hover:text-foreground"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
               <button
                 type="button"
                 onClick={close}
@@ -118,62 +159,175 @@ export function BookingDialogProvider({
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="dlg-patient" className="text-sm font-medium">
-                  Patient *
-                </label>
-                <select
-                  id="dlg-patient"
-                  name="patientId"
-                  required
-                  autoFocus
-                  className={inputCls}
-                >
-                  <option value="">Choose a patient…</option>
-                  {patients.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.label}
-                    </option>
-                  ))}
-                </select>
-                <p className="text-xs text-faint">
-                  Someone new?{" "}
-                  <Link
-                    href="/patients/new"
-                    className="text-primary hover:underline"
-                  >
-                    Create their patient file first.
-                  </Link>
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="dlg-type" className="text-sm font-medium">
-                  Appointment type *
-                </label>
-                <select
-                  id="dlg-type"
-                  name="appointmentTypeId"
-                  required
-                  className={inputCls}
-                >
-                  {types.map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {t.name} — {t.durationMinutes} min ·{" "}
-                      {formatPrice(t.priceCents)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
+            {at.mode === "appointment" ? (
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="dlg-date" className="text-sm font-medium">
+                  <label htmlFor="dlg-patient" className="text-sm font-medium">
+                    Patient *
+                  </label>
+                  <select
+                    id="dlg-patient"
+                    name="patientId"
+                    required
+                    autoFocus
+                    className={inputCls}
+                  >
+                    <option value="">Choose a patient…</option>
+                    {patients.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.label}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-faint">
+                    Someone new?{" "}
+                    <Link
+                      href="/patients/new"
+                      className="text-primary hover:underline"
+                    >
+                      Create their patient file first.
+                    </Link>
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="dlg-type" className="text-sm font-medium">
+                    Appointment type *
+                  </label>
+                  <select
+                    id="dlg-type"
+                    name="appointmentTypeId"
+                    required
+                    className={inputCls}
+                  >
+                    {types.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.name} — {t.durationMinutes} min ·{" "}
+                        {formatPrice(t.priceCents)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label htmlFor="dlg-date" className="text-sm font-medium">
+                      Date *
+                    </label>
+                    <input
+                      id="dlg-date"
+                      name="date"
+                      type="date"
+                      required
+                      defaultValue={at.date}
+                      className={inputCls}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label htmlFor="dlg-time" className="text-sm font-medium">
+                      Time *
+                    </label>
+                    <input
+                      id="dlg-time"
+                      name="time"
+                      type="time"
+                      required
+                      step={300}
+                      defaultValue={at.time}
+                      className={inputCls}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label htmlFor="dlg-repeat" className="text-sm font-medium">
+                      Repeats
+                    </label>
+                    <select id="dlg-repeat" name="repeat" className={inputCls}>
+                      <option value="none">Doesn&apos;t repeat</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="fortnightly">Fortnightly</option>
+                    </select>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label
+                      htmlFor="dlg-repeatCount"
+                      className="text-sm font-medium"
+                    >
+                      Total visits (if repeating)
+                    </label>
+                    <input
+                      id="dlg-repeatCount"
+                      name="repeatCount"
+                      type="number"
+                      min={1}
+                      max={52}
+                      defaultValue={6}
+                      className={inputCls}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="dlg-note" className="text-sm font-medium">
+                    Booking note
+                  </label>
+                  <input
+                    id="dlg-note"
+                    name="adminNotes"
+                    placeholder="e.g. prefers firm pressure, running 10 min late"
+                    className={inputCls}
+                  />
+                </div>
+
+                {error && <p className="text-sm text-danger">{error}</p>}
+
+                <div className="flex items-center justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={close}
+                    disabled={submitting}
+                    className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover disabled:opacity-60"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+                  >
+                    {submitting && (
+                      <Loader2 size={15} className="animate-spin" />
+                    )}
+                    Book appointment
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <p className="text-sm text-muted">
+                  Reserve time you&apos;re not seeing patients — lunch, admin,
+                  meetings, leave.
+                </p>
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="dlg-reason" className="text-sm font-medium">
+                    Reason
+                  </label>
+                  <input
+                    id="dlg-reason"
+                    name="reason"
+                    autoFocus
+                    placeholder="e.g. Lunch, Admin, Meeting"
+                    className={inputCls}
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="dlg-block-date" className="text-sm font-medium">
                     Date *
                   </label>
                   <input
-                    id="dlg-date"
+                    id="dlg-block-date"
                     name="date"
                     type="date"
                     required
@@ -181,85 +335,61 @@ export function BookingDialogProvider({
                     className={inputCls}
                   />
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="dlg-time" className="text-sm font-medium">
-                    Time *
-                  </label>
-                  <input
-                    id="dlg-time"
-                    name="time"
-                    type="time"
-                    required
-                    step={300}
-                    defaultValue={at.time}
-                    className={inputCls}
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label htmlFor="dlg-from" className="text-sm font-medium">
+                      From *
+                    </label>
+                    <input
+                      id="dlg-from"
+                      name="startTime"
+                      type="time"
+                      required
+                      step={300}
+                      defaultValue={at.time}
+                      className={inputCls}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label htmlFor="dlg-to" className="text-sm font-medium">
+                      To *
+                    </label>
+                    <input
+                      id="dlg-to"
+                      name="endTime"
+                      type="time"
+                      required
+                      step={300}
+                      defaultValue={addMinutes(at.time, 30)}
+                      className={inputCls}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="dlg-repeat" className="text-sm font-medium">
-                    Repeats
-                  </label>
-                  <select id="dlg-repeat" name="repeat" className={inputCls}>
-                    <option value="none">Doesn&apos;t repeat</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="fortnightly">Fortnightly</option>
-                  </select>
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor="dlg-repeatCount"
-                    className="text-sm font-medium"
+                {error && <p className="text-sm text-danger">{error}</p>}
+
+                <div className="flex items-center justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={close}
+                    disabled={submitting}
+                    className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover disabled:opacity-60"
                   >
-                    Total visits (if repeating)
-                  </label>
-                  <input
-                    id="dlg-repeatCount"
-                    name="repeatCount"
-                    type="number"
-                    min={1}
-                    max={52}
-                    defaultValue={6}
-                    className={inputCls}
-                  />
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+                  >
+                    {submitting && (
+                      <Loader2 size={15} className="animate-spin" />
+                    )}
+                    Block time
+                  </button>
                 </div>
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="dlg-note" className="text-sm font-medium">
-                  Booking note
-                </label>
-                <input
-                  id="dlg-note"
-                  name="adminNotes"
-                  placeholder="e.g. prefers firm pressure, running 10 min late"
-                  className={inputCls}
-                />
-              </div>
-
-              {error && <p className="text-sm text-danger">{error}</p>}
-
-              <div className="flex items-center justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={close}
-                  disabled={submitting}
-                  className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover disabled:opacity-60"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
-                >
-                  {submitting && <Loader2 size={15} className="animate-spin" />}
-                  Book appointment
-                </button>
-              </div>
-            </form>
+              </form>
+            )}
           </div>
         </div>
       )}
@@ -290,7 +420,7 @@ export function SlotButton({
     <button
       type="button"
       title="Book appointment"
-      onClick={() => openAt({ date, time })}
+      onClick={() => openAt({ mode: "appointment", date, time })}
       className="absolute inset-x-0 block border-b border-border/40 transition-colors hover:bg-primary-soft/40"
       style={style}
     />
@@ -303,10 +433,24 @@ export function NewAppointmentButton({ date }: { date: string }) {
   return (
     <button
       type="button"
-      onClick={() => openAt({ date, time: "09:00" })}
+      onClick={() => openAt({ mode: "appointment", date, time: "09:00" })}
       className="flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
     >
       <Plus size={15} /> New appointment
+    </button>
+  );
+}
+
+/** The calendar header's "Block time" button — same dialog, block tab. */
+export function BlockTimeButton({ date }: { date: string }) {
+  const { openAt } = useBookingDialog();
+  return (
+    <button
+      type="button"
+      onClick={() => openAt({ mode: "block", date, time: "12:00" })}
+      className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+    >
+      <CalendarOff size={15} /> Block time
     </button>
   );
 }

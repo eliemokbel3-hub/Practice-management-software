@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { CalendarOff, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DayColumn } from "@/components/calendar/day-column";
 import {
+  BlockTimeButton,
   BookingDialogProvider,
   NewAppointmentButton,
 } from "@/components/calendar/booking-dialog";
@@ -75,12 +76,7 @@ export default async function CalendarPage({
             : formatLongDate(focus)}
         </h1>
         <div className="flex items-center gap-2">
-          <Link
-            href={`/calendar/block/new?date=${dateKey(focus)}`}
-            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
-          >
-            <CalendarOff size={15} /> Block time
-          </Link>
+          <BlockTimeButton date={dateKey(focus)} />
           <NewAppointmentButton date={dateKey(focus)} />
         </div>
       </div>

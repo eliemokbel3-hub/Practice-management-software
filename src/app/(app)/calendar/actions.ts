@@ -94,6 +94,36 @@ export async function cancelAppointmentAction(id: string, form: FormData) {
   redirect("/calendar");
 }
 
+/** Blocked time from the in-calendar dialog: no redirect, errors returned. */
+export async function createBlockedTimeInlineAction(
+  form: FormData
+): Promise<{ ok: boolean; error?: string }> {
+  const date = String(form.get("date") ?? "");
+  const start = new Date(`${date}T${String(form.get("startTime") ?? "")}`);
+  const end = new Date(`${date}T${String(form.get("endTime") ?? "")}`);
+  if (
+    Number.isNaN(start.getTime()) ||
+    Number.isNaN(end.getTime()) ||
+    end <= start
+  ) {
+    return { ok: false, error: "End time must be after start time." };
+  }
+  try {
+    await createBlockedTime(
+      start,
+      end,
+      String(form.get("reason") ?? "").trim() || null
+    );
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Couldn't block that time.",
+    };
+  }
+  revalidatePath("/calendar");
+  return { ok: true };
+}
+
 export async function createBlockedTimeAction(form: FormData) {
   const date = String(form.get("date") ?? "");
   const start = new Date(`${date}T${String(form.get("startTime") ?? "")}`);
