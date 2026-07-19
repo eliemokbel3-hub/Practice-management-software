@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SlotButton } from "@/components/calendar/booking-dialog";
 import type { Appointment, BlockedTime, WorkingHours } from "@/lib/types";
 import {
   DAY_START_HOUR,
@@ -68,10 +69,10 @@ export function DayColumn({
   const slots: number[] = [];
   for (let m = GRID_START; m < GRID_END; m += 30) slots.push(m);
 
-  const slotHref = (minutes: number) => {
+  const slotTime = (minutes: number) => {
     const hh = String(Math.floor(minutes / 60)).padStart(2, "0");
     const mm = String(minutes % 60).padStart(2, "0");
-    return `/calendar/new?date=${dateKey(day)}&time=${hh}:${mm}`;
+    return `${hh}:${mm}`;
   };
 
   return (
@@ -82,11 +83,10 @@ export function DayColumn({
       style={{ height: GRID_HEIGHT }}
     >
       {slots.map((m) => (
-        <Link
+        <SlotButton
           key={m}
-          href={slotHref(m)}
-          title="Book appointment"
-          className="absolute inset-x-0 block border-b border-border/40 transition-colors hover:bg-primary-soft/40"
+          date={dateKey(day)}
+          time={slotTime(m)}
           style={{ top: top(m), height: 30 * PX_PER_MINUTE }}
         />
       ))}

@@ -22,7 +22,7 @@ function parseDateTime(form: FormData): Date {
   return parsed;
 }
 
-export async function createAppointmentAction(form: FormData) {
+async function createFromForm(form: FormData): Promise<string> {
   const patientId = String(form.get("patientId") ?? "");
   const appointmentTypeId = String(form.get("appointmentTypeId") ?? "");
   if (!patientId) throw new Error("Please choose a patient.");
@@ -34,7 +34,7 @@ export async function createAppointmentAction(form: FormData) {
     | "none"
     | "weekly"
     | "fortnightly";
-  const id = await createAppointment({
+  return createAppointment({
     patientId,
     appointmentTypeId,
     startsAt,
@@ -43,8 +43,31 @@ export async function createAppointmentAction(form: FormData) {
     repeat,
     repeatCount: Number(form.get("repeatCount") ?? 1) || 1,
   });
+}
+
+export async function createAppointmentAction(form: FormData) {
+  const id = await createFromForm(form);
   revalidatePath("/calendar");
   redirect(`/calendar/appointments/${id}`);
+}
+
+/**
+ * Same booking, but for the in-calendar dialog: no redirect, and problems
+ * come back as a message the dialog can show instead of an error page.
+ */
+export async function createAppointmentInlineAction(
+  form: FormData
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await createFromForm(form);
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Couldn't book the appointment.",
+    };
+  }
+  revalidatePath("/calendar");
+  return { ok: true };
 }
 
 export async function rescheduleAppointmentAction(

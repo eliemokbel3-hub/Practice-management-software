@@ -1,8 +1,14 @@
 import Link from "next/link";
-import { CalendarOff, ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { CalendarOff, ChevronLeft, ChevronRight } from "lucide-react";
 import { DayColumn } from "@/components/calendar/day-column";
+import {
+  BookingDialogProvider,
+  NewAppointmentButton,
+} from "@/components/calendar/booking-dialog";
 import { listAppointmentsInRange } from "@/lib/data/appointments";
 import { listBlockedTimesInRange, listWorkingHours } from "@/lib/data/schedule";
+import { listAppointmentTypes } from "@/lib/data/appointment-types";
+import { listPatients } from "@/lib/data/patients";
 import {
   DAY_END_HOUR,
   DAY_START_HOUR,
@@ -29,11 +35,26 @@ export default async function CalendarPage({
   const rangeEnd = addDays(rangeStart, dayCount);
   const today = new Date();
 
-  const [appointments, blockedTimes, workingHours] = await Promise.all([
-    listAppointmentsInRange(rangeStart.toISOString(), rangeEnd.toISOString()),
-    listBlockedTimesInRange(rangeStart.toISOString(), rangeEnd.toISOString()),
-    listWorkingHours(),
-  ]);
+  const [appointments, blockedTimes, workingHours, patients, types] =
+    await Promise.all([
+      listAppointmentsInRange(rangeStart.toISOString(), rangeEnd.toISOString()),
+      listBlockedTimesInRange(rangeStart.toISOString(), rangeEnd.toISOString()),
+      listWorkingHours(),
+      listPatients(),
+      listAppointmentTypes(),
+    ]);
+  const dialogPatients = patients.map((p) => ({
+    id: p.id,
+    label: `${p.lastName}, ${p.firstName}${
+      p.dateOfBirth ? ` (${p.dateOfBirth.slice(0, 4)})` : ""
+    }`,
+  }));
+  const dialogTypes = types.map((t) => ({
+    id: t.id,
+    name: t.name,
+    durationMinutes: t.durationMinutes,
+    priceCents: t.priceCents,
+  }));
 
   const days = Array.from({ length: dayCount }, (_, i) => addDays(rangeStart, i));
   const step = view === "week" ? 7 : 1;
@@ -45,6 +66,7 @@ export default async function CalendarPage({
   );
 
   return (
+    <BookingDialogProvider patients={dialogPatients} types={dialogTypes}>
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-xl font-semibold tracking-tight">
@@ -59,12 +81,7 @@ export default async function CalendarPage({
           >
             <CalendarOff size={15} /> Block time
           </Link>
-          <Link
-            href={`/calendar/new?date=${dateKey(focus)}`}
-            className="flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
-          >
-            <Plus size={15} /> New appointment
-          </Link>
+          <NewAppointmentButton date={dateKey(focus)} />
         </div>
       </div>
 
@@ -172,5 +189,6 @@ export default async function CalendarPage({
         shaded areas are outside your working hours.
       </p>
     </div>
+    </BookingDialogProvider>
   );
 }
