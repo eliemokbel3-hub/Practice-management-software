@@ -6,6 +6,7 @@ import {
   BookingDialogProvider,
   NewAppointmentButton,
 } from "@/components/calendar/booking-dialog";
+import { ManageDialogProvider } from "@/components/calendar/manage-dialog";
 import { listAppointmentsInRange } from "@/lib/data/appointments";
 import { listBlockedTimesInRange, listWorkingHours } from "@/lib/data/schedule";
 import { listAppointmentTypes } from "@/lib/data/appointment-types";
@@ -68,6 +69,7 @@ export default async function CalendarPage({
 
   return (
     <BookingDialogProvider patients={dialogPatients} types={dialogTypes}>
+    <ManageDialogProvider>
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-xl font-semibold tracking-tight">
@@ -185,6 +187,7 @@ export default async function CalendarPage({
         shaded areas are outside your working hours.
       </p>
     </div>
+    </ManageDialogProvider>
     </BookingDialogProvider>
   );
 }

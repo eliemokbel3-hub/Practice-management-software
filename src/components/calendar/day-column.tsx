@@ -1,12 +1,14 @@
-import Link from "next/link";
 import { SlotButton } from "@/components/calendar/booking-dialog";
+import {
+  AppointmentChip,
+  BlockedChip,
+} from "@/components/calendar/manage-dialog";
 import type { Appointment, BlockedTime, WorkingHours } from "@/lib/types";
 import {
   DAY_START_HOUR,
   DAY_END_HOUR,
   PX_PER_MINUTE,
   dateKey,
-  formatTime,
   layoutOverlaps,
   minutesIntoDay,
 } from "@/lib/calendar-utils";
@@ -103,19 +105,17 @@ export function DayColumn({
         const from = minutesIntoDay(b.startsAt);
         const to = minutesIntoDay(b.endsAt);
         return (
-          <Link
+          <BlockedChip
             key={b.id}
-            href={`/calendar/blocked/${b.id}`}
-            className="absolute inset-x-0.5 z-10 overflow-hidden rounded-md border border-border-strong bg-surface-hover px-1.5 py-0.5 text-xs text-muted"
+            block={b}
+            className="absolute inset-x-0.5 z-10 overflow-hidden rounded-md border border-border-strong bg-surface-hover px-1.5 py-0.5 text-left text-xs text-muted"
             style={{
               top: top(from),
               height: Math.max((to - from) * PX_PER_MINUTE - 2, 14),
               backgroundImage:
                 "repeating-linear-gradient(-45deg, transparent, transparent 5px, var(--border) 5px, var(--border) 6px)",
             }}
-          >
-            {b.reason ?? "Blocked"}
-          </Link>
+          />
         );
       })}
 
@@ -124,10 +124,10 @@ export function DayColumn({
         const to = minutesIntoDay(a.endsAt);
         const widthPct = 100 / a.colCount;
         return (
-          <Link
+          <AppointmentChip
             key={a.id}
-            href={`/calendar/appointments/${a.id}`}
-            className={`absolute z-20 overflow-hidden rounded-md border border-black/10 px-1.5 py-0.5 text-xs leading-tight text-black/80 shadow-sm transition-transform hover:z-30 ${
+            appointment={a}
+            className={`absolute z-20 overflow-hidden rounded-md border border-black/10 px-1.5 py-0.5 text-left text-xs leading-tight text-black/80 shadow-sm transition-transform hover:z-30 ${
               STATUS_DECOR[a.status] ?? ""
             }`}
             style={{
@@ -137,11 +137,7 @@ export function DayColumn({
               width: `calc(${widthPct}% - 4px)`,
               backgroundColor: a.typeColor ?? "#7edcd2",
             }}
-          >
-            <span className="font-semibold">{a.patientName}</span>
-            <br />
-            {formatTime(a.startsAt)} · {a.typeName}
-          </Link>
+          />
         );
       })}
     </div>

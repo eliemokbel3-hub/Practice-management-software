@@ -70,6 +70,74 @@ export async function createAppointmentInlineAction(
   return { ok: true };
 }
 
+// Inline variants for the in-calendar appointment popup: no redirects,
+// problems come back as messages.
+
+export async function setStatusInlineAction(
+  id: string,
+  status: AppointmentStatus
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await setAppointmentStatus(id, status);
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Couldn't update the appointment.",
+    };
+  }
+  revalidatePath("/calendar");
+  return { ok: true };
+}
+
+export async function cancelAppointmentInlineAction(
+  id: string,
+  reason: string
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await setAppointmentStatus(id, "cancelled", reason.trim() || undefined);
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Couldn't cancel the appointment.",
+    };
+  }
+  revalidatePath("/calendar");
+  return { ok: true };
+}
+
+export async function rescheduleAppointmentInlineAction(
+  id: string,
+  durationMinutes: number,
+  form: FormData
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const startsAt = parseDateTime(form);
+    await rescheduleAppointment(id, startsAt, durationMinutes);
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Couldn't move the appointment.",
+    };
+  }
+  revalidatePath("/calendar");
+  return { ok: true };
+}
+
+export async function deleteBlockedTimeInlineAction(
+  id: string
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    await deleteBlockedTime(id);
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Couldn't remove the blocked time.",
+    };
+  }
+  revalidatePath("/calendar");
+  return { ok: true };
+}
+
 export async function rescheduleAppointmentAction(
   id: string,
   durationMinutes: number,
