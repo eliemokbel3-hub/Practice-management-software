@@ -27,9 +27,12 @@ import {
   XCircle,
 } from "lucide-react";
 import type { Appointment, AppointmentStatus, BlockedTime } from "@/lib/types";
+import { formatPrice } from "@/lib/types";
+import type { DialogAppointmentType } from "@/components/calendar/booking-dialog";
 import { dateKey, formatLongDate, formatTime } from "@/lib/calendar-utils";
 import {
   cancelAppointmentInlineAction,
+  changeTypeInlineAction,
   deleteBlockedTimeInlineAction,
   rescheduleAppointmentInlineAction,
   setStatusInlineAction,
@@ -59,8 +62,10 @@ const ManageDialogContext = createContext<{
 } | null>(null);
 
 export function ManageDialogProvider({
+  types,
   children,
 }: {
+  types: DialogAppointmentType[];
   children: React.ReactNode;
 }) {
   const router = useRouter();
@@ -126,6 +131,7 @@ export function ManageDialogProvider({
             {target.kind === "appointment" ? (
               <AppointmentBody
                 appointment={target.appointment}
+                types={types}
                 busy={busy}
                 error={error}
                 run={run}
@@ -149,12 +155,14 @@ export function ManageDialogProvider({
 
 function AppointmentBody({
   appointment,
+  types,
   busy,
   error,
   run,
   close,
 }: {
   appointment: Appointment;
+  types: DialogAppointmentType[];
   busy: boolean;
   error: string | null;
   run: (a: () => Promise<{ ok: boolean; error?: string }>) => Promise<void>;
@@ -221,6 +229,32 @@ function AppointmentBody({
           {STATUS_LABEL[appointment.status]}
         </span>
       </div>
+
+      {appointment.appointmentTypeId && types.length > 0 && (
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="mng-type" className="text-xs font-medium text-muted">
+            Appointment type
+          </label>
+          <select
+            id="mng-type"
+            disabled={busy}
+            value={appointment.appointmentTypeId}
+            onChange={(e) =>
+              run(() => changeTypeInlineAction(appointment.id, e.target.value))
+            }
+            className={`${inputCls} disabled:opacity-60`}
+          >
+            {types.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name} — {t.durationMinutes} min · {formatPrice(t.priceCents)}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-faint">
+            Changing it sets the length to the new type&apos;s usual duration.
+          </p>
+        </div>
+      )}
 
       {appointment.adminNotes && (
         <p className="text-sm text-muted">{appointment.adminNotes}</p>

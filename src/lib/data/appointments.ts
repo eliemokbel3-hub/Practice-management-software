@@ -117,6 +117,30 @@ export async function createAppointment(
   return data![0].id;
 }
 
+/**
+ * Switch an appointment to a different type. The length becomes the new
+ * type's default, keeping the same start time.
+ */
+export async function changeAppointmentType(
+  id: string,
+  appointmentTypeId: string,
+  durationMinutes: number
+): Promise<void> {
+  const appointment = await getAppointment(id);
+  if (!appointment) throw new Error("Appointment not found.");
+  const supabase = await createClient();
+  const starts = new Date(appointment.startsAt);
+  const ends = new Date(starts.getTime() + durationMinutes * 60_000);
+  const { error } = await supabase
+    .from("appointments")
+    .update({
+      appointment_type_id: appointmentTypeId,
+      ends_at: ends.toISOString(),
+    })
+    .eq("id", id);
+  if (error) throw new Error(`Couldn't change the appointment type: ${error.message}`);
+}
+
 export async function rescheduleAppointment(
   id: string,
   startsAt: Date,

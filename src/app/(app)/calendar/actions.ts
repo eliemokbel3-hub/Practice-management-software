@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import {
+  changeAppointmentType,
   createAppointment,
   rescheduleAppointment,
   setAppointmentStatus,
@@ -83,6 +84,25 @@ export async function setStatusInlineAction(
     return {
       ok: false,
       error: e instanceof Error ? e.message : "Couldn't update the appointment.",
+    };
+  }
+  revalidatePath("/calendar");
+  return { ok: true };
+}
+
+export async function changeTypeInlineAction(
+  id: string,
+  appointmentTypeId: string
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const type = await getAppointmentType(appointmentTypeId);
+    if (!type) throw new Error("That appointment type no longer exists.");
+    await changeAppointmentType(id, appointmentTypeId, type.durationMinutes);
+  } catch (e) {
+    return {
+      ok: false,
+      error:
+        e instanceof Error ? e.message : "Couldn't change the appointment type.",
     };
   }
   revalidatePath("/calendar");
