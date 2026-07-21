@@ -41,6 +41,7 @@ function patientInputFromForm(form: FormData): PatientInput {
     medicalHistory: str(form, "medicalHistory"),
     alerts: str(form, "alerts"),
     referralSource: str(form, "referralSource"),
+    concession: str(form, "concession"),
     healthFundName: str(form, "healthFundName"),
     healthFundMemberNumber: str(form, "healthFundMemberNumber"),
   };

@@ -168,6 +168,7 @@ export default async function PatientPage({
             <Item label="Sex" value={patient.sex} />
             <Item label="Occupation" value={patient.occupation} />
             <Item label="Referral source" value={patient.referralSource} />
+            <Item label="Concession" value={patient.concession} />
           </dl>
         </Card>
 

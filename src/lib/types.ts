@@ -24,6 +24,7 @@ export interface Patient {
   medicalHistory: string | null;
   alerts: string | null;
   referralSource: string | null;
+  concession: string | null;
   healthFundName: string | null;
   healthFundMemberNumber: string | null;
   archivedAt: string | null;

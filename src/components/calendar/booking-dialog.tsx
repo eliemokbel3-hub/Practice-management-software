@@ -59,10 +59,12 @@ function addMinutes(time: string, minutes: number): string {
 export function BookingDialogProvider({
   patients,
   types,
+  blockTypes = [],
   children,
 }: {
   patients: DialogPatient[];
   types: DialogAppointmentType[];
+  blockTypes?: string[];
   children: React.ReactNode;
 }) {
   const router = useRouter();
@@ -318,9 +320,15 @@ export function BookingDialogProvider({
                     id="dlg-reason"
                     name="reason"
                     autoFocus
+                    list="dlg-block-types"
                     placeholder="e.g. Lunch, Admin, Meeting"
                     className={inputCls}
                   />
+                  <datalist id="dlg-block-types">
+                    {blockTypes.map((b) => (
+                      <option key={b} value={b} />
+                    ))}
+                  </datalist>
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <label htmlFor="dlg-block-date" className="text-sm font-medium">

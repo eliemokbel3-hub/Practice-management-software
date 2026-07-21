@@ -70,14 +70,50 @@ function Section({
   );
 }
 
+function Choice({
+  label,
+  name,
+  value,
+  options,
+}: {
+  label: string;
+  name: string;
+  value?: string | null;
+  options: string[];
+}) {
+  // Keep any existing value even if it's no longer in the managed list.
+  const all = value && !options.includes(value) ? [value, ...options] : options;
+  return (
+    <Field label={label} name={name}>
+      <select
+        id={name}
+        name={name}
+        defaultValue={value ?? ""}
+        className={inputCls}
+      >
+        <option value="">—</option>
+        {all.map((o) => (
+          <option key={o} value={o}>
+            {o}
+          </option>
+        ))}
+      </select>
+    </Field>
+  );
+}
+
 export function PatientForm({
   patient,
   action,
   submitLabel,
+  referralSources = [],
+  concessionTypes = [],
 }: {
   patient?: Patient;
   action: (form: FormData) => Promise<void>;
   submitLabel: string;
+  referralSources?: string[];
+  concessionTypes?: string[];
 }) {
   return (
     <form action={action} className="flex flex-col gap-5">
@@ -152,7 +188,18 @@ export function PatientForm({
       </Section>
 
       <Section title="Other">
-        <Text label="Referral source" name="referralSource" value={patient?.referralSource} />
+        <Choice
+          label="Referral source"
+          name="referralSource"
+          value={patient?.referralSource}
+          options={referralSources}
+        />
+        <Choice
+          label="Concession"
+          name="concession"
+          value={patient?.concession}
+          options={concessionTypes}
+        />
         <Text label="Health fund" name="healthFundName" value={patient?.healthFundName} />
         <Text
           label="Health fund member no."

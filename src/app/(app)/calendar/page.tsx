@@ -11,6 +11,7 @@ import { listAppointmentsInRange } from "@/lib/data/appointments";
 import { listBlockedTimesInRange, listWorkingHours } from "@/lib/data/schedule";
 import { listAppointmentTypes } from "@/lib/data/appointment-types";
 import { listPatients } from "@/lib/data/patients";
+import { listBlockTypes } from "@/lib/data/lists";
 import {
   DAY_END_HOUR,
   DAY_START_HOUR,
@@ -37,13 +38,14 @@ export default async function CalendarPage({
   const rangeEnd = addDays(rangeStart, dayCount);
   const today = new Date();
 
-  const [appointments, blockedTimes, workingHours, patients, types] =
+  const [appointments, blockedTimes, workingHours, patients, types, blockTypes] =
     await Promise.all([
       listAppointmentsInRange(rangeStart.toISOString(), rangeEnd.toISOString()),
       listBlockedTimesInRange(rangeStart.toISOString(), rangeEnd.toISOString()),
       listWorkingHours(),
       listPatients(),
       listAppointmentTypes(),
+      listBlockTypes(),
     ]);
   const dialogPatients = patients.map((p) => ({
     id: p.id,
@@ -68,7 +70,11 @@ export default async function CalendarPage({
   );
 
   return (
-    <BookingDialogProvider patients={dialogPatients} types={dialogTypes}>
+    <BookingDialogProvider
+      patients={dialogPatients}
+      types={dialogTypes}
+      blockTypes={blockTypes.map((b) => b.name)}
+    >
     <ManageDialogProvider types={dialogTypes}>
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">

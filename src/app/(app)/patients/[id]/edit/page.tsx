@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { PatientForm } from "@/components/patient-form";
 import { getPatient } from "@/lib/data/patients";
+import { listConcessionTypes, listReferralSources } from "@/lib/data/lists";
 import { fullName } from "@/lib/types";
 import { updatePatientAction } from "../../actions";
 
@@ -12,7 +13,11 @@ export default async function EditPatientPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const patient = await getPatient(id);
+  const [patient, referralSources, concessionTypes] = await Promise.all([
+    getPatient(id),
+    listReferralSources(),
+    listConcessionTypes(),
+  ]);
   if (!patient) notFound();
 
   const action = updatePatientAction.bind(null, patient.id);
@@ -32,6 +37,8 @@ export default async function EditPatientPage({
         patient={patient}
         action={action}
         submitLabel="Save changes"
+        referralSources={referralSources.map((r) => r.name)}
+        concessionTypes={concessionTypes.map((c) => c.name)}
       />
     </div>
   );

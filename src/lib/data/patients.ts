@@ -28,6 +28,7 @@ function rowToPatient(row: any): Patient {
     medicalHistory: row.medical_history,
     alerts: row.alerts,
     referralSource: row.referral_source,
+    concession: row.concession ?? null,
     healthFundName: row.health_fund_name,
     healthFundMemberNumber: row.health_fund_member_number,
     archivedAt: row.archived_at,
@@ -56,6 +57,7 @@ function inputToRow(input: PatientInput) {
     medical_history: input.medicalHistory,
     alerts: input.alerts,
     referral_source: input.referralSource,
+    concession: input.concession,
     health_fund_name: input.healthFundName,
     health_fund_member_number: input.healthFundMemberNumber,
   };
