@@ -57,13 +57,20 @@ export async function GET(
     .order(q.order);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-  // Flatten joined names into plain columns.
+  // Flatten joined names into plain columns. Note typeof null === "object",
+  // so null scalars are kept (as empty), only real join objects are replaced.
   const rows = (data ?? []).map((r: any) => {
     const out: Record<string, any> = {};
     for (const [k, v] of Object.entries(r)) {
-      if (k === "patients" && v) out.patient = `${(v as any).first_name} ${(v as any).last_name}`;
-      else if (k === "appointment_types" && v) out.appointment_type = (v as any).name;
-      else if (typeof v !== "object") out[k] = v;
+      if (k === "patients") {
+        out.patient = v ? `${(v as any).first_name} ${(v as any).last_name}` : "";
+      } else if (k === "appointment_types") {
+        out.appointment_type = v ? (v as any).name : "";
+      } else if (v !== null && typeof v === "object") {
+        continue; // skip any other nested object
+      } else {
+        out[k] = v;
+      }
     }
     return out;
   });
