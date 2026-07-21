@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import {
   createStaff,
+  resetStaffPassword,
   setPractitionerTypes,
   setStaffActive,
   transferOwnership,
@@ -33,6 +34,20 @@ export async function createStaffAction(
 export async function toggleStaffActiveAction(id: string, active: boolean) {
   await setStaffActive(id, active);
   revalidatePath("/settings/users");
+}
+
+export async function resetStaffPasswordAction(
+  id: string
+): Promise<{ ok: boolean; tempPassword?: string; error?: string }> {
+  try {
+    const { tempPassword } = await resetStaffPassword(id);
+    return { ok: true, tempPassword };
+  } catch (e) {
+    return {
+      ok: false,
+      error: e instanceof Error ? e.message : "Couldn't reset the password.",
+    };
+  }
 }
 
 export async function transferOwnershipAction(id: string) {

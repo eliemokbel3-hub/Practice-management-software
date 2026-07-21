@@ -145,6 +145,33 @@ export async function updateStaff(
   if (error) throw new Error(`Couldn't save changes: ${error.message}`);
 }
 
+/**
+ * Reset a team member's password to a fresh temporary one and return it, so
+ * the owner can pass it on. Owner-only; the target must be in the owner's
+ * clinic (RLS on the profiles lookup enforces that).
+ */
+export async function resetStaffPassword(
+  id: string
+): Promise<{ tempPassword: string }> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== "owner") {
+    throw new Error("Only the account owner can reset passwords.");
+  }
+  const supabase = await createClient();
+  const { data: target } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("id", id)
+    .maybeSingle();
+  if (!target) throw new Error("That team member isn't in your clinic.");
+
+  const admin = createAdminClient();
+  const password = randomPassword();
+  const { error } = await admin.auth.admin.updateUserById(id, { password });
+  if (error) throw new Error(`Couldn't reset password: ${error.message}`);
+  return { tempPassword: password };
+}
+
 export async function setStaffActive(id: string, active: boolean): Promise<void> {
   const profile = await getCurrentProfile();
   if (!profile || profile.role !== "owner") {

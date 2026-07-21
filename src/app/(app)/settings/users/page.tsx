@@ -3,6 +3,7 @@ import { ArrowLeft, Pencil, ShieldCheck } from "lucide-react";
 import { listStaff } from "@/lib/data/team";
 import { getCurrentProfile } from "@/lib/supabase/server";
 import { AddStaffForm } from "./add-staff-form";
+import { ResetPasswordButton } from "./reset-password-button";
 import { toggleStaffActiveAction } from "./actions";
 
 const ROLE_LABEL: Record<string, string> = {
@@ -58,21 +59,26 @@ export default async function UsersPage() {
               </p>
             </div>
             {isOwner && (
-              <div className="flex shrink-0 items-center gap-1">
-                <Link
-                  href={`/settings/users/${s.id}/edit`}
-                  className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-surface-hover"
-                >
-                  <Pencil size={12} /> Edit
-                </Link>
-                {!s.isSelf && (
-                  <form
-                    action={toggleStaffActiveAction.bind(null, s.id, !s.isActive)}
+              <div className="flex shrink-0 flex-col items-end gap-1.5">
+                <div className="flex items-center gap-1">
+                  <Link
+                    href={`/settings/users/${s.id}/edit`}
+                    className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-surface-hover"
                   >
-                    <button className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-surface-hover">
-                      {s.isActive ? "Deactivate" : "Reactivate"}
-                    </button>
-                  </form>
+                    <Pencil size={12} /> Edit
+                  </Link>
+                  {!s.isSelf && (
+                    <form
+                      action={toggleStaffActiveAction.bind(null, s.id, !s.isActive)}
+                    >
+                      <button className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-surface-hover">
+                        {s.isActive ? "Deactivate" : "Reactivate"}
+                      </button>
+                    </form>
+                  )}
+                </div>
+                {!s.isSelf && (
+                  <ResetPasswordButton staffId={s.id} email={s.email} />
                 )}
               </div>
             )}
