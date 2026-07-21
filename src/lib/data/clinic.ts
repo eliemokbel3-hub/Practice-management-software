@@ -22,6 +22,10 @@ function rowToClinic(row: any): Clinic {
     postcode: row.postcode,
     gstRate: typeof settings.gst_rate === "number" ? settings.gst_rate : 0.1,
     invoiceTitle: settings.invoice_title ?? "Tax Invoice",
+    invoiceFooter:
+      typeof settings.invoice_footer === "string" && settings.invoice_footer.trim()
+        ? settings.invoice_footer.trim()
+        : null,
   };
 }
 
@@ -125,6 +129,28 @@ export async function updatePrivacySettings(
     })
     .eq("id", profile.clinic_id);
   if (error) throw new Error(`Couldn't save privacy settings: ${error.message}`);
+}
+
+/** Documents & printing settings (stored in clinic.settings jsonb). */
+export async function updateDocumentsSettings(
+  invoiceFooter: string | null
+): Promise<void> {
+  const profile = await getCurrentProfile();
+  if (!profile) throw new Error("Your login isn't linked to a clinic yet.");
+  const supabase = await createClient();
+  const { data: existing, error: loadError } = await supabase
+    .from("clinics")
+    .select("settings")
+    .eq("id", profile.clinic_id)
+    .single();
+  if (loadError) throw new Error(`Couldn't save: ${loadError.message}`);
+  const { error } = await supabase
+    .from("clinics")
+    .update({
+      settings: { ...existing.settings, invoice_footer: invoiceFooter },
+    })
+    .eq("id", profile.clinic_id);
+  if (error) throw new Error(`Couldn't save settings: ${error.message}`);
 }
 
 export async function updateClinic(input: {

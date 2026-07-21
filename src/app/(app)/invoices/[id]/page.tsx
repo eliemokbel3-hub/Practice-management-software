@@ -224,6 +224,12 @@ export default async function InvoicePage({
             ))}
           </div>
         )}
+
+        {clinic.invoiceFooter && (
+          <p className="mt-6 whitespace-pre-wrap border-t border-border pt-3 text-xs text-muted">
+            {clinic.invoiceFooter}
+          </p>
+        )}
       </section>
 
       {isDraft && (

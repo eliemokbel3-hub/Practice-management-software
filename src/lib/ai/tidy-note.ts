@@ -26,6 +26,11 @@ function getApiKey(): string | null {
   return null;
 }
 
+/** Whether the AI features have an API key available on this server. */
+export function aiIsConfigured(): boolean {
+  return getApiKey() !== null;
+}
+
 const SYSTEM_PROMPT = `You tidy rough clinical shorthand written by an allied-health practitioner into clear, well-organised treatment-note text.
 
 Rules:

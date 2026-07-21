@@ -173,6 +173,8 @@ export interface Clinic {
   /** Percent-free decimal, e.g. 0.10 for 10% GST. */
   gstRate: number;
   invoiceTitle: string;
+  /** Optional note printed at the foot of invoices (payment terms, etc.). */
+  invoiceFooter: string | null;
 }
 
 export interface ServiceItem {
