@@ -31,6 +31,7 @@ function rowToPatient(row: any): Patient {
     concession: row.concession ?? null,
     healthFundName: row.health_fund_name,
     healthFundMemberNumber: row.health_fund_member_number,
+    custom: row.custom ?? {},
     archivedAt: row.archived_at,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -60,6 +61,7 @@ function inputToRow(input: PatientInput) {
     concession: input.concession,
     health_fund_name: input.healthFundName,
     health_fund_member_number: input.healthFundMemberNumber,
+    custom: input.custom ?? {},
   };
 }
 

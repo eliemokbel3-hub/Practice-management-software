@@ -27,6 +27,8 @@ export interface Patient {
   concession: string | null;
   healthFundName: string | null;
   healthFundMemberNumber: string | null;
+  /** Values for clinic-defined custom fields, keyed by field id. */
+  custom: Record<string, string>;
   archivedAt: string | null;
   createdAt: string;
   updatedAt: string;

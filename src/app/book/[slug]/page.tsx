@@ -59,7 +59,13 @@ export default async function PublicBookingPage({
           </p>
         </div>
       ) : (
-        <BookingFlow slug={clinic.slug} timeZone={clinic.timezone} types={types} />
+        <BookingFlow
+          slug={clinic.slug}
+          timeZone={clinic.timezone}
+          types={types}
+          privacyNote={clinic.booking.privacyNote}
+          requireConsent={clinic.booking.requireConsent}
+        />
       )}
     </>
   );

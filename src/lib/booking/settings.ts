@@ -20,6 +20,10 @@ export interface BookingSettings {
   reminderHoursBefore: number;
   /** Also email the clinic when someone books, cancels or reschedules online. */
   notifyClinic: boolean;
+  /** Privacy/data-handling note shown to patients on public pages. */
+  privacyNote: string | null;
+  /** Require patients to tick a consent box before booking online. */
+  requireConsent: boolean;
 }
 
 export const BOOKING_DEFAULTS: BookingSettings = {
@@ -32,6 +36,8 @@ export const BOOKING_DEFAULTS: BookingSettings = {
   remindersEnabled: true,
   reminderHoursBefore: 24,
   notifyClinic: true,
+  privacyNote: null,
+  requireConsent: false,
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -57,6 +63,11 @@ export function bookingSettingsFrom(settings: any): BookingSettings {
     remindersEnabled: bool(s.reminders_enabled, BOOKING_DEFAULTS.remindersEnabled),
     reminderHoursBefore: num(s.reminder_hours_before, BOOKING_DEFAULTS.reminderHoursBefore),
     notifyClinic: bool(s.booking_notify_clinic, BOOKING_DEFAULTS.notifyClinic),
+    privacyNote:
+      typeof s.privacy_note === "string" && s.privacy_note.trim()
+        ? s.privacy_note.trim()
+        : null,
+    requireConsent: bool(s.booking_require_consent, BOOKING_DEFAULTS.requireConsent),
   };
 }
 
@@ -72,5 +83,7 @@ export function bookingSettingsToJson(s: BookingSettings): Record<string, unknow
     reminders_enabled: s.remindersEnabled,
     reminder_hours_before: s.reminderHoursBefore,
     booking_notify_clinic: s.notifyClinic,
+    // Privacy fields are written by the Patient privacy page, not here, so
+    // saving online-booking settings never disturbs them.
   };
 }

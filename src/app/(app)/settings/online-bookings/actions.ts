@@ -30,6 +30,9 @@ export async function updateBookingSettingsAction(form: FormData) {
       BOOKING_DEFAULTS.reminderHoursBefore
     ),
     notifyClinic: form.get("notifyClinic") === "on",
+    // Privacy fields live under Patient privacy; not written from this form.
+    privacyNote: null,
+    requireConsent: false,
   });
   revalidatePath("/settings/online-bookings");
   redirect("/settings");

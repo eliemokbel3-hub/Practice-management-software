@@ -7,6 +7,7 @@ import {
   updatePatient,
   setPatientArchived,
 } from "@/lib/data/patients";
+import { listCustomFields, type CustomField } from "@/lib/data/custom-fields";
 import type { PatientInput, Sex } from "@/lib/types";
 
 function str(form: FormData, key: string): string | null {
@@ -16,7 +17,25 @@ function str(form: FormData, key: string): string | null {
   return trimmed === "" ? null : trimmed;
 }
 
-function patientInputFromForm(form: FormData): PatientInput {
+function customFromForm(
+  form: FormData,
+  fields: CustomField[]
+): Record<string, string> {
+  const custom: Record<string, string> = {};
+  for (const f of fields) {
+    if (f.fieldType === "checkbox") {
+      custom[f.id] = form.get(`custom_${f.id}`) === "on" ? "Yes" : "";
+    } else {
+      custom[f.id] = String(form.get(`custom_${f.id}`) ?? "").trim();
+    }
+  }
+  return custom;
+}
+
+function patientInputFromForm(
+  form: FormData,
+  custom: Record<string, string>
+): PatientInput {
   const firstName = str(form, "firstName");
   const lastName = str(form, "lastName");
   if (!firstName || !lastName) {
@@ -44,17 +63,22 @@ function patientInputFromForm(form: FormData): PatientInput {
     concession: str(form, "concession"),
     healthFundName: str(form, "healthFundName"),
     healthFundMemberNumber: str(form, "healthFundMemberNumber"),
+    custom,
   };
 }
 
 export async function createPatientAction(form: FormData) {
-  const patient = await createPatient(patientInputFromForm(form));
+  const fields = await listCustomFields();
+  const input = patientInputFromForm(form, customFromForm(form, fields));
+  const patient = await createPatient(input);
   revalidatePath("/patients");
   redirect(`/patients/${patient.id}`);
 }
 
 export async function updatePatientAction(id: string, form: FormData) {
-  await updatePatient(id, patientInputFromForm(form));
+  const fields = await listCustomFields();
+  const input = patientInputFromForm(form, customFromForm(form, fields));
+  await updatePatient(id, input);
   revalidatePath("/patients");
   revalidatePath(`/patients/${id}`);
   redirect(`/patients/${id}`);

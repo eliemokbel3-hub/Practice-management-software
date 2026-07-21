@@ -14,6 +14,7 @@ import { listNotesForPatient } from "@/lib/data/clinical-notes";
 import { listNoteTemplates } from "@/lib/data/note-templates";
 import { listInvoicesForPatient } from "@/lib/data/invoices";
 import { listMeasures, listRequestsForPatient } from "@/lib/data/outcomes";
+import { listCustomFields } from "@/lib/data/custom-fields";
 import { createNoteForPatientAction } from "@/app/(app)/notes/actions";
 import { createInvoiceForPatientAction } from "@/app/(app)/invoices/actions";
 import { sendMeasureAction } from "@/app/(app)/outcomes/actions";
@@ -61,15 +62,26 @@ export default async function PatientPage({
   const { measureToken, emailed } = await searchParams;
   const patient = await getPatient(id);
   if (!patient) notFound();
-  const [upcoming, notes, templates, invoices, measures, measureRequests] =
-    await Promise.all([
-      listUpcomingForPatient(id),
-      listNotesForPatient(id),
-      listNoteTemplates(),
-      listInvoicesForPatient(id),
-      listMeasures(),
-      listRequestsForPatient(id),
-    ]);
+  const [
+    upcoming,
+    notes,
+    templates,
+    invoices,
+    measures,
+    measureRequests,
+    customFields,
+  ] = await Promise.all([
+    listUpcomingForPatient(id),
+    listNotesForPatient(id),
+    listNoteTemplates(),
+    listInvoicesForPatient(id),
+    listMeasures(),
+    listRequestsForPatient(id),
+    listCustomFields(),
+  ]);
+  const customWithValues = customFields
+    .map((f) => ({ label: f.label, value: patient.custom?.[f.id] ?? "" }))
+    .filter((f) => f.value.trim());
   const sendMeasure = sendMeasureAction.bind(null, id);
 
   // One progress series per measure with at least two scored responses.
@@ -232,6 +244,18 @@ export default async function PatientPage({
             <Item label="Member no." value={patient.healthFundMemberNumber} />
           </dl>
         </Card>
+
+        {customWithValues.length > 0 && (
+          <div className="lg:col-span-2">
+            <Card title="Additional information">
+              <dl className="grid gap-4 sm:grid-cols-2">
+                {customWithValues.map((f) => (
+                  <Item key={f.label} label={f.label} value={f.value} />
+                ))}
+              </dl>
+            </Card>
+          </div>
+        )}
 
         <div className="lg:col-span-2">
           <Card title="Medical history">

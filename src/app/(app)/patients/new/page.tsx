@@ -2,12 +2,14 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { PatientForm } from "@/components/patient-form";
 import { listConcessionTypes, listReferralSources } from "@/lib/data/lists";
+import { listCustomFields } from "@/lib/data/custom-fields";
 import { createPatientAction } from "../actions";
 
 export default async function NewPatientPage() {
-  const [referralSources, concessionTypes] = await Promise.all([
+  const [referralSources, concessionTypes, customFields] = await Promise.all([
     listReferralSources(),
     listConcessionTypes(),
+    listCustomFields(),
   ]);
   return (
     <div className="flex flex-col gap-6">
@@ -25,6 +27,7 @@ export default async function NewPatientPage() {
         submitLabel="Create patient"
         referralSources={referralSources.map((r) => r.name)}
         concessionTypes={concessionTypes.map((c) => c.name)}
+        customFields={customFields}
       />
     </div>
   );

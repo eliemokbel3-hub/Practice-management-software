@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { PatientForm } from "@/components/patient-form";
 import { getPatient } from "@/lib/data/patients";
 import { listConcessionTypes, listReferralSources } from "@/lib/data/lists";
+import { listCustomFields } from "@/lib/data/custom-fields";
 import { fullName } from "@/lib/types";
 import { updatePatientAction } from "../../actions";
 
@@ -13,11 +14,13 @@ export default async function EditPatientPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [patient, referralSources, concessionTypes] = await Promise.all([
-    getPatient(id),
-    listReferralSources(),
-    listConcessionTypes(),
-  ]);
+  const [patient, referralSources, concessionTypes, customFields] =
+    await Promise.all([
+      getPatient(id),
+      listReferralSources(),
+      listConcessionTypes(),
+      listCustomFields(),
+    ]);
   if (!patient) notFound();
 
   const action = updatePatientAction.bind(null, patient.id);
@@ -39,6 +42,7 @@ export default async function EditPatientPage({
         submitLabel="Save changes"
         referralSources={referralSources.map((r) => r.name)}
         concessionTypes={concessionTypes.map((c) => c.name)}
+        customFields={customFields}
       />
     </div>
   );

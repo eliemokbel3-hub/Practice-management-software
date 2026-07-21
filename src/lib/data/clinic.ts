@@ -80,6 +80,53 @@ export async function updateBookingConfig(
   }
 }
 
+/** Patient-privacy settings (stored in clinic.settings jsonb). */
+export async function getPrivacySettings(): Promise<{
+  privacyNote: string | null;
+  requireConsent: boolean;
+}> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("clinics")
+    .select("settings")
+    .single();
+  if (error) throw new Error(`Couldn't load privacy settings: ${error.message}`);
+  const s = data.settings ?? {};
+  return {
+    privacyNote:
+      typeof s.privacy_note === "string" && s.privacy_note.trim()
+        ? s.privacy_note.trim()
+        : null,
+    requireConsent: s.booking_require_consent === true,
+  };
+}
+
+export async function updatePrivacySettings(
+  privacyNote: string | null,
+  requireConsent: boolean
+): Promise<void> {
+  const profile = await getCurrentProfile();
+  if (!profile) throw new Error("Your login isn't linked to a clinic yet.");
+  const supabase = await createClient();
+  const { data: existing, error: loadError } = await supabase
+    .from("clinics")
+    .select("settings")
+    .eq("id", profile.clinic_id)
+    .single();
+  if (loadError) throw new Error(`Couldn't save: ${loadError.message}`);
+  const { error } = await supabase
+    .from("clinics")
+    .update({
+      settings: {
+        ...existing.settings,
+        privacy_note: privacyNote,
+        booking_require_consent: requireConsent,
+      },
+    })
+    .eq("id", profile.clinic_id);
+  if (error) throw new Error(`Couldn't save privacy settings: ${error.message}`);
+}
+
 export async function updateClinic(input: {
   name: string;
   phone: string | null;

@@ -1,4 +1,5 @@
 import type { Patient } from "@/lib/types";
+import type { CustomField } from "@/lib/data/custom-fields";
 
 const inputCls =
   "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
@@ -102,18 +103,67 @@ function Choice({
   );
 }
 
+function CustomFieldInput({
+  field,
+  value,
+}: {
+  field: CustomField;
+  value: string;
+}) {
+  const name = `custom_${field.id}`;
+  if (field.fieldType === "checkbox") {
+    return (
+      <label className="flex items-center gap-2.5 text-sm sm:col-span-2">
+        <input
+          type="checkbox"
+          name={name}
+          defaultChecked={value === "Yes"}
+          className="h-4 w-4 accent-[var(--primary)]"
+        />
+        {field.label}
+      </label>
+    );
+  }
+  return (
+    <Field label={field.label} name={name}>
+      {field.fieldType === "paragraph" ? (
+        <textarea id={name} name={name} rows={3} defaultValue={value} className={inputCls} />
+      ) : field.fieldType === "select" ? (
+        <select id={name} name={name} defaultValue={value} className={inputCls}>
+          <option value="">—</option>
+          {field.options.map((o) => (
+            <option key={o} value={o}>
+              {o}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          id={name}
+          name={name}
+          type={field.fieldType === "date" ? "date" : "text"}
+          defaultValue={value}
+          className={inputCls}
+        />
+      )}
+    </Field>
+  );
+}
+
 export function PatientForm({
   patient,
   action,
   submitLabel,
   referralSources = [],
   concessionTypes = [],
+  customFields = [],
 }: {
   patient?: Patient;
   action: (form: FormData) => Promise<void>;
   submitLabel: string;
   referralSources?: string[];
   concessionTypes?: string[];
+  customFields?: CustomField[];
 }) {
   return (
     <form action={action} className="flex flex-col gap-5">
@@ -207,6 +257,18 @@ export function PatientForm({
           value={patient?.healthFundMemberNumber}
         />
       </Section>
+
+      {customFields.length > 0 && (
+        <Section title="Additional information">
+          {customFields.map((f) => (
+            <CustomFieldInput
+              key={f.id}
+              field={f}
+              value={patient?.custom?.[f.id] ?? ""}
+            />
+          ))}
+        </Section>
+      )}
 
       <div className="flex justify-end">
         <button

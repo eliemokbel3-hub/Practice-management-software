@@ -27,10 +27,14 @@ export default function BookingFlow({
   slug,
   timeZone,
   types,
+  privacyNote = null,
+  requireConsent = false,
 }: {
   slug: string;
   timeZone: string;
   types: PublicAppointmentType[];
+  privacyNote?: string | null;
+  requireConsent?: boolean;
 }) {
   const [type, setType] = useState<PublicAppointmentType | null>(
     types.length === 1 ? types[0] : null
@@ -262,6 +266,25 @@ export default function BookingFlow({
             />
           </div>
         </div>
+
+        {privacyNote && (
+          <p className="rounded-lg bg-surface-hover p-3 text-xs text-muted">
+            {privacyNote}
+          </p>
+        )}
+        {requireConsent && (
+          <label className="flex items-start gap-2.5 text-sm">
+            <input
+              type="checkbox"
+              name="consent"
+              required
+              className="mt-0.5 h-4 w-4 accent-[var(--primary)]"
+            />
+            <span>
+              I understand and agree to how my information will be handled.
+            </span>
+          </label>
+        )}
 
         {error && <p className="text-sm text-danger">{error}</p>}
 
