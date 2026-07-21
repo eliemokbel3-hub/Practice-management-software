@@ -85,6 +85,14 @@ export default async function InvoicePage({
       <section className="rounded-xl border border-border bg-surface p-6 print:border-0 print:p-0">
         <div className="flex items-start justify-between gap-6">
           <div>
+            {clinic.logo && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={clinic.logo}
+                alt={clinic.name}
+                className="mb-3 max-h-14 max-w-[200px] object-contain"
+              />
+            )}
             <h2 className="text-lg font-semibold">{clinic.invoiceTitle}</h2>
             <p className="mt-1 text-sm font-medium">{clinic.name}</p>
             <p className="text-xs leading-relaxed text-muted">

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { Phone } from "lucide-react";
 import { getClinicBySlug, listBookableTypes } from "@/lib/booking/public";
 import BookingFlow from "../components/booking-flow";
+import { BrandLogo, BrandStyle } from "../components/brand";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +17,8 @@ export default async function PublicBookingPage({
 
   const header = (
     <div className="mb-6">
+      <BrandStyle brandColor={clinic.brandColor} />
+      <BrandLogo logo={clinic.logo} name={clinic.name} />
       <h1 className="text-2xl font-semibold tracking-tight">{clinic.name}</h1>
       <p className="mt-1 text-sm text-muted">Book an appointment</p>
       {clinic.booking.welcomeMessage && (

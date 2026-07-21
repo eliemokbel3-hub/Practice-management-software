@@ -1,6 +1,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { getMeasureRequestByToken } from "@/lib/outcomes/public";
 import MeasureForm from "./measure-form";
+import { BrandLogo, BrandStyle } from "@/app/book/components/brand";
 
 export const dynamic = "force-dynamic";
 
@@ -41,7 +42,9 @@ export default async function MeasurePage({
 
   return (
     <div className="flex flex-col gap-6">
+      <BrandStyle brandColor={request.clinicBrandColor} />
       <div>
+        <BrandLogo logo={request.clinicLogo} name={request.clinicName} />
         <h1 className="text-2xl font-semibold tracking-tight">
           {request.measureName}
         </h1>

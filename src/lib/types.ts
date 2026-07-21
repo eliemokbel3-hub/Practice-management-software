@@ -175,6 +175,10 @@ export interface Clinic {
   invoiceTitle: string;
   /** Optional note printed at the foot of invoices (payment terms, etc.). */
   invoiceFooter: string | null;
+  /** Re-encoded raster data URL of the clinic logo, or null. */
+  logo: string | null;
+  /** Brand colour (hex) that drives the theme, or null for the default. */
+  brandColor: string | null;
 }
 
 export interface ServiceItem {

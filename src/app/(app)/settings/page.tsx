@@ -17,6 +17,11 @@ const groups: { heading: string; items: Item[] }[] = [
         description: "Name, ABN, address and contact details shown on invoices.",
       },
       {
+        href: "/settings/branding",
+        title: "Branding & logo",
+        description: "Upload your logo to auto-theme the whole app.",
+      },
+      {
         href: "/settings/users",
         title: "Users & practitioners",
         description: "Staff logins, roles and the services each practitioner offers.",

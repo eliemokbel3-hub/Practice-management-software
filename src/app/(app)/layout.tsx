@@ -4,6 +4,8 @@ import { SidebarNav } from "@/components/sidebar-nav";
 import { ChatDock } from "@/components/chat-dock";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { getCurrentProfile } from "@/lib/supabase/server";
+import { getBranding } from "@/lib/data/clinic";
+import { brandThemeCss } from "@/lib/branding";
 import { signOutAction } from "./sign-out-action";
 
 export default async function AppLayout({
@@ -11,18 +13,34 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const profile = await getCurrentProfile();
+  const [profile, branding] = await Promise.all([
+    getCurrentProfile(),
+    getBranding(),
+  ]);
+  const brandCss = brandThemeCss(branding.brandColor);
 
   return (
     <div className="flex min-h-screen">
+      {brandCss && <style dangerouslySetInnerHTML={{ __html: brandCss }} />}
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-60 flex-col border-r border-border bg-surface px-4 py-5 md:flex print:hidden">
-        <Link href="/patients" className="mb-8 flex items-center gap-2.5 px-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Activity size={18} strokeWidth={2.5} />
-          </span>
-          <span className="text-[15px] font-semibold tracking-tight">
-            PracticeHub
-          </span>
+        <Link href="/" className="mb-8 flex items-center gap-2.5 px-2">
+          {branding.logo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={branding.logo}
+              alt={branding.name}
+              className="max-h-10 max-w-[168px] object-contain"
+            />
+          ) : (
+            <>
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                <Activity size={18} strokeWidth={2.5} />
+              </span>
+              <span className="text-[15px] font-semibold tracking-tight">
+                PracticeHub
+              </span>
+            </>
+          )}
         </Link>
         <SidebarNav />
         <div className="mt-auto flex flex-col gap-4">

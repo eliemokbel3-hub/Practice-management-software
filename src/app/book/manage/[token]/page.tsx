@@ -5,6 +5,7 @@ import {
   formatTimeInTz,
 } from "@/lib/booking/timezone";
 import ManageBooking from "./manage-booking";
+import { BrandLogo, BrandStyle } from "../../components/brand";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,8 @@ export default async function ManageBookingPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
+        <BrandStyle brandColor={clinic.brandColor} />
+        <BrandLogo logo={clinic.logo} name={clinic.name} />
         <h1 className="text-2xl font-semibold tracking-tight">{clinic.name}</h1>
         <p className="mt-1 text-sm text-muted">Your appointment</p>
       </div>
