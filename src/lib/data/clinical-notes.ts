@@ -96,6 +96,19 @@ export async function listNotesForPatient(
   return (data ?? []).map(rowToNote);
 }
 
+/** Unfinalised notes across the clinic, newest first — for the dashboard. */
+export async function listDraftNotes(limit = 12): Promise<ClinicalNote[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("clinical_notes")
+    .select(SELECT_WITH_JOINS)
+    .eq("status", "draft")
+    .order("updated_at", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(`Couldn't load draft notes: ${error.message}`);
+  return (data ?? []).map(rowToNote);
+}
+
 export async function getNoteForAppointment(
   appointmentId: string
 ): Promise<ClinicalNote | null> {

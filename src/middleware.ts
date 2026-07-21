@@ -51,7 +51,7 @@ export async function middleware(request: NextRequest) {
   }
   if (user && isLoginPage) {
     const url = request.nextUrl.clone();
-    url.pathname = "/patients";
+    url.pathname = "/";
     url.search = "";
     return NextResponse.redirect(url);
   }

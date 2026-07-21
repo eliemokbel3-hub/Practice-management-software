@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Activity, LogOut } from "lucide-react";
 import { SidebarNav } from "@/components/sidebar-nav";
+import { ChatDock } from "@/components/chat-dock";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { getCurrentProfile } from "@/lib/supabase/server";
 import { signOutAction } from "./sign-out-action";
@@ -56,6 +57,7 @@ export default async function AppLayout({
           {children}
         </main>
       </div>
+      <ChatDock />
     </div>
   );
 }

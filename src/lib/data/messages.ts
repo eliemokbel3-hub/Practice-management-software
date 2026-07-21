@@ -87,6 +87,53 @@ export async function getConversation(partnerId: string): Promise<ChatMessage[]>
   }));
 }
 
+export interface RecentMessage {
+  id: string;
+  partnerId: string;
+  partnerName: string;
+  body: string;
+  createdAt: string;
+  unread: boolean;
+}
+
+/**
+ * The latest message in each conversation the current user is part of,
+ * newest first — for the dashboard's "Recent messages" panel.
+ */
+export async function listRecentMessages(limit = 6): Promise<RecentMessage[]> {
+  const profile = await getCurrentProfile();
+  if (!profile) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("messages")
+    .select(
+      "id, sender_id, recipient_id, body, created_at, read_at, sender:profiles!messages_sender_id_fkey(first_name, last_name), recipient:profiles!messages_recipient_id_fkey(first_name, last_name)"
+    )
+    .order("created_at", { ascending: false })
+    .limit(60);
+  if (error) throw new Error(`Couldn't load messages: ${error.message}`);
+
+  const seen = new Set<string>();
+  const out: RecentMessage[] = [];
+  for (const m of (data ?? []) as any[]) {
+    const incoming = m.recipient_id === profile.id;
+    const partnerId = incoming ? m.sender_id : m.recipient_id;
+    if (partnerId === profile.id || seen.has(partnerId)) continue;
+    seen.add(partnerId);
+    const who = incoming ? m.sender : m.recipient;
+    out.push({
+      id: m.id,
+      partnerId,
+      partnerName: who ? `${who.first_name} ${who.last_name}` : "Someone",
+      body: incoming ? m.body : `You: ${m.body}`,
+      createdAt: m.created_at,
+      unread: incoming && !m.read_at,
+    });
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+
 export async function sendMessage(
   recipientId: string,
   body: string

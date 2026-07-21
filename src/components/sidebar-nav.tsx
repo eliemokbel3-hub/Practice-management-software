@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Home,
   CalendarDays,
   Users,
   Receipt,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 
 const items = [
+  { href: "/", label: "Home", icon: Home },
   { href: "/calendar", label: "Calendar", icon: CalendarDays },
   { href: "/patients", label: "Patients", icon: Users },
   { href: "/invoices", label: "Invoices", icon: Receipt },
@@ -25,7 +27,10 @@ export function SidebarNav() {
   return (
     <nav className="flex flex-col gap-1">
       {items.map(({ href, label, icon: Icon }) => {
-        const active = pathname === href || pathname.startsWith(`${href}/`);
+        const active =
+          href === "/"
+            ? pathname === "/"
+            : pathname === href || pathname.startsWith(`${href}/`);
         return (
           <Link
             key={href}
