@@ -7,6 +7,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { bookingSettingsFrom } from "@/lib/booking/settings";
 import { sendAndLog, emailIsConfigured } from "./resend";
 import { reminderEmail, type EmailClinic } from "./templates";
+import { getSendTemplate } from "@/lib/data/message-templates";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -72,6 +73,7 @@ export async function sendDueReminders(): Promise<ReminderRunResult> {
       postcode: clinicRow.postcode,
     };
 
+    const reminderTpl = await getSendTemplate(clinicRow.id, "reminder");
     for (const appt of appts as any[]) {
       if (done.has(appt.id)) continue;
       const patient = appt.patients;
@@ -88,7 +90,8 @@ export async function sendDueReminders(): Promise<ReminderRunResult> {
           timeZone: clinicRow.timezone,
           manageToken: appt.manage_token,
         },
-        settings.cancelMinHours
+        settings.cancelMinHours,
+        reminderTpl
       );
       const sendResult = await sendAndLog({
         clinicId: clinicRow.id,

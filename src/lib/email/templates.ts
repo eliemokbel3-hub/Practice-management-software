@@ -86,12 +86,56 @@ function manageBlock(appt: EmailAppointment, cancelMinHours: number): string {
   </p>`;
 }
 
-export function confirmationEmail(
+/** A saved template's subject + body, with {placeholders}. */
+export interface CustomTemplate {
+  subject: string;
+  body: string;
+}
+
+/**
+ * Render a clinic's editable template into a finished email. Scalar
+ * placeholders are substituted (and escaped); {appointment_details} and
+ * {manage_link} expand to their styled blocks.
+ */
+export function renderTemplate(
   clinic: EmailClinic,
+  template: CustomTemplate,
   patientFirstName: string,
   appt: EmailAppointment,
   cancelMinHours: number
 ): { subject: string; html: string } {
+  const starts = new Date(appt.startsAt);
+  const scalars: Record<string, string> = {
+    patient_first_name: patientFirstName,
+    clinic_name: clinic.name,
+    appointment_type: appt.typeName,
+    appointment_date: formatLongDateInTz(starts, appt.timeZone),
+    appointment_time: formatTimeInTz(starts, appt.timeZone),
+  };
+  const subject = Object.entries(scalars).reduce(
+    (s, [k, v]) => s.replaceAll(`{${k}}`, v),
+    template.subject || `${clinic.name}`
+  );
+  let body = esc(template.body);
+  for (const [k, v] of Object.entries(scalars)) {
+    body = body.replaceAll(`{${k}}`, esc(v));
+  }
+  body = body
+    .replaceAll("{appointment_details}", detailsBlock(appt))
+    .replaceAll("{manage_link}", manageBlock(appt, cancelMinHours))
+    .replace(/\n/g, "<br>");
+  return { subject, html: layout(clinic, `<p style="margin:0;">${body}</p>`) };
+}
+
+export function confirmationEmail(
+  clinic: EmailClinic,
+  patientFirstName: string,
+  appt: EmailAppointment,
+  cancelMinHours: number,
+  template?: CustomTemplate | null
+): { subject: string; html: string } {
+  if (template)
+    return renderTemplate(clinic, template, patientFirstName, appt, cancelMinHours);
   return {
     subject: `Appointment confirmed — ${clinic.name}`,
     html: layout(
@@ -110,8 +154,11 @@ export function reminderEmail(
   clinic: EmailClinic,
   patientFirstName: string,
   appt: EmailAppointment,
-  cancelMinHours: number
+  cancelMinHours: number,
+  template?: CustomTemplate | null
 ): { subject: string; html: string } {
+  if (template)
+    return renderTemplate(clinic, template, patientFirstName, appt, cancelMinHours);
   return {
     subject: `Appointment reminder — ${clinic.name}`,
     html: layout(
@@ -128,8 +175,11 @@ export function reminderEmail(
 export function cancellationEmail(
   clinic: EmailClinic,
   patientFirstName: string,
-  appt: EmailAppointment
+  appt: EmailAppointment,
+  template?: CustomTemplate | null
 ): { subject: string; html: string } {
+  if (template)
+    return renderTemplate(clinic, template, patientFirstName, appt, 0);
   return {
     subject: `Appointment cancelled — ${clinic.name}`,
     html: layout(

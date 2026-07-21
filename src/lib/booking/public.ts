@@ -11,9 +11,8 @@ import {
   type BusyInterval,
 } from "./availability";
 import { dateKeyInTz } from "./timezone";
-import {
-  sendAndLog,
-} from "@/lib/email/resend";
+import { sendAndLog } from "@/lib/email/resend";
+import { getSendTemplate } from "@/lib/data/message-templates";
 import {
   confirmationEmail,
   cancellationEmail,
@@ -346,7 +345,8 @@ export async function createOnlineBooking(
     emailClinic(clinic),
     details.firstName.trim(),
     emailAppt,
-    clinic.booking.cancelMinHours
+    clinic.booking.cancelMinHours,
+    await getSendTemplate(clinic.id, "confirmation")
   );
   const sendResult = await sendAndLog({
     clinicId: clinic.id,
@@ -479,7 +479,8 @@ export async function cancelBookingByToken(
     const message = cancellationEmail(
       emailClinic(booking.clinic),
       booking.patientFirstName,
-      emailAppt
+      emailAppt,
+      await getSendTemplate(booking.clinic.id, "cancellation")
     );
     await sendAndLog({
       clinicId: booking.clinic.id,
