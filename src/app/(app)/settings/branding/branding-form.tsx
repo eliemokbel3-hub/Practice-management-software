@@ -1,68 +1,25 @@
 "use client";
 
-// Upload one or two logos (a light-background one and, optionally, a
-// dark-background one) → read the dominant colour → preview and save a full
-// theme. Works for any clinic; the second logo is never required.
+// Upload one or two logos → the background is cut out and the artwork trimmed
+// automatically → preview and save a full theme. The second (dark-background)
+// logo is optional. Works for any clinic.
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, ImageUp, Loader2, RotateCcw, Trash2 } from "lucide-react";
 import { deriveTheme, normalizeHex } from "@/lib/branding";
+import { processLogo } from "./logo-processing";
 import { saveBrandingAction } from "./actions";
 
 const DEFAULT = "#0d9488";
 
-/** Pick the most prominent, saturated colour from an image. */
-function extractColor(img: HTMLImageElement): string | null {
-  const size = 72;
-  const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return null;
-  ctx.drawImage(img, 0, 0, size, size);
-  const { data } = ctx.getImageData(0, 0, size, size);
-  const buckets = new Map<string, { r: number; g: number; b: number; w: number }>();
-  for (let i = 0; i < data.length; i += 4) {
-    const r = data[i];
-    const g = data[i + 1];
-    const b = data[i + 2];
-    if (data[i + 3] < 128) continue;
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    if (min > 232 || max < 24) continue;
-    const sat = max === 0 ? 0 : (max - min) / max;
-    if (sat < 0.12) continue;
-    const key = `${r >> 4}-${g >> 4}-${b >> 4}`;
-    const weight = 1 + sat * 3;
-    const cur = buckets.get(key) ?? { r: 0, g: 0, b: 0, w: 0 };
-    cur.r += r * weight;
-    cur.g += g * weight;
-    cur.b += b * weight;
-    cur.w += weight;
-    buckets.set(key, cur);
-  }
-  let best: { r: number; g: number; b: number; w: number } | null = null;
-  for (const v of buckets.values()) if (!best || v.w > best.w) best = v;
-  if (!best) return null;
-  const to = (n: number) => Math.round(n).toString(16).padStart(2, "0");
-  return `#${to(best.r / best.w)}${to(best.g / best.w)}${to(best.b / best.w)}`;
-}
-
-/** Re-encode to a small raster data URL (strips any SVG scripting, caps size). */
-function toLogoDataUrl(img: HTMLImageElement): string {
-  const maxDim = 240;
-  const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
-  const w = Math.max(1, Math.round(img.width * scale));
-  const h = Math.max(1, Math.round(img.height * scale));
-  const canvas = document.createElement("canvas");
-  canvas.width = w;
-  canvas.height = h;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return "";
-  ctx.drawImage(img, 0, 0, w, h);
-  return canvas.toDataURL("image/webp", 0.9);
-}
+// A faint checkerboard so transparency is visible in previews.
+const checker: React.CSSProperties = {
+  backgroundImage:
+    "linear-gradient(45deg, rgba(128,128,128,0.15) 25%, transparent 25%, transparent 75%, rgba(128,128,128,0.15) 75%), linear-gradient(45deg, rgba(128,128,128,0.15) 25%, transparent 25%, transparent 75%, rgba(128,128,128,0.15) 75%)",
+  backgroundSize: "14px 14px",
+  backgroundPosition: "0 0, 7px 7px",
+};
 
 function readImage(file: File, cb: (img: HTMLImageElement) => void) {
   const reader = new FileReader();
@@ -98,9 +55,8 @@ function LogoSlot({
       </div>
       <div className="flex items-center gap-4">
         <div
-          className={`flex h-16 w-40 items-center justify-center overflow-hidden rounded-lg border border-border p-2 ${
-            dark ? "bg-[#1a2120]" : "bg-background"
-          }`}
+          className="flex h-16 w-40 items-center justify-center overflow-hidden rounded-lg border border-border p-2"
+          style={{ ...checker, backgroundColor: dark ? "#1a2120" : "#ffffff" }}
         >
           {value ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -206,17 +162,19 @@ export function BrandingForm({
   function pickLight(file: File) {
     setSaved(false);
     readImage(file, (img) => {
-      setLogo(toLogoDataUrl(img));
-      const extracted = extractColor(img);
-      if (extracted && (!initialColor || color === DEFAULT)) {
-        setColor(extracted);
-        setNote("Colour picked from your logo — tweak it below if you like.");
-      }
+      const { dataUrl, color: picked, removedBackground } = processLogo(img);
+      setLogo(dataUrl);
+      if (picked && (!initialColor || color === DEFAULT)) setColor(picked);
+      setNote(
+        removedBackground
+          ? "Background removed automatically and trimmed to fit."
+          : "Logo trimmed to fit."
+      );
     });
   }
   function pickDark(file: File) {
     setSaved(false);
-    readImage(file, (img) => setLogoDark(toLogoDataUrl(img)));
+    readImage(file, (img) => setLogoDark(processLogo(img).dataUrl));
   }
 
   async function save() {
@@ -249,14 +207,15 @@ export function BrandingForm({
         <div>
           <h2 className="text-sm font-semibold">Logos</h2>
           <p className="text-xs text-faint">
-            PNG, JPG, WebP or SVG. The dark-background logo is optional — add it
-            only if your main logo doesn&apos;t sit well on dark backgrounds. A
-            logo with a transparent background looks best.
+            PNG, JPG, WebP or SVG. We automatically remove a plain background and
+            trim the artwork, so your logo sits cleanly everywhere. Add the
+            dark-background logo only if your main one doesn&apos;t read well on
+            dark backgrounds.
           </p>
         </div>
         <LogoSlot
           title="Logo"
-          hint="Used everywhere, and in light mode. Best on a light/transparent background."
+          hint="Used everywhere, and in light mode."
           value={logo}
           onPick={pickLight}
           onRemove={() => {
@@ -267,7 +226,7 @@ export function BrandingForm({
         <div className="border-t border-border" />
         <LogoSlot
           title="Dark-background logo (optional)"
-          hint="Shown in dark mode and on dark surfaces. Best on a dark/transparent background."
+          hint="Shown in dark mode and on dark surfaces."
           value={logoDark}
           dark
           onPick={pickDark}
