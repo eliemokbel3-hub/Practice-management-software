@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# agent workflow — machine-specific notes (never secrets) and transient loop logs
+AGENTS.local.md
+.cursor/loops/
