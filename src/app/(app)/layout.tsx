@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Activity, LogOut } from "lucide-react";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { ChatDock } from "@/components/chat-dock";
+import { LogoWatermark } from "@/components/logo-watermark";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { getCurrentProfile } from "@/lib/supabase/server";
 import { getBranding } from "@/lib/data/clinic";
@@ -22,6 +23,7 @@ export default async function AppLayout({
   return (
     <div className="flex min-h-screen">
       {brandCss && <style dangerouslySetInnerHTML={{ __html: brandCss }} />}
+      <LogoWatermark logo={branding.logo} />
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-60 flex-col border-r border-border bg-surface px-4 py-5 md:flex print:hidden">
         <Link href="/" className="mb-8 flex items-center gap-2.5 px-2">
           {branding.logo ? (

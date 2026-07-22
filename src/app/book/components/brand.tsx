@@ -1,5 +1,7 @@
 import { brandThemeCss } from "@/lib/branding";
 
+export { LogoWatermark as BrandWatermark } from "@/components/logo-watermark";
+
 /** Injects a clinic's brand theme on a public page. */
 export function BrandStyle({ brandColor }: { brandColor: string | null }) {
   const css = brandThemeCss(brandColor);
