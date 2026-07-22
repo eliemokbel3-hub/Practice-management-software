@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Lock, PenLine, Check, X } from "lucide-react";
+import { Archive, ArrowLeft, ArchiveRestore, Lock, PenLine, Check, X } from "lucide-react";
 import { NoteEditor } from "@/components/note-editor";
 import { getNote } from "@/lib/data/clinical-notes";
 import { formatLongDate, formatTime } from "@/lib/calendar-utils";
+import { setNoteArchivedAction } from "../actions";
 
 export default async function NotePage({
   params,
@@ -16,6 +17,7 @@ export default async function NotePage({
 
   const created = new Date(note.createdAt);
   const isDraft = note.status === "draft";
+  const isArchived = Boolean(note.archivedAt);
 
   return (
     <div className="flex max-w-2xl flex-col gap-6">
@@ -36,6 +38,11 @@ export default async function NotePage({
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {isArchived && (
+            <span className="rounded-full border border-border px-3 py-1 text-xs font-medium text-faint">
+              Archived
+            </span>
+          )}
           {isDraft ? (
             <span className="rounded-full bg-warning-soft px-3 py-1 text-xs font-medium text-warning-soft-foreground">
               Draft
@@ -47,7 +54,7 @@ export default async function NotePage({
                 ` ${new Date(note.finalisedAt).toLocaleDateString("en-AU")}`}
             </span>
           )}
-          {!isDraft && (
+          {!isDraft && !isArchived && (
             <Link
               href={`/notes/${note.id}/amend`}
               className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-surface-hover"
@@ -55,6 +62,19 @@ export default async function NotePage({
               <PenLine size={14} /> Amend
             </Link>
           )}
+          <form action={setNoteArchivedAction.bind(null, note.id, !isArchived)}>
+            <button className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-surface-hover">
+              {isArchived ? (
+                <>
+                  <ArchiveRestore size={14} /> Restore
+                </>
+              ) : (
+                <>
+                  <Archive size={14} /> Archive
+                </>
+              )}
+            </button>
+          </form>
         </div>
       </div>
 

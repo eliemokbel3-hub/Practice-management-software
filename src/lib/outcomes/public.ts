@@ -15,6 +15,7 @@ export interface PublicMeasureRequest {
   patientFirstName: string;
   clinicName: string;
   clinicLogo: string | null;
+  clinicLogoDark: string | null;
   clinicBrandColor: string | null;
   completed: boolean;
 }
@@ -27,7 +28,7 @@ export async function getMeasureRequestByToken(
   const { data } = await admin
     .from("outcome_measure_requests")
     .select(
-      "id, clinic_id, outcome_measures(name, definition), patients(first_name), outcome_measure_responses(id), clinics(name, logo, brand_color)"
+      "id, clinic_id, outcome_measures(name, definition), patients(first_name), outcome_measure_responses(id), clinics(name, logo, logo_dark, brand_color)"
     )
     .eq("token", token)
     .maybeSingle();
@@ -42,6 +43,7 @@ export async function getMeasureRequestByToken(
     patientFirstName: patient?.first_name ?? "there",
     clinicName: clinic?.name ?? "Your clinic",
     clinicLogo: clinic?.logo ?? null,
+    clinicLogoDark: clinic?.logo_dark ?? null,
     clinicBrandColor: clinic?.brand_color ?? null,
     completed: Boolean(data.outcome_measure_responses),
   };

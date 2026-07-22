@@ -27,27 +27,36 @@ function rowToClinic(row: any): Clinic {
         ? settings.invoice_footer.trim()
         : null,
     logo: row.logo ?? null,
+    logoDark: row.logo_dark ?? null,
     brandColor: row.brand_color ?? null,
   };
 }
 
-/** Light query for the theme + logo, loaded on every app page. */
+/** Light query for the theme + logos, loaded on every app page. */
 export async function getBranding(): Promise<{
   name: string;
   logo: string | null;
+  logoDark: string | null;
   brandColor: string | null;
 }> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("clinics")
-    .select("name, logo, brand_color")
+    .select("name, logo, logo_dark, brand_color")
     .single();
-  if (error || !data) return { name: "PracticeHub", logo: null, brandColor: null };
-  return { name: data.name, logo: data.logo, brandColor: data.brand_color };
+  if (error || !data)
+    return { name: "PracticeHub", logo: null, logoDark: null, brandColor: null };
+  return {
+    name: data.name,
+    logo: data.logo,
+    logoDark: data.logo_dark,
+    brandColor: data.brand_color,
+  };
 }
 
 export async function updateBranding(
   logo: string | null,
+  logoDark: string | null,
   brandColor: string | null
 ): Promise<void> {
   const profile = await getCurrentProfile();
@@ -55,7 +64,7 @@ export async function updateBranding(
   const supabase = await createClient();
   const { error } = await supabase
     .from("clinics")
-    .update({ logo, brand_color: brandColor })
+    .update({ logo, logo_dark: logoDark, brand_color: brandColor })
     .eq("id", profile.clinic_id);
   if (error) throw new Error(`Couldn't save branding: ${error.message}`);
 }

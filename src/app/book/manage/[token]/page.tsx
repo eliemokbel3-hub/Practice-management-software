@@ -37,8 +37,8 @@ export default async function ManageBookingPage({
     <div className="flex flex-col gap-6">
       <div>
         <BrandStyle brandColor={clinic.brandColor} />
-        <BrandWatermark logo={clinic.logo} />
-        <BrandLogo logo={clinic.logo} name={clinic.name} />
+        <BrandWatermark logo={clinic.logo} logoDark={clinic.logoDark} />
+        <BrandLogo logo={clinic.logo} logoDark={clinic.logoDark} name={clinic.name} />
         <h1 className="text-2xl font-semibold tracking-tight">{clinic.name}</h1>
         <p className="mt-1 text-sm text-muted">Your appointment</p>
       </div>

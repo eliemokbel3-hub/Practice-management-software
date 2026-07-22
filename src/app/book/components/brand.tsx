@@ -1,4 +1,5 @@
 import { brandThemeCss } from "@/lib/branding";
+import { ThemedLogo } from "@/components/themed-logo";
 
 export { LogoWatermark as BrandWatermark } from "@/components/logo-watermark";
 
@@ -11,17 +12,19 @@ export function BrandStyle({ brandColor }: { brandColor: string | null }) {
 /** A clinic logo above a public page's heading, if one is set. */
 export function BrandLogo({
   logo,
+  logoDark,
   name,
 }: {
   logo: string | null;
+  logoDark: string | null;
   name: string;
 }) {
-  if (!logo) return null;
+  if (!logo && !logoDark) return null;
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={logo}
-      alt={name}
+    <ThemedLogo
+      logo={logo}
+      logoDark={logoDark}
+      name={name}
       className="mb-4 max-h-16 max-w-[220px] object-contain"
     />
   );

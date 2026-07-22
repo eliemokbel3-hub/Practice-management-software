@@ -18,8 +18,8 @@ export default async function PublicBookingPage({
   const header = (
     <div className="mb-6">
       <BrandStyle brandColor={clinic.brandColor} />
-      <BrandWatermark logo={clinic.logo} />
-      <BrandLogo logo={clinic.logo} name={clinic.name} />
+      <BrandWatermark logo={clinic.logo} logoDark={clinic.logoDark} />
+      <BrandLogo logo={clinic.logo} logoDark={clinic.logoDark} name={clinic.name} />
       <h1 className="text-2xl font-semibold tracking-tight">{clinic.name}</h1>
       <p className="mt-1 text-sm text-muted">Book an appointment</p>
       {clinic.booking.welcomeMessage && (

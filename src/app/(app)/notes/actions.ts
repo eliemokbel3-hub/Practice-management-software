@@ -6,8 +6,10 @@ import {
   amendNote,
   createNote,
   finaliseNote,
+  getNote,
   getNoteForAppointment,
   saveDraftAnswers,
+  setNoteArchived,
 } from "@/lib/data/clinical-notes";
 import {
   getDefaultNoteTemplate,
@@ -82,4 +84,14 @@ export async function amendNoteAction(
   await amendNote(id, answers);
   revalidatePath(`/notes/${id}`);
   redirect(`/notes/${id}`);
+}
+
+export async function setNoteArchivedAction(id: string, archived: boolean) {
+  const note = await getNote(id);
+  await setNoteArchived(id, archived);
+  revalidatePath(`/notes/${id}`);
+  if (note?.patientId) revalidatePath(`/patients/${note.patientId}`);
+  revalidatePath("/");
+  // Send the practitioner back to the patient file when archiving.
+  redirect(archived && note?.patientId ? `/patients/${note.patientId}` : `/notes/${id}`);
 }

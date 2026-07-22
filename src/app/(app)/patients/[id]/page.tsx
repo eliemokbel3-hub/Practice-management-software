@@ -274,28 +274,45 @@ export default async function PatientPage({
                 <p className="text-sm text-faint">No treatment notes yet.</p>
               ) : (
                 <ul className="flex flex-col divide-y divide-border">
-                  {notes.map((n) => (
-                    <li key={n.id} className="py-2 first:pt-0 last:pb-0">
-                      <Link
-                        href={`/notes/${n.id}`}
-                        className="flex items-center justify-between gap-3 text-sm hover:underline"
+                  {[...notes]
+                    .sort(
+                      (a, b) =>
+                        Number(Boolean(a.archivedAt)) -
+                        Number(Boolean(b.archivedAt))
+                    )
+                    .map((n) => (
+                      <li
+                        key={n.id}
+                        className={`py-2 first:pt-0 last:pb-0 ${
+                          n.archivedAt ? "opacity-55" : ""
+                        }`}
                       >
-                        <span>
-                          {formatLongDate(new Date(n.createdAt))} ·{" "}
-                          {n.practitionerName}
-                        </span>
-                        <span
-                          className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                            n.status === "draft"
-                              ? "bg-warning-soft text-warning-soft-foreground"
-                              : "bg-primary-soft text-primary-soft-foreground"
-                          }`}
+                        <Link
+                          href={`/notes/${n.id}`}
+                          className="flex items-center justify-between gap-3 text-sm hover:underline"
                         >
-                          {n.status === "draft" ? "Draft" : "Finalised"}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
+                          <span>
+                            {formatLongDate(new Date(n.createdAt))} ·{" "}
+                            {n.practitionerName}
+                          </span>
+                          {n.archivedAt ? (
+                            <span className="rounded-full border border-border px-2.5 py-0.5 text-xs font-medium text-faint">
+                              Archived
+                            </span>
+                          ) : (
+                            <span
+                              className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                                n.status === "draft"
+                                  ? "bg-warning-soft text-warning-soft-foreground"
+                                  : "bg-primary-soft text-primary-soft-foreground"
+                              }`}
+                            >
+                              {n.status === "draft" ? "Draft" : "Finalised"}
+                            </span>
+                          )}
+                        </Link>
+                      </li>
+                    ))}
                 </ul>
               )}
               <form action={newNoteAction} className="flex items-center gap-2">

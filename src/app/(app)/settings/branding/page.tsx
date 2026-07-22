@@ -4,7 +4,7 @@ import { getBranding } from "@/lib/data/clinic";
 import { BrandingForm } from "./branding-form";
 
 export default async function BrandingPage() {
-  const { logo, brandColor } = await getBranding();
+  const { logo, logoDark, brandColor } = await getBranding();
 
   return (
     <div className="flex max-w-2xl flex-col gap-6">
@@ -21,7 +21,11 @@ export default async function BrandingPage() {
           in light and dark mode. Change it any time.
         </p>
       </div>
-      <BrandingForm initialLogo={logo} initialColor={brandColor} />
+      <BrandingForm
+        initialLogo={logo}
+        initialLogoDark={logoDark}
+        initialColor={brandColor}
+      />
     </div>
   );
 }

@@ -17,6 +17,7 @@ function rowToNote(row: any): ClinicalNote {
     content: row.content ?? { sections: [], answers: {} },
     status: row.status,
     finalisedAt: row.finalised_at,
+    archivedAt: row.archived_at ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     patientName: row.patients
@@ -103,10 +104,24 @@ export async function listDraftNotes(limit = 12): Promise<ClinicalNote[]> {
     .from("clinical_notes")
     .select(SELECT_WITH_JOINS)
     .eq("status", "draft")
+    .is("archived_at", null)
     .order("updated_at", { ascending: false })
     .limit(limit);
   if (error) throw new Error(`Couldn't load draft notes: ${error.message}`);
   return (data ?? []).map(rowToNote);
+}
+
+/** Archive or restore a treatment note (records are never deleted). */
+export async function setNoteArchived(
+  id: string,
+  archived: boolean
+): Promise<void> {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("clinical_notes")
+    .update({ archived_at: archived ? new Date().toISOString() : null })
+    .eq("id", id);
+  if (error) throw new Error(`Couldn't update note: ${error.message}`);
 }
 
 export async function getNoteForAppointment(

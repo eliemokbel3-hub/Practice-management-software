@@ -85,10 +85,11 @@ export default async function InvoicePage({
       <section className="rounded-xl border border-border bg-surface p-6 print:border-0 print:p-0">
         <div className="flex items-start justify-between gap-6">
           <div>
-            {clinic.logo && (
+            {(clinic.logo ?? clinic.logoDark) && (
+              // Invoices print on white, so always use the light logo.
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={clinic.logo}
+                src={clinic.logo ?? clinic.logoDark ?? ""}
                 alt={clinic.name}
                 className="mb-3 max-h-14 max-w-[200px] object-contain"
               />

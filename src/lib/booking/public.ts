@@ -36,6 +36,7 @@ export interface PublicClinic {
   state: string | null;
   postcode: string | null;
   logo: string | null;
+  logoDark: string | null;
   brandColor: string | null;
   booking: BookingSettings;
 }
@@ -62,6 +63,7 @@ function rowToPublicClinic(row: any): PublicClinic {
     state: row.state,
     postcode: row.postcode,
     logo: row.logo ?? null,
+    logoDark: row.logo_dark ?? null,
     brandColor: row.brand_color ?? null,
     booking: bookingSettingsFrom(row.settings),
   };
@@ -83,7 +85,7 @@ export async function getClinicBySlug(slug: string): Promise<PublicClinic | null
   const admin = createAdminClient();
   const { data } = await admin
     .from("clinics")
-    .select("id, slug, name, timezone, phone, email, address, suburb, state, postcode, logo, brand_color, settings")
+    .select("id, slug, name, timezone, phone, email, address, suburb, state, postcode, logo, logo_dark, brand_color, settings")
     .eq("slug", slug)
     .maybeSingle();
   return data ? rowToPublicClinic(data) : null;
@@ -421,7 +423,7 @@ export async function getBookingByToken(
 
   const { data: clinicRow } = await admin
     .from("clinics")
-    .select("id, slug, name, timezone, phone, email, address, suburb, state, postcode, logo, brand_color, settings")
+    .select("id, slug, name, timezone, phone, email, address, suburb, state, postcode, logo, logo_dark, brand_color, settings")
     .eq("id", data.clinic_id)
     .single();
   const clinic = rowToPublicClinic(clinicRow);

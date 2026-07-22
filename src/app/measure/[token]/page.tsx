@@ -43,9 +43,13 @@ export default async function MeasurePage({
   return (
     <div className="flex flex-col gap-6">
       <BrandStyle brandColor={request.clinicBrandColor} />
-      <BrandWatermark logo={request.clinicLogo} />
+      <BrandWatermark logo={request.clinicLogo} logoDark={request.clinicLogoDark} />
       <div>
-        <BrandLogo logo={request.clinicLogo} name={request.clinicName} />
+        <BrandLogo
+          logo={request.clinicLogo}
+          logoDark={request.clinicLogoDark}
+          name={request.clinicName}
+        />
         <h1 className="text-2xl font-semibold tracking-tight">
           {request.measureName}
         </h1>

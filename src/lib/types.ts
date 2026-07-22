@@ -152,6 +152,7 @@ export interface ClinicalNote {
   content: NoteContent;
   status: NoteStatus;
   finalisedAt: string | null;
+  archivedAt: string | null;
   createdAt: string;
   updatedAt: string;
   patientName?: string;
@@ -177,6 +178,8 @@ export interface Clinic {
   invoiceFooter: string | null;
   /** Re-encoded raster data URL of the clinic logo, or null. */
   logo: string | null;
+  /** Optional logo for dark backgrounds; falls back to `logo` when unset. */
+  logoDark: string | null;
   /** Brand colour (hex) that drives the theme, or null for the default. */
   brandColor: string | null;
 }
