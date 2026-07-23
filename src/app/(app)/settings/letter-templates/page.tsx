@@ -15,7 +15,7 @@ export default async function LetterTemplatesPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Letter templates</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Letter templates</h1>
         <p className="mt-1 text-sm text-muted">
           Reusable letters — referrals, treatment summaries, certificates — with
           placeholders filled in per patient.
@@ -23,7 +23,7 @@ export default async function LetterTemplatesPage() {
       </div>
 
       {letters.length > 0 && (
-        <ul className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
+        <ul className="flex flex-col divide-y divide-border card">
           {letters.map((l) => (
             <li key={l.id} className="flex items-center justify-between gap-3 px-5 py-3">
               <span className="truncate text-sm font-medium">{l.name}</span>
@@ -53,9 +53,9 @@ export default async function LetterTemplatesPage() {
           name="name"
           required
           placeholder="New letter name, e.g. GP referral"
-          className="flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+          className="flex-1 input-base"
         />
-        <button className="flex shrink-0 items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+        <button className="flex shrink-0 items-center gap-1.5 btn-primary">
           <Plus size={15} /> Create
         </button>
       </form>

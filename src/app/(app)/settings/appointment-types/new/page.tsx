@@ -19,7 +19,7 @@ export default async function NewAppointmentTypePage() {
         >
           <ArrowLeft size={14} /> Appointment types
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           New appointment type
         </h1>
       </div>

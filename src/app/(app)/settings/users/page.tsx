@@ -25,7 +25,7 @@ export default async function UsersPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           Users &amp; practitioners
         </h1>
         <p className="mt-1 text-sm text-muted">
@@ -34,7 +34,7 @@ export default async function UsersPage() {
         </p>
       </div>
 
-      <ul className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
+      <ul className="flex flex-col divide-y divide-border card">
         {staff.map((s) => (
           <li
             key={s.id}

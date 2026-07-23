@@ -29,12 +29,12 @@ export default async function NewAppointmentPage({
         >
           <ArrowLeft size={14} /> Calendar
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">New appointment</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">New appointment</h1>
       </div>
 
       <form
         action={createAppointmentAction}
-        className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-5"
+        className="flex flex-col gap-4 card p-5"
       >
         <div className="flex flex-col gap-1.5">
           <label htmlFor="patientId" className="text-sm font-medium">
@@ -147,7 +147,7 @@ export default async function NewAppointmentPage({
         <div className="flex justify-end">
           <button
             type="submit"
-            className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+            className="btn-primary px-5"
           >
             Book appointment
           </button>

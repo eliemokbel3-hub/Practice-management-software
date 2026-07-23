@@ -23,7 +23,7 @@ export default async function AmendNotePage({
         >
           <ArrowLeft size={14} /> Back to note
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           Amend treatment note
         </h1>
         <p className="mt-1 text-sm text-muted">

@@ -14,12 +14,17 @@ export default async function PatientsPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-xl font-semibold tracking-tight">Patients</h1>
-        <Link
-          href="/patients/new"
-          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
-        >
+      <div className="animate-fade-up flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
+            Patients
+          </h1>
+          <p className="mt-0.5 text-sm text-muted">
+            {patients.length} {patients.length === 1 ? "record" : "records"}
+            {q ? ` matching “${q}”` : ""}
+          </p>
+        </div>
+        <Link href="/patients/new" className="btn-primary">
           <Plus size={16} /> New patient
         </Link>
       </div>
@@ -28,14 +33,14 @@ export default async function PatientsPage({
         <div className="relative min-w-56 flex-1">
           <Search
             size={15}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-faint"
+            className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-faint"
           />
           <input
             type="search"
             name="q"
             defaultValue={q}
             placeholder="Search by name, phone, email or suburb…"
-            className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-3 text-sm outline-none placeholder:text-faint focus:border-ring"
+            className="input-base w-full pl-9"
           />
         </div>
         <label className="flex items-center gap-2 text-sm text-muted">
@@ -48,18 +53,15 @@ export default async function PatientsPage({
           />
           Include archived
         </label>
-        <button
-          type="submit"
-          className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
-        >
+        <button type="submit" className="btn-secondary">
           Search
         </button>
       </form>
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-surface">
+      <div className="card animate-fade-up-delayed overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-faint">
+            <tr className="border-b border-border bg-background/60 text-left text-xs uppercase tracking-wide text-faint">
               <th className="px-4 py-3 font-medium">Name</th>
               <th className="px-4 py-3 font-medium">Age</th>
               <th className="px-4 py-3 font-medium">Phone</th>
@@ -78,9 +80,15 @@ export default async function PatientsPage({
                   <td className="px-4 py-3">
                     <Link
                       href={`/patients/${p.id}`}
-                      className="font-medium text-primary hover:underline"
+                      className="group inline-flex items-center gap-2.5 font-medium"
                     >
-                      {fullName(p)}
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary-soft text-[11px] font-semibold text-primary-soft-foreground">
+                        {p.firstName[0]}
+                        {p.lastName[0]}
+                      </span>
+                      <span className="text-foreground transition-colors group-hover:text-primary">
+                        {fullName(p)}
+                      </span>
                     </Link>
                     {p.archivedAt && (
                       <span className="ml-2 rounded-full border border-border px-2 py-0.5 text-xs text-faint">

@@ -23,7 +23,7 @@ export default async function EditFormTemplatePage({
         >
           <ArrowLeft size={14} /> Patient form templates
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">{template.name}</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">{template.name}</h1>
         {template.description && (
           <p className="mt-1 text-sm text-muted">{template.description}</p>
         )}

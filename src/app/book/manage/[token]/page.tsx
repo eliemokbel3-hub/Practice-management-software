@@ -19,7 +19,7 @@ export default async function ManageBookingPage({
 
   if (!booking) {
     return (
-      <div className="rounded-xl border border-border bg-surface p-6">
+      <div className="card p-6">
         <p className="font-medium">This link isn&apos;t valid.</p>
         <p className="mt-1 text-sm text-muted">
           It may have been mistyped — check the link in your email, or contact
@@ -43,7 +43,7 @@ export default async function ManageBookingPage({
         <p className="mt-1 text-sm text-muted">Your appointment</p>
       </div>
 
-      <div className="rounded-xl border border-border bg-surface p-5">
+      <div className="card p-5">
         <div className="flex items-start justify-between gap-3">
           <div>
             <p className="font-medium">{booking.typeName}</p>
@@ -67,7 +67,7 @@ export default async function ManageBookingPage({
       </div>
 
       {isCancelled && (
-        <div className="rounded-xl border border-border bg-surface p-5 text-sm text-muted">
+        <div className="card p-5 text-sm text-muted">
           This appointment has been cancelled.{" "}
           <a
             href={`/book/${clinic.slug}`}
@@ -94,7 +94,7 @@ export default async function ManageBookingPage({
       )}
 
       {!isCancelled && !isPast && (!booking.canChange || !booking.typeId) && (
-        <div className="flex flex-col gap-2 rounded-xl border border-border bg-surface p-5">
+        <div className="flex flex-col gap-2 card p-5">
           <p className="text-sm">
             Online changes close {clinic.booking.cancelMinHours} hours before
             your appointment. To make a change now, please contact the clinic.

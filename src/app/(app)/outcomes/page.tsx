@@ -12,14 +12,14 @@ export default async function OutcomesPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Outcome measures</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Outcome measures</h1>
         <p className="mt-1 text-sm text-muted">
           Send questionnaires from a patient&apos;s file — they fill them in by
           link, scores land back here automatically.
         </p>
       </div>
 
-      <section className="rounded-xl border border-border bg-surface p-5">
+      <section className="card p-5">
         <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-faint">
           Recent responses
         </h2>
@@ -51,7 +51,7 @@ export default async function OutcomesPage() {
         )}
       </section>
 
-      <section className="rounded-xl border border-border bg-surface p-5">
+      <section className="card p-5">
         <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-faint">
           Questionnaire library
         </h2>

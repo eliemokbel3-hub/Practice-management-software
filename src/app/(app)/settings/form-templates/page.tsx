@@ -15,7 +15,7 @@ export default async function FormTemplatesPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           Patient form templates
         </h1>
         <p className="mt-1 text-sm text-muted">
@@ -25,7 +25,7 @@ export default async function FormTemplatesPage() {
       </div>
 
       {forms.length > 0 && (
-        <ul className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
+        <ul className="flex flex-col divide-y divide-border card">
           {forms.map((f) => {
             const count = f.sections.reduce(
               (n, s) => n + s.questions.length,
@@ -64,20 +64,20 @@ export default async function FormTemplatesPage() {
 
       <form
         action={createFormAction}
-        className="flex flex-col gap-2 rounded-xl border border-border bg-surface p-4"
+        className="flex flex-col gap-2 card p-4"
       >
         <input
           name="name"
           required
           placeholder="Form name, e.g. New patient intake"
-          className="rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+          className="input-base"
         />
         <input
           name="description"
           placeholder="Short description (optional)"
-          className="rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+          className="input-base"
         />
-        <button className="flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+        <button className="flex items-center justify-center gap-1.5 btn-primary">
           <Plus size={15} /> Create form
         </button>
       </form>

@@ -61,7 +61,7 @@ export default function ManageBooking({
           <button
             type="button"
             onClick={() => setMode("reschedule")}
-            className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+            className="flex items-center gap-2 btn-primary"
           >
             <CalendarClock size={15} /> Choose a new time
           </button>
@@ -94,7 +94,7 @@ export default function ManageBooking({
               type="button"
               onClick={() => setMode("idle")}
               disabled={busy}
-              className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+              className="btn-secondary"
             >
               Keep my appointment
             </button>

@@ -29,7 +29,7 @@ export default async function EditAppointmentTypePage({
         >
           <ArrowLeft size={14} /> Appointment types
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           Edit: {type.name}
         </h1>
       </div>

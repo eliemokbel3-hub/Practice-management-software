@@ -43,12 +43,12 @@ export function SettingsList({
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">{title}</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">{title}</h1>
         <p className="mt-1 text-sm text-muted">{description}</p>
       </div>
 
       {items.length > 0 && (
-        <ul className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
+        <ul className="flex flex-col divide-y divide-border card">
           {items.map((item) => (
             <li
               key={item.id}
@@ -84,16 +84,16 @@ export function SettingsList({
 
       <form
         action={createAction}
-        className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-4"
+        className="flex flex-col gap-3 card p-4"
       >
         <div className="flex items-center gap-2">
           <input
             name="name"
             required
             placeholder={addPlaceholder}
-            className="flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+            className="flex-1 input-base"
           />
-          <button className="flex shrink-0 items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+          <button className="flex shrink-0 items-center gap-1.5 btn-primary">
             <Plus size={15} /> Add
           </button>
         </div>

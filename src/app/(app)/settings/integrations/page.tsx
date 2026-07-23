@@ -38,7 +38,7 @@ export default function IntegrationsPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Integrations</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Integrations</h1>
         <p className="mt-1 text-sm text-muted">
           The outside services PracticeHub connects to, and whether each is set
           up on this installation.
@@ -49,7 +49,7 @@ export default function IntegrationsPage() {
         {items.map(({ icon: Icon, name, connected, note, how }) => (
           <div
             key={name}
-            className="flex items-start gap-4 rounded-xl border border-border bg-surface p-4"
+            className="flex items-start gap-4 card p-4"
           >
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-soft-foreground">
               <Icon size={18} />

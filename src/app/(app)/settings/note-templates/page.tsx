@@ -14,7 +14,7 @@ export default async function NoteTemplatesPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           Treatment note templates
         </h1>
         <p className="mt-1 text-sm text-muted">
@@ -27,7 +27,7 @@ export default async function NoteTemplatesPage() {
         {templates.map((t) => (
           <details
             key={t.id}
-            className="group rounded-xl border border-border bg-surface"
+            className="group card"
           >
             <summary className="flex cursor-pointer items-center justify-between gap-3 px-5 py-4">
               <span className="font-medium">

@@ -17,7 +17,7 @@ export default async function BillableItemsPage() {
           >
             <ArrowLeft size={14} /> Settings
           </Link>
-          <h1 className="text-xl font-semibold tracking-tight">Billable items</h1>
+          <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Billable items</h1>
           <p className="mt-1 text-sm text-muted">
             The services you invoice, with the item codes health funds expect on
             receipts.
@@ -25,13 +25,13 @@ export default async function BillableItemsPage() {
         </div>
         <Link
           href="/settings/billable-items/new"
-          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+          className="flex items-center gap-2 btn-primary"
         >
           <Plus size={16} /> New item
         </Link>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-surface">
+      <div className="overflow-x-auto card">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-faint">

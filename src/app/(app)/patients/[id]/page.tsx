@@ -42,7 +42,7 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-xl border border-border bg-surface p-5">
+    <section className="card p-5">
       <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-faint">
         {title}
       </h2>
@@ -129,7 +129,7 @@ export default async function PatientPage({
           >
             <ArrowLeft size={14} /> Patients
           </Link>
-          <h1 className="text-xl font-semibold tracking-tight">
+          <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
             {fullName(patient)}
             {patient.archivedAt && (
               <span className="ml-3 rounded-full border border-border px-2.5 py-1 align-middle text-xs font-normal text-faint">
@@ -151,14 +151,14 @@ export default async function PatientPage({
           <form action={archiveAction}>
             <button
               type="submit"
-              className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+              className="btn-secondary"
             >
               {patient.archivedAt ? "Unarchive" : "Archive"}
             </button>
           </form>
           <Link
             href={`/patients/${patient.id}/edit`}
-            className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+            className="flex items-center gap-2 btn-primary"
           >
             <Pencil size={14} /> Edit
           </Link>
@@ -327,7 +327,7 @@ export default async function PatientPage({
                     </option>
                   ))}
                 </select>
-                <button className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+                <button className="btn-secondary">
                   New note
                 </button>
               </form>
@@ -362,7 +362,7 @@ export default async function PatientPage({
                 </ul>
               )}
               <form action={newInvoiceAction}>
-                <button className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+                <button className="btn-secondary">
                   New invoice
                 </button>
               </form>
@@ -446,7 +446,7 @@ export default async function PatientPage({
                     </option>
                   ))}
                 </select>
-                <button className="shrink-0 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+                <button className="shrink-0 btn-secondary">
                   Send questionnaire
                 </button>
               </form>

@@ -11,7 +11,7 @@ import {
 import { tidyNoteAction } from "@/app/(app)/notes/ai-actions";
 
 const inputCls =
-  "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
+  "w-full input-base";
 
 export function NoteEditor({
   noteId,
@@ -144,7 +144,7 @@ export function NoteEditor({
           type="button"
           onClick={tidy}
           disabled={aiBusy}
-          className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover disabled:opacity-60"
+          className="flex items-center gap-1.5 btn-secondary px-3 disabled:opacity-60"
         >
           <Sparkles size={14} />
           {aiBusy ? "Tidying…" : "Tidy this note"}
@@ -190,7 +190,7 @@ export function NoteEditor({
             <button
               type="button"
               onClick={() => setProposal(null)}
-              className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+              className="btn-secondary"
             >
               Discard
             </button>
@@ -198,7 +198,7 @@ export function NoteEditor({
               <button
                 type="button"
                 onClick={applyProposal}
-                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+                className="btn-primary"
               >
                 Apply tidy-up
               </button>
@@ -210,7 +210,7 @@ export function NoteEditor({
       {sections.map((section) => (
         <section
           key={section.key}
-          className="rounded-xl border border-border bg-surface p-5"
+          className="card p-5"
         >
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-faint">
             {section.label}
@@ -267,7 +267,7 @@ export function NoteEditor({
         </section>
       ))}
 
-      <div className="sticky bottom-0 flex items-center justify-between gap-3 rounded-xl border border-border bg-surface/95 px-4 py-3 shadow-sm backdrop-blur">
+      <div className="sticky bottom-0 flex items-center justify-between gap-3 card/95 px-4 py-3 shadow-sm backdrop-blur">
         <span className="flex items-center gap-2 text-xs text-muted">
           {saveState === "saved" && <Check size={14} className="text-primary" />}
           {saveState === "saving" && <CloudUpload size={14} />}
@@ -280,7 +280,7 @@ export function NoteEditor({
             type="button"
             onClick={finalise}
             disabled={isPending}
-            className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+            className="flex items-center gap-2 btn-primary"
           >
             <Lock size={14} /> {isPending ? "Finalising…" : "Finalise note"}
           </button>
@@ -289,7 +289,7 @@ export function NoteEditor({
             type="button"
             onClick={saveAmendment}
             disabled={isPending}
-            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+            className="btn-primary"
           >
             {isPending ? "Saving…" : "Save amendment"}
           </button>

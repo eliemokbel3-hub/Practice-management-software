@@ -173,18 +173,16 @@ const groups: { heading: string; items: Item[] }[] = [
 export default function SettingsPage() {
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-xl font-semibold tracking-tight">Settings</h1>
+      <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Settings</h1>
       {groups.map((group) => (
         <section key={group.heading} className="flex flex-col gap-3">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
-            {group.heading}
-          </h2>
+          <h2 className="section-label">{group.heading}</h2>
           <div className="grid gap-3 sm:grid-cols-2">
             {group.items.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="group flex items-start justify-between gap-3 rounded-xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+                className="group card card-hover flex items-start justify-between gap-3 p-4"
               >
                 <span className="min-w-0">
                   <span className="block text-sm font-medium">{item.title}</span>

@@ -27,39 +27,40 @@ export default async function InvoicesPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-xl font-semibold tracking-tight">Invoices</h1>
+      <h1 className="animate-fade-up text-[26px] font-semibold leading-tight tracking-tight">
+        Invoices
+      </h1>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-border bg-surface p-5">
-          <p className="text-xs uppercase tracking-wide text-faint">
-            Outstanding
-          </p>
-          <p className="mt-1 text-2xl font-semibold">
+      <div className="animate-fade-up-delayed grid gap-4 sm:grid-cols-2">
+        <div className="card p-5">
+          <p className="section-label">Outstanding</p>
+          <p className="mt-1.5 text-[28px] font-semibold leading-none tracking-tight">
             {formatPrice(summary.outstandingCents)}
           </p>
-          <p className="text-xs text-muted">
+          <p className="mt-1.5 text-xs text-muted">
             across {summary.outstandingCount} unpaid invoice
             {summary.outstandingCount === 1 ? "" : "s"}
           </p>
         </div>
-        <div className="rounded-xl border border-border bg-surface p-5">
-          <p className="text-xs uppercase tracking-wide text-faint">
-            Payments this month
-          </p>
-          <p className="mt-1 text-2xl font-semibold">
+        <div className="card p-5">
+          <p className="section-label">Payments this month</p>
+          <p
+            className="mt-1.5 bg-clip-text text-[28px] font-semibold leading-none tracking-tight text-transparent"
+            style={{ backgroundImage: "var(--gradient-primary)" }}
+          >
             {formatPrice(summary.paidThisMonthCents)}
           </p>
         </div>
       </div>
 
-      <div className="flex items-center gap-0.5 self-start rounded-lg border border-border p-0.5 text-sm font-medium">
+      <div className="flex items-center gap-0.5 self-start rounded-xl border border-border bg-surface p-0.5 text-sm font-medium shadow-xs">
         {FILTERS.map((f) => (
           <Link
             key={f}
             href={f === "all" ? "/invoices" : `/invoices?status=${f}`}
-            className={`rounded-md px-3 py-1 capitalize transition-colors ${
+            className={`rounded-[10px] px-3 py-1 capitalize transition-colors ${
               filter === f
-                ? "bg-primary-soft text-primary-soft-foreground"
+                ? "bg-primary-soft text-primary-soft-foreground shadow-xs"
                 : "text-muted hover:text-foreground"
             }`}
           >
@@ -68,10 +69,10 @@ export default async function InvoicesPage({
         ))}
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-surface">
+      <div className="overflow-x-auto card">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-faint">
+            <tr className="border-b border-border bg-background/60 text-left text-xs uppercase tracking-wide text-faint">
               <th className="px-4 py-3 font-medium">Invoice</th>
               <th className="px-4 py-3 font-medium">Patient</th>
               <th className="px-4 py-3 font-medium">Status</th>

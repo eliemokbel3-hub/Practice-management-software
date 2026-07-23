@@ -11,7 +11,7 @@ export default function SmsSettingsPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">SMS settings</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">SMS settings</h1>
         <p className="mt-1 text-sm text-muted">
           Text-message confirmations and reminders.
         </p>
@@ -31,7 +31,7 @@ export default function SmsSettingsPage() {
         </div>
       </div>
 
-      <div className="rounded-xl border border-border bg-surface p-5 opacity-60">
+      <div className="card p-5 opacity-60">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium">Send appointment texts</p>

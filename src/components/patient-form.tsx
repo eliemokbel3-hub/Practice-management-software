@@ -2,7 +2,7 @@ import type { Patient } from "@/lib/types";
 import type { CustomField } from "@/lib/data/custom-fields";
 
 const inputCls =
-  "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
+  "w-full input-base";
 const labelCls = "text-sm font-medium";
 
 function Field({
@@ -62,7 +62,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-xl border border-border bg-surface p-5">
+    <section className="card p-5">
       <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-faint">
         {title}
       </h2>
@@ -273,7 +273,7 @@ export function PatientForm({
       <div className="flex justify-end">
         <button
           type="submit"
-          className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+          className="btn-primary px-5"
         >
           {submitLabel}
         </button>

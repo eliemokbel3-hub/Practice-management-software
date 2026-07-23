@@ -98,7 +98,7 @@ export function FormBuilder({
       {rows.map((row, i) => (
         <div
           key={i}
-          className="flex flex-col gap-2 rounded-xl border border-border bg-surface p-3"
+          className="flex flex-col gap-2 card p-3"
         >
           <div className="flex items-center gap-2">
             <GripVertical size={16} className="shrink-0 text-faint" />
@@ -134,7 +134,7 @@ export function FormBuilder({
               value={row.text}
               onChange={(e) => update(i, { text: e.target.value })}
               placeholder="Statement the patient agrees to (e.g. I consent to treatment)"
-              className="ml-6 rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+              className="ml-6 input-base"
             />
           )}
         </div>
@@ -143,7 +143,7 @@ export function FormBuilder({
       <div className="flex items-center justify-between">
         <button
           onClick={add}
-          className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+          className="flex items-center gap-1.5 btn-secondary"
         >
           <Plus size={15} /> Add question
         </button>
@@ -157,7 +157,7 @@ export function FormBuilder({
           <button
             onClick={save}
             disabled={saving}
-            className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+            className="flex items-center gap-2 btn-primary px-5"
           >
             {saving && <Loader2 size={15} className="animate-spin" />}
             Save form

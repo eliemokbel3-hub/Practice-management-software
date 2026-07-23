@@ -63,7 +63,7 @@ export default async function AppointmentPage({
         </p>
       </div>
 
-      <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
+      <section className="flex flex-col gap-3 card p-5">
         <div className="flex items-center justify-between">
           <Link
             href={`/patients/${appointment.patientId}`}
@@ -93,52 +93,52 @@ export default async function AppointmentPage({
 
       {appointment.status !== "cancelled" && (
         <>
-          <section className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface p-5">
+          <section className="flex items-center justify-between gap-3 card p-5">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
               Treatment note
             </h2>
             {note ? (
               <Link
                 href={`/notes/${note.id}`}
-                className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+                className="flex items-center gap-2 btn-secondary"
               >
                 <FileText size={15} />
                 {note.status === "draft" ? "Continue draft note" : "View note"}
               </Link>
             ) : (
               <form action={openNoteForAppointmentAction.bind(null, appointment.id)}>
-                <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+                <button className="flex items-center gap-2 btn-primary">
                   <FileText size={15} /> Write treatment note
                 </button>
               </form>
             )}
           </section>
 
-          <section className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface p-5">
+          <section className="flex items-center justify-between gap-3 card p-5">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
               Billing
             </h2>
             <form action={createInvoiceForAppointmentAction.bind(null, appointment.id)}>
-              <button className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+              <button className="flex items-center gap-2 btn-secondary">
                 <Receipt size={15} /> Create invoice
               </button>
             </form>
           </section>
 
-          <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
+          <section className="flex flex-col gap-3 card p-5">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
               On the day
             </h2>
             <div className="flex flex-wrap gap-2">
               <form action={setStatusAction.bind(null, appointment.id, "arrived")}>
-                <button className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+                <button className="flex items-center gap-1.5 btn-secondary px-3">
                   <UserCheck size={15} /> Arrived
                 </button>
               </form>
               <form
                 action={setStatusAction.bind(null, appointment.id, "completed")}
               >
-                <button className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+                <button className="flex items-center gap-1.5 btn-secondary px-3">
                   <Check size={15} /> Completed
                 </button>
               </form>
@@ -149,7 +149,7 @@ export default async function AppointmentPage({
                   "did_not_arrive"
                 )}
               >
-                <button className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+                <button className="flex items-center gap-1.5 btn-secondary px-3">
                   <UserX size={15} /> Did not arrive
                 </button>
               </form>
@@ -163,7 +163,7 @@ export default async function AppointmentPage({
             </div>
           </section>
 
-          <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
+          <section className="flex flex-col gap-3 card p-5">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
               Reschedule
             </h2>
@@ -202,7 +202,7 @@ export default async function AppointmentPage({
                   className={inputCls}
                 />
               </div>
-              <button className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+              <button className="btn-primary">
                 Move appointment
               </button>
             </form>
@@ -213,7 +213,7 @@ export default async function AppointmentPage({
             )}
           </section>
 
-          <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
+          <section className="flex flex-col gap-3 card p-5">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
               Cancel
             </h2>

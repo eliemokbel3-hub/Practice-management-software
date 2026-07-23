@@ -25,7 +25,7 @@ const items = [
 export function SidebarNav() {
   const pathname = usePathname();
   return (
-    <nav className="flex flex-col gap-1">
+    <nav className="flex flex-col gap-0.5">
       {items.map(({ href, label, icon: Icon }) => {
         const active =
           href === "/"
@@ -35,13 +35,27 @@ export function SidebarNav() {
           <Link
             key={href}
             href={href}
-            className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+            className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 ${
               active
-                ? "bg-primary-soft text-primary-soft-foreground"
-                : "text-muted hover:bg-surface-hover hover:text-foreground"
+                ? "bg-primary-soft text-primary-soft-foreground shadow-xs"
+                : "text-muted hover:translate-x-0.5 hover:bg-surface-hover hover:text-foreground"
             }`}
           >
-            <Icon size={17} strokeWidth={2} />
+            {active && (
+              <span
+                aria-hidden
+                className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-primary"
+              />
+            )}
+            <Icon
+              size={17}
+              strokeWidth={2}
+              className={
+                active
+                  ? "text-primary"
+                  : "text-faint transition-colors group-hover:text-foreground"
+              }
+            />
             {label}
           </Link>
         );

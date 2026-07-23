@@ -16,7 +16,7 @@ const TYPE_LABEL: Record<string, string> = {
 };
 
 const inputCls =
-  "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
+  "w-full input-base";
 
 export default async function CustomFieldsPage() {
   const fields = await listCustomFields(true);
@@ -30,7 +30,7 @@ export default async function CustomFieldsPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           Custom patient fields
         </h1>
         <p className="mt-1 text-sm text-muted">
@@ -40,7 +40,7 @@ export default async function CustomFieldsPage() {
       </div>
 
       {fields.length > 0 && (
-        <ul className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
+        <ul className="flex flex-col divide-y divide-border card">
           {fields.map((f) => (
             <li
               key={f.id}
@@ -79,7 +79,7 @@ export default async function CustomFieldsPage() {
 
       <form
         action={createCustomFieldAction}
-        className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-4"
+        className="flex flex-col gap-3 card p-4"
       >
         <input name="label" required placeholder="Field label, e.g. GP name" className={inputCls} />
         <div className="flex gap-2">
@@ -96,7 +96,7 @@ export default async function CustomFieldsPage() {
           placeholder="Dropdown choices, comma-separated (only for Dropdown)"
           className={inputCls}
         />
-        <button className="flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+        <button className="flex items-center justify-center gap-1.5 btn-primary">
           <Plus size={15} /> Add field
         </button>
       </form>

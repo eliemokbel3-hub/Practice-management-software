@@ -15,7 +15,7 @@ export default async function MeasurePage({
 
   if (!request) {
     return (
-      <div className="rounded-xl border border-border bg-surface p-6">
+      <div className="card p-6">
         <p className="font-medium">This link isn&apos;t valid.</p>
         <p className="mt-1 text-sm text-muted">
           It may have been mistyped — check the link in your email, or contact
@@ -27,7 +27,7 @@ export default async function MeasurePage({
 
   if (request.completed) {
     return (
-      <div className="flex flex-col items-center gap-4 rounded-xl border border-border bg-surface p-8 text-center">
+      <div className="flex flex-col items-center gap-4 card p-8 text-center">
         <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary-soft-foreground">
           <CheckCircle2 size={24} />
         </span>

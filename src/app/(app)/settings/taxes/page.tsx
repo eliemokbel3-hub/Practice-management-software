@@ -20,7 +20,7 @@ export default async function TaxesPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Taxes</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Taxes</h1>
         <p className="mt-1 text-sm text-muted">
           Tax rates for invoicing. The default rate is applied to billable items
           marked as attracting GST.
@@ -28,7 +28,7 @@ export default async function TaxesPage() {
       </div>
 
       {rates.length > 0 && (
-        <ul className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
+        <ul className="flex flex-col divide-y divide-border card">
           {rates.map((r) => (
             <li
               key={r.id}
@@ -79,13 +79,13 @@ export default async function TaxesPage() {
 
       <form
         action={createTaxRateAction}
-        className="flex items-center gap-2 rounded-xl border border-border bg-surface p-4"
+        className="flex items-center gap-2 card p-4"
       >
         <input
           name="name"
           required
           placeholder="e.g. GST"
-          className="flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+          className="flex-1 input-base"
         />
         <div className="flex items-center gap-1">
           <input
@@ -98,7 +98,7 @@ export default async function TaxesPage() {
           />
           <span className="text-sm text-muted">%</span>
         </div>
-        <button className="flex shrink-0 items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+        <button className="flex shrink-0 items-center gap-1.5 btn-primary">
           <Plus size={15} /> Add
         </button>
       </form>

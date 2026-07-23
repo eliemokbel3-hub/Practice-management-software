@@ -1,7 +1,7 @@
 import type { ServiceItem } from "@/lib/types";
 
 const inputCls =
-  "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
+  "w-full input-base";
 
 export function ServiceItemForm({
   item,
@@ -15,7 +15,7 @@ export function ServiceItemForm({
   return (
     <form
       action={action}
-      className="flex max-w-lg flex-col gap-4 rounded-xl border border-border bg-surface p-5"
+      className="flex max-w-lg flex-col gap-4 card p-5"
     >
       <div className="grid grid-cols-[1fr_2fr] gap-4">
         <div className="flex flex-col gap-1.5">
@@ -69,7 +69,7 @@ export function ServiceItemForm({
         GST applies to this item
       </label>
       <div className="flex justify-end">
-        <button className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+        <button className="btn-primary px-5">
           {submitLabel}
         </button>
       </div>

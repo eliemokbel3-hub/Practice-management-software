@@ -34,7 +34,7 @@ export default async function EditPatientPage({
         >
           <ArrowLeft size={14} /> {fullName(patient)}
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Edit patient</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Edit patient</h1>
       </div>
       <PatientForm
         patient={patient}

@@ -12,14 +12,14 @@ export default function DataImportsPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Data imports</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Data imports</h1>
         <p className="mt-1 text-sm text-muted">
           Bring patients in from a spreadsheet. Export patients from your old
           system as CSV, then upload it here.
         </p>
       </div>
 
-      <div className="rounded-xl border border-border bg-surface p-4 text-sm text-muted">
+      <div className="card p-4 text-sm text-muted">
         <p className="font-medium text-foreground">Expected columns</p>
         <p className="mt-1">
           A header row with any of:{" "}

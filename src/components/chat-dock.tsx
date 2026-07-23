@@ -261,7 +261,7 @@ export function ChatDock() {
       {/* Contacts + launcher column */}
       <div className="flex flex-col items-end gap-3">
         {listOpen && (
-          <div className="w-64 overflow-hidden rounded-xl border border-border bg-surface shadow-xl">
+          <div className="w-64 overflow-hidden card shadow-xl">
             <div className="border-b border-border px-4 py-3">
               <p className="text-sm font-semibold">Clinic chat</p>
               <p className="text-xs text-faint">Message your team</p>

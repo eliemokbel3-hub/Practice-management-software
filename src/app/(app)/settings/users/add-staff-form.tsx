@@ -9,7 +9,7 @@ import { Check, Copy, Loader2, UserPlus } from "lucide-react";
 import { createStaffAction } from "./actions";
 
 const inputCls =
-  "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
+  "w-full input-base";
 
 export function AddStaffForm() {
   const router = useRouter();
@@ -85,7 +85,7 @@ export function AddStaffForm() {
             setCreated(null);
             setCopied(false);
           }}
-          className="self-start rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+          className="self-start btn-secondary"
         >
           Done
         </button>
@@ -97,7 +97,7 @@ export function AddStaffForm() {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 self-start rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+        className="flex items-center gap-1.5 self-start btn-primary"
       >
         <UserPlus size={15} /> Add team member
       </button>
@@ -107,7 +107,7 @@ export function AddStaffForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-5"
+      className="flex flex-col gap-4 card p-5"
     >
       <h2 className="text-sm font-semibold">New team member</h2>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -141,14 +141,14 @@ export function AddStaffForm() {
           type="button"
           onClick={() => setOpen(false)}
           disabled={busy}
-          className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+          className="btn-secondary"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={busy}
-          className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+          className="flex items-center gap-2 btn-primary px-5"
         >
           {busy && <Loader2 size={15} className="animate-spin" />}
           Create login

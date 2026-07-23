@@ -32,7 +32,7 @@ export default function DataExportsPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Data exports</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Data exports</h1>
         <p className="mt-1 text-sm text-muted">
           Download your clinic&apos;s data as spreadsheet-ready CSV files — for
           backups, accounting or moving elsewhere. Your data is always yours.
@@ -44,7 +44,7 @@ export default function DataExportsPage() {
           <a
             key={type}
             href={`/api/export/${type}`}
-            className="group flex items-center gap-4 rounded-xl border border-border bg-surface p-4 transition-colors hover:border-border-strong"
+            className="group flex items-center gap-4 card p-4 transition-colors hover:border-border-strong"
           >
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-soft-foreground">
               <Icon size={18} />

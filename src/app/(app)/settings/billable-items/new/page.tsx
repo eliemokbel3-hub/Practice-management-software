@@ -13,7 +13,7 @@ export default function NewBillableItemPage() {
         >
           <ArrowLeft size={14} /> Billable items
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           New billable item
         </h1>
       </div>

@@ -32,7 +32,7 @@ export default async function PublicBookingPage({
     return (
       <>
         {header}
-        <div className="flex flex-col gap-2 rounded-xl border border-border bg-surface p-6">
+        <div className="flex flex-col gap-2 card p-6">
           <p className="font-medium">Online booking is currently unavailable.</p>
           <p className="text-sm text-muted">
             Please contact the clinic directly to make an appointment.
@@ -56,7 +56,7 @@ export default async function PublicBookingPage({
     <>
       {header}
       {types.length === 0 ? (
-        <div className="rounded-xl border border-border bg-surface p-6">
+        <div className="card p-6">
           <p className="font-medium">No appointments are bookable online yet.</p>
           <p className="mt-1 text-sm text-muted">
             Please contact the clinic directly to make an appointment.

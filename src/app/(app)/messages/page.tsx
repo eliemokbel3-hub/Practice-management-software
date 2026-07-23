@@ -24,14 +24,14 @@ export default async function MessagesPage({
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <h1 className="text-xl font-semibold tracking-tight">Messages</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Messages</h1>
         <p className="mt-1 text-sm text-muted">
           Private messages between accounts linked to your clinic.
         </p>
       </div>
 
       <div className="grid gap-5 md:grid-cols-[240px_1fr]">
-        <div className="flex h-fit flex-col gap-1 rounded-xl border border-border bg-surface p-2">
+        <div className="flex h-fit flex-col gap-1 card p-2">
           {members.map((m) => (
             <Link
               key={m.id}
@@ -69,7 +69,7 @@ export default async function MessagesPage({
         </div>
 
         {partner && conversation ? (
-          <div className="flex flex-col rounded-xl border border-border bg-surface">
+          <div className="flex flex-col card">
             <div className="border-b border-border px-4 py-3">
               <p className="text-sm font-medium">
                 {partner.name}
@@ -119,10 +119,10 @@ export default async function MessagesPage({
                 required
                 rows={2}
                 placeholder="Write a message…"
-                className="min-h-10 flex-1 resize-y rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+                className="min-h-10 flex-1 resize-y input-base"
               />
               <button
-                className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+                className="flex items-center gap-1.5 btn-primary"
                 aria-label="Send message"
               >
                 <Send size={14} /> Send
@@ -130,7 +130,7 @@ export default async function MessagesPage({
             </form>
           </div>
         ) : (
-          <div className="flex min-h-64 flex-col items-center justify-center gap-3 rounded-xl border border-border bg-surface p-8 text-center">
+          <div className="flex min-h-64 flex-col items-center justify-center gap-3 card p-8 text-center">
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary-soft-foreground">
               <MessageSquare size={22} />
             </span>

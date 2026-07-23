@@ -20,7 +20,7 @@ export default async function NewPatientPage() {
         >
           <ArrowLeft size={14} /> Patients
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">New patient</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">New patient</h1>
       </div>
       <PatientForm
         action={createPatientAction}

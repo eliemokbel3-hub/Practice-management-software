@@ -153,7 +153,7 @@ export default function SlotPicker({
               return (
                 <div
                   key={day.date}
-                  className="rounded-xl border border-border bg-surface p-4"
+                  className="card p-4"
                 >
                   <p className="mb-3 text-sm font-semibold">
                     {label.weekday}{" "}

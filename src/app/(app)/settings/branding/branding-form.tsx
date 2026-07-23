@@ -69,7 +69,7 @@ function LogoSlot({
           <button
             type="button"
             onClick={() => ref.current?.click()}
-            className="flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+            className="flex items-center gap-1.5 btn-secondary"
           >
             <ImageUp size={15} /> {value ? "Replace" : "Upload"}
           </button>
@@ -203,7 +203,7 @@ export function BrandingForm({
 
   return (
     <div className="flex flex-col gap-6">
-      <section className="flex flex-col gap-5 rounded-xl border border-border bg-surface p-5">
+      <section className="flex flex-col gap-5 card p-5">
         <div>
           <h2 className="text-sm font-semibold">Logos</h2>
           <p className="text-xs text-faint">
@@ -238,7 +238,7 @@ export function BrandingForm({
         {note && <p className="text-xs text-muted">{note}</p>}
       </section>
 
-      <section className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-5">
+      <section className="flex flex-col gap-4 card p-5">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-sm font-semibold">Brand colour</h2>
@@ -289,7 +289,7 @@ export function BrandingForm({
             type="button"
             onClick={save}
             disabled={saving}
-            className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+            className="flex items-center gap-2 btn-primary px-5"
           >
             {saving && <Loader2 size={15} className="animate-spin" />}
             Save branding

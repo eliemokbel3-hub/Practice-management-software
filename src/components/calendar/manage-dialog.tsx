@@ -51,7 +51,7 @@ const STATUS_LABEL: Record<string, string> = {
 const inputCls =
   "rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none focus:border-ring";
 const ghostBtnCls =
-  "flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover disabled:opacity-60";
+  "flex items-center gap-1.5 btn-secondary px-3 disabled:opacity-60";
 
 type Target =
   | { kind: "appointment"; appointment: Appointment }
@@ -126,7 +126,7 @@ export function ManageDialogProvider({
             aria-label={
               target.kind === "appointment" ? "Appointment" : "Blocked time"
             }
-            className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-border bg-surface p-5 shadow-xl"
+            className="max-h-[90vh] w-full max-w-lg overflow-y-auto card p-5 shadow-xl"
           >
             {target.kind === "appointment" ? (
               <AppointmentBody

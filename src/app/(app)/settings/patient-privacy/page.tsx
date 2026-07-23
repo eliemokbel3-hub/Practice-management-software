@@ -15,7 +15,7 @@ export default async function PatientPrivacyPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Patient privacy</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Patient privacy</h1>
         <p className="mt-1 text-sm text-muted">
           How you tell patients their information is handled, shown on your
           public booking page.
@@ -23,7 +23,7 @@ export default async function PatientPrivacyPage() {
       </div>
 
       <form action={savePrivacyAction} className="flex flex-col gap-5">
-        <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
+        <section className="flex flex-col gap-3 card p-5">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="privacyNote" className="text-sm font-medium">
               Privacy note
@@ -34,7 +34,7 @@ export default async function PatientPrivacyPage() {
               rows={5}
               defaultValue={privacyNote ?? ""}
               placeholder="e.g. We collect your details only to provide your care and never share them without your consent. See our privacy policy at…"
-              className="w-full resize-y rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+              className="w-full resize-y input-base"
             />
             <p className="text-xs text-faint">
               Shown to patients on your booking page.
@@ -58,7 +58,7 @@ export default async function PatientPrivacyPage() {
         </section>
 
         <div className="flex justify-end">
-          <button className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+          <button className="btn-primary px-5">
             Save privacy settings
           </button>
         </div>

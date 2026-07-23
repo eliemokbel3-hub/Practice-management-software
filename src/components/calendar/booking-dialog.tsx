@@ -127,7 +127,7 @@ export function BookingDialogProvider({
             role="dialog"
             aria-modal="true"
             aria-label={at.mode === "appointment" ? "New appointment" : "Block time"}
-            className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-border bg-surface p-5 shadow-xl"
+            className="max-h-[90vh] w-full max-w-lg overflow-y-auto card p-5 shadow-xl"
           >
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-0.5 rounded-lg border border-border p-0.5 text-sm font-medium">
@@ -290,14 +290,14 @@ export function BookingDialogProvider({
                     type="button"
                     onClick={close}
                     disabled={submitting}
-                    className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover disabled:opacity-60"
+                    className="btn-secondary disabled:opacity-60"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+                    className="flex items-center gap-2 btn-primary px-5"
                   >
                     {submitting && (
                       <Loader2 size={15} className="animate-spin" />
@@ -381,14 +381,14 @@ export function BookingDialogProvider({
                     type="button"
                     onClick={close}
                     disabled={submitting}
-                    className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover disabled:opacity-60"
+                    className="btn-secondary disabled:opacity-60"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="flex items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+                    className="flex items-center gap-2 btn-primary px-5"
                   >
                     {submitting && (
                       <Loader2 size={15} className="animate-spin" />
@@ -442,7 +442,7 @@ export function NewAppointmentButton({ date }: { date: string }) {
     <button
       type="button"
       onClick={() => openAt({ mode: "appointment", date, time: "09:00" })}
-      className="flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+      className="flex items-center gap-1.5 btn-primary px-3.5"
     >
       <Plus size={15} /> New appointment
     </button>
@@ -456,7 +456,7 @@ export function BlockTimeButton({ date }: { date: string }) {
     <button
       type="button"
       onClick={() => openAt({ mode: "block", date, time: "12:00" })}
-      className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+      className="flex items-center gap-1.5 btn-secondary px-3"
     >
       <CalendarOff size={15} /> Block time
     </button>

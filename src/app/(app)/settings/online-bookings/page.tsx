@@ -12,7 +12,7 @@ import { emailIsConfigured } from "@/lib/email/resend";
 import { sendRemindersNowAction, updateBookingSettingsAction } from "./actions";
 
 const inputCls =
-  "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
+  "w-full input-base";
 const checkboxCls = "h-4 w-4 accent-[var(--primary)]";
 
 function NumberField({
@@ -74,7 +74,7 @@ export default async function OnlineBookingSettingsPage({
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Online bookings</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Online bookings</h1>
         <p className="mt-1 text-sm text-muted">
           Your public booking page and the emails that go with it.
         </p>
@@ -88,7 +88,7 @@ export default async function OnlineBookingSettingsPage({
       )}
 
       {bookingUrl && (
-        <div className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface p-5">
+        <div className="flex items-center justify-between gap-3 card p-5">
           <div className="min-w-0">
             <p className="text-sm font-medium">Your booking page</p>
             <p className="mt-1 truncate text-sm text-muted">{bookingUrl}</p>
@@ -96,7 +96,7 @@ export default async function OnlineBookingSettingsPage({
           <a
             href={`/book/${slug}`}
             target="_blank"
-            className="flex shrink-0 items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+            className="flex shrink-0 items-center gap-1.5 btn-secondary px-3"
           >
             <ExternalLink size={14} /> Open
           </a>
@@ -141,7 +141,7 @@ export default async function OnlineBookingSettingsPage({
       </div>
 
       <form action={updateBookingSettingsAction} className="flex flex-col gap-5">
-        <section className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-5">
+        <section className="flex flex-col gap-4 card p-5">
           <label className="flex items-center gap-3 text-sm font-medium">
             <input
               type="checkbox"
@@ -188,7 +188,7 @@ export default async function OnlineBookingSettingsPage({
           </div>
         </section>
 
-        <section className="grid gap-4 rounded-xl border border-border bg-surface p-5 sm:grid-cols-2">
+        <section className="grid gap-4 card p-5 sm:grid-cols-2">
           <NumberField
             label="Minimum notice (hours)"
             name="minNoticeHours"
@@ -225,7 +225,7 @@ export default async function OnlineBookingSettingsPage({
           />
         </section>
 
-        <section className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-5">
+        <section className="flex flex-col gap-4 card p-5">
           <label className="flex items-center gap-3 text-sm font-medium">
             <input
               type="checkbox"
@@ -254,13 +254,13 @@ export default async function OnlineBookingSettingsPage({
         </section>
 
         <div className="flex justify-end">
-          <button className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+          <button className="btn-primary px-5">
             Save booking settings
           </button>
         </div>
       </form>
 
-      <section className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface p-5">
+      <section className="flex items-center justify-between gap-3 card p-5">
         <div>
           <p className="text-sm font-medium">Due reminders</p>
           <p className="mt-1 text-sm text-muted">
@@ -269,7 +269,7 @@ export default async function OnlineBookingSettingsPage({
           </p>
         </div>
         <form action={sendRemindersNowAction}>
-          <button className="flex shrink-0 items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-surface-hover">
+          <button className="flex shrink-0 items-center gap-1.5 btn-secondary px-3">
             <BellRing size={14} /> Send now
           </button>
         </form>

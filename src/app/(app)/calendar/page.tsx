@@ -78,7 +78,7 @@ export default async function CalendarPage({
     <ManageDialogProvider types={dialogTypes}>
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           {view === "week"
             ? `Week of ${formatDayHeading(rangeStart)}`
             : formatLongDate(focus)}
@@ -100,7 +100,7 @@ export default async function CalendarPage({
           </Link>
           <Link
             href={`/calendar?view=${view}`}
-            className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-surface-hover"
+            className="btn-secondary px-3 py-1.5"
           >
             Today
           </Link>
@@ -129,7 +129,7 @@ export default async function CalendarPage({
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-border bg-surface">
+      <div className="overflow-x-auto card">
         <div className="min-w-[640px]">
           <div
             className="grid border-b border-border"

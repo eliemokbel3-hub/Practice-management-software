@@ -18,13 +18,13 @@ export default async function PaymentTypesPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Payment types</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Payment types</h1>
         <p className="mt-1 text-sm text-muted">
           The ways patients pay you — shown when recording a payment.
         </p>
       </div>
 
-      <ul className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
+      <ul className="flex flex-col divide-y divide-border card">
         {types.map((t) => (
           <li
             key={t.id}
@@ -47,9 +47,9 @@ export default async function PaymentTypesPage() {
           name="name"
           required
           placeholder="e.g. Bank transfer"
-          className="flex-1 rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+          className="flex-1 input-base"
         />
-        <button className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+        <button className="flex items-center gap-1.5 btn-primary">
           <Plus size={15} /> Add
         </button>
       </form>

@@ -10,7 +10,7 @@ import type { MeasureDefinition } from "@/lib/outcomes/types";
 import { submitMeasureAction } from "../actions";
 
 const inputCls =
-  "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
+  "w-full input-base";
 
 export default function MeasureForm({
   token,
@@ -59,7 +59,7 @@ export default function MeasureForm({
 
   if (done) {
     return (
-      <div className="flex flex-col items-center gap-4 rounded-xl border border-border bg-surface p-8 text-center">
+      <div className="flex flex-col items-center gap-4 card p-8 text-center">
         <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary-soft-foreground">
           <CheckCircle2 size={24} />
         </span>
@@ -73,7 +73,7 @@ export default function MeasureForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <p className="rounded-xl border border-border bg-surface p-4 text-sm leading-relaxed text-muted">
+      <p className="card p-4 text-sm leading-relaxed text-muted">
         {definition.instructions}
       </p>
 
@@ -82,7 +82,7 @@ export default function MeasureForm({
           {activities.map((a, i) => (
             <div
               key={i}
-              className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-4"
+              className="flex flex-col gap-3 card p-4"
             >
               <div className="flex flex-col gap-1.5">
                 <label htmlFor={`act-${i}`} className="text-sm font-medium">
@@ -143,7 +143,7 @@ export default function MeasureForm({
           {definition.questions.map((q, qi) => (
             <fieldset
               key={q.key}
-              className="rounded-xl border border-border bg-surface p-4"
+              className="card p-4"
             >
               <legend className="sr-only">{q.text}</legend>
               <p className="mb-3 text-sm font-semibold">
@@ -182,7 +182,7 @@ export default function MeasureForm({
       <button
         type="submit"
         disabled={submitting}
-        className="flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+        className="flex items-center justify-center gap-2 btn-primary px-5 py-2.5"
       >
         {submitting && <Loader2 size={15} className="animate-spin" />}
         Send my answers

@@ -15,7 +15,7 @@ export default async function DocumentsSettingsPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           Documents &amp; printing
         </h1>
         <p className="mt-1 text-sm text-muted">
@@ -25,7 +25,7 @@ export default async function DocumentsSettingsPage() {
       </div>
 
       <form action={saveDocumentsAction} className="flex flex-col gap-5">
-        <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
+        <section className="flex flex-col gap-3 card p-5">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="invoiceFooter" className="text-sm font-medium">
               Invoice footer
@@ -36,7 +36,7 @@ export default async function DocumentsSettingsPage() {
               rows={3}
               defaultValue={clinic.invoiceFooter ?? ""}
               placeholder="e.g. Payment due within 14 days. Thank you for choosing our clinic."
-              className="w-full resize-y rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+              className="w-full resize-y input-base"
             />
             <p className="text-xs text-faint">
               Printed at the bottom of every invoice.
@@ -45,7 +45,7 @@ export default async function DocumentsSettingsPage() {
         </section>
 
         <div className="flex justify-end">
-          <button className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+          <button className="btn-primary px-5">
             Save
           </button>
         </div>

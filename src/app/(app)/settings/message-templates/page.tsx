@@ -37,7 +37,7 @@ export default async function MessageTemplatesPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           Message templates
         </h1>
         <p className="mt-1 text-sm text-muted">
@@ -46,7 +46,7 @@ export default async function MessageTemplatesPage() {
         </p>
       </div>
 
-      <div className="rounded-xl border border-border bg-surface p-4 text-sm">
+      <div className="card p-4 text-sm">
         <p className="font-medium">Placeholders you can use</p>
         <div className="mt-2 flex flex-wrap gap-1.5">
           {PLACEHOLDERS.map((p) => (
@@ -71,7 +71,7 @@ export default async function MessageTemplatesPage() {
           <form
             key={kind}
             action={saveMessageTemplateAction}
-            className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5"
+            className="flex flex-col gap-3 card p-5"
           >
             <input type="hidden" name="kind" value={kind} />
             <div>
@@ -84,7 +84,7 @@ export default async function MessageTemplatesPage() {
                 name="subject"
                 defaultValue={t?.subject ?? ""}
                 placeholder={`e.g. Appointment confirmed — {clinic_name}`}
-                className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+                className="w-full input-base"
               />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -106,7 +106,7 @@ export default async function MessageTemplatesPage() {
                 />
                 Use this template
               </label>
-              <button className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+              <button className="btn-primary">
                 Save
               </button>
             </div>

@@ -29,7 +29,7 @@ export default async function BlockedTimePage({
         >
           <ArrowLeft size={14} /> Calendar
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           {data.reason ?? "Blocked time"}
         </h1>
         <p className="mt-1 text-sm text-muted">

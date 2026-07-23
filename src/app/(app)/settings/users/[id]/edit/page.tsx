@@ -10,7 +10,7 @@ import { getCurrentProfile } from "@/lib/supabase/server";
 import { transferOwnershipAction, updateStaffAction } from "../../actions";
 
 const inputCls =
-  "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
+  "w-full input-base";
 
 export default async function EditStaffPage({
   params,
@@ -44,14 +44,14 @@ export default async function EditStaffPage({
         >
           <ArrowLeft size={14} /> Users &amp; practitioners
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
           {member.firstName} {member.lastName}
         </h1>
         <p className="mt-1 text-sm text-muted">{member.email}</p>
       </div>
 
       <form action={save} className="flex flex-col gap-5">
-        <section className="grid gap-4 rounded-xl border border-border bg-surface p-5 sm:grid-cols-2">
+        <section className="grid gap-4 card p-5 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium">First name</label>
             <input name="firstName" required defaultValue={member.firstName} className={inputCls} />
@@ -88,7 +88,7 @@ export default async function EditStaffPage({
           </div>
         </section>
 
-        <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
+        <section className="flex flex-col gap-3 card p-5">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
             Services offered
           </h2>
@@ -116,14 +116,14 @@ export default async function EditStaffPage({
         </section>
 
         <div className="flex justify-end">
-          <button className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+          <button className="btn-primary px-5">
             Save changes
           </button>
         </div>
       </form>
 
       {!member.isOwner && member.isActive && (
-        <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
+        <section className="flex flex-col gap-3 card p-5">
           <h2 className="flex items-center gap-2 text-sm font-semibold">
             <ShieldCheck size={15} /> Account ownership
           </h2>

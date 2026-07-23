@@ -11,13 +11,13 @@ export default function SubscriptionPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Subscription</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Subscription</h1>
         <p className="mt-1 text-sm text-muted">
           Your PracticeHub plan and billing.
         </p>
       </div>
 
-      <div className="rounded-xl border border-border bg-surface p-5">
+      <div className="card p-5">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium">Early access</p>

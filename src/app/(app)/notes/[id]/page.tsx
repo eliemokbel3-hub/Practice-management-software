@@ -29,7 +29,7 @@ export default async function NotePage({
           >
             <ArrowLeft size={14} /> {note.patientName}
           </Link>
-          <h1 className="text-xl font-semibold tracking-tight">
+          <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
             Treatment note
           </h1>
           <p className="mt-1 text-sm text-muted">
@@ -57,13 +57,13 @@ export default async function NotePage({
           {!isDraft && !isArchived && (
             <Link
               href={`/notes/${note.id}/amend`}
-              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-surface-hover"
+              className="flex items-center gap-1.5 btn-secondary px-3 py-1.5"
             >
               <PenLine size={14} /> Amend
             </Link>
           )}
           <form action={setNoteArchivedAction.bind(null, note.id, !isArchived)}>
-            <button className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-surface-hover">
+            <button className="flex items-center gap-1.5 btn-secondary px-3 py-1.5">
               {isArchived ? (
                 <>
                   <ArchiveRestore size={14} /> Restore
@@ -97,7 +97,7 @@ export default async function NotePage({
           {note.content.sections.map((section) => (
             <section
               key={section.key}
-              className="rounded-xl border border-border bg-surface p-5"
+              className="card p-5"
             >
               <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-faint">
                 {section.label}

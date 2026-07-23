@@ -29,7 +29,7 @@ export default async function AppLayout({
         logoDark={branding.logoDark}
         offsetSidebar
       />
-      <aside className="fixed inset-y-0 left-0 z-20 hidden w-60 flex-col border-r border-border bg-surface px-4 py-5 md:flex print:hidden">
+      <aside className="fixed inset-y-0 left-0 z-20 hidden w-60 flex-col border-r border-border bg-surface/80 px-4 py-5 backdrop-blur-xl md:flex print:hidden">
         <Link href="/" className="mb-8 flex items-center gap-2.5 px-2">
           {branding.logo || branding.logoDark ? (
             <ThemedLogo
@@ -40,7 +40,10 @@ export default async function AppLayout({
             />
           ) : (
             <>
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <span
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-primary-foreground shadow-sm"
+                style={{ backgroundImage: "var(--gradient-primary)" }}
+              >
                 <Activity size={18} strokeWidth={2.5} />
               </span>
               <span className="text-[15px] font-semibold tracking-tight">

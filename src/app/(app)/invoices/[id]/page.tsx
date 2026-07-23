@@ -17,7 +17,7 @@ import {
 } from "../actions";
 
 const inputCls =
-  "rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
+  "input-base";
 
 const STATUS_STYLE: Record<string, string> = {
   draft: "bg-warning-soft text-warning-soft-foreground",
@@ -53,7 +53,7 @@ export default async function InvoicePage({
           >
             <ArrowLeft size={14} /> Invoices
           </Link>
-          <h1 className="text-xl font-semibold tracking-tight">
+          <h1 className="text-[26px] font-semibold leading-tight tracking-tight">
             Invoice #{invoice.invoiceNumber}
             <span
               className={`ml-3 rounded-full px-3 py-1 align-middle text-xs font-medium capitalize ${STATUS_STYLE[invoice.status]}`}
@@ -66,7 +66,7 @@ export default async function InvoicePage({
           <PrintButton />
           {isDraft && (invoice.lines?.length ?? 0) > 0 && (
             <form action={issueInvoiceAction.bind(null, invoice.id)}>
-              <button className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+              <button className="flex items-center gap-2 btn-primary">
                 <Send size={14} /> Issue invoice
               </button>
             </form>
@@ -82,7 +82,7 @@ export default async function InvoicePage({
       </div>
 
       {/* Printable document */}
-      <section className="rounded-xl border border-border bg-surface p-6 print:border-0 print:p-0">
+      <section className="card p-6 print:border-0 print:p-0">
         <div className="flex items-start justify-between gap-6">
           <div>
             {(clinic.logo ?? clinic.logoDark) && (
@@ -242,7 +242,7 @@ export default async function InvoicePage({
       </section>
 
       {isDraft && (
-        <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5 print:hidden">
+        <section className="flex flex-col gap-3 card p-5 print:hidden">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
             Add item
           </h2>
@@ -289,7 +289,7 @@ export default async function InvoicePage({
                 className={inputCls}
               />
             </div>
-            <button className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+            <button className="btn-primary">
               Add
             </button>
           </form>
@@ -297,7 +297,7 @@ export default async function InvoicePage({
       )}
 
       {invoice.status === "issued" && balance > 0 && (
-        <section className="flex flex-col gap-3 rounded-xl border border-border bg-surface p-5 print:hidden">
+        <section className="flex flex-col gap-3 card p-5 print:hidden">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
             Record payment
           </h2>
@@ -337,7 +337,7 @@ export default async function InvoicePage({
               </label>
               <input id="reference" name="reference" className={inputCls} />
             </div>
-            <button className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
+            <button className="btn-primary">
               Record
             </button>
           </form>

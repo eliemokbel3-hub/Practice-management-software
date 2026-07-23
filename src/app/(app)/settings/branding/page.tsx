@@ -15,7 +15,7 @@ export default async function BrandingPage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Branding &amp; logo</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Branding &amp; logo</h1>
         <p className="mt-1 text-sm text-muted">
           Upload your logo and we&apos;ll build a matching theme automatically —
           in light and dark mode. Change it any time.

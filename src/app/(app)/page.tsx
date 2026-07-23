@@ -41,11 +41,9 @@ function Panel({
   children: React.ReactNode;
 }) {
   return (
-    <section className="flex flex-col rounded-xl border border-border bg-surface">
-      <div className="flex items-center justify-between gap-2 border-b border-border px-5 py-3">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
-          {title}
-        </h2>
+    <section className="card card-hover flex flex-col">
+      <div className="flex items-center justify-between gap-2 border-b border-border px-5 py-3.5">
+        <h2 className="section-label">{title}</h2>
         {action}
       </div>
       <div className="flex-1 p-5">{children}</div>
@@ -65,11 +63,26 @@ export default async function HomePage() {
   const greeting =
     hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
+  const today = new Date().toLocaleDateString("en-AU", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-xl font-semibold tracking-tight">
-          {greeting}, {firstName}
+      <div className="animate-fade-up">
+        <p className="text-[13px] font-medium uppercase tracking-widest text-faint">
+          {today}
+        </p>
+        <h1 className="mt-1.5 text-[28px] font-semibold leading-tight tracking-tight">
+          {greeting},{" "}
+          <span
+            className="bg-clip-text text-transparent"
+            style={{ backgroundImage: "var(--gradient-primary)" }}
+          >
+            {firstName}
+          </span>
         </h1>
         <p className="mt-1 text-sm text-muted">
           What&apos;s happening at the clinic today.
@@ -84,7 +97,7 @@ export default async function HomePage() {
             required
             rows={2}
             placeholder="Post a note for the whole clinic — reminders, updates, anything the team should see."
-            className="w-full resize-y rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+            className="input-base w-full resize-y"
           />
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2 text-sm text-muted">
@@ -95,9 +108,7 @@ export default async function HomePage() {
               />
               Pin to top
             </label>
-            <button className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover">
-              Post
-            </button>
+            <button className="btn-primary">Post</button>
           </div>
         </form>
 

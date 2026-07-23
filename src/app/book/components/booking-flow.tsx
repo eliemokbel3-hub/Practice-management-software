@@ -11,7 +11,7 @@ import SlotPicker, { timeLabel } from "./slot-picker";
 import { submitBookingAction } from "../actions";
 
 const inputCls =
-  "w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring";
+  "w-full input-base";
 
 function slotDayLabel(iso: string, timeZone: string): string {
   return new Intl.DateTimeFormat("en-AU", {
@@ -74,7 +74,7 @@ export default function BookingFlow({
   // ---- Step 4: booked ----
   if (done && type && slot) {
     return (
-      <div className="flex flex-col items-center gap-4 rounded-xl border border-border bg-surface p-8 text-center">
+      <div className="flex flex-col items-center gap-4 card p-8 text-center">
         <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary-soft-foreground">
           <CalendarCheck size={24} />
         </span>
@@ -118,7 +118,7 @@ export default function BookingFlow({
             key={t.id}
             type="button"
             onClick={() => setType(t)}
-            className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-surface p-4 text-left transition-colors hover:border-border-strong"
+            className="group flex items-center justify-between gap-4 card p-4 text-left transition-colors hover:border-border-strong"
           >
             <span>
               <span className="block font-medium">{t.name}</span>
@@ -161,7 +161,7 @@ export default function BookingFlow({
     return (
       <div className="flex flex-col gap-4">
         {backToTypes}
-        <div className="rounded-xl border border-border bg-surface p-4">
+        <div className="card p-4">
           <p className="font-medium">{type.name}</p>
           <p className="text-sm text-muted">
             {type.durationMinutes} minutes
@@ -193,7 +193,7 @@ export default function BookingFlow({
         <ArrowLeft size={14} /> Change time
       </button>
 
-      <div className="rounded-xl border border-border bg-surface p-4">
+      <div className="card p-4">
         <p className="font-medium">{type.name}</p>
         <p className="text-sm text-muted">
           {slotDayLabel(slot.startsAt, timeZone)} at{" "}
@@ -204,7 +204,7 @@ export default function BookingFlow({
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 rounded-xl border border-border bg-surface p-5"
+        className="flex flex-col gap-4 card p-5"
       >
         <h2 className="text-sm font-semibold uppercase tracking-wide text-faint">
           Your details
@@ -291,7 +291,7 @@ export default function BookingFlow({
         <button
           type="submit"
           disabled={submitting}
-          className="flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+          className="flex items-center justify-center gap-2 btn-primary px-5 py-2.5"
         >
           {submitting && <Loader2 size={15} className="animate-spin" />}
           Confirm booking

@@ -29,7 +29,7 @@ export default async function SchedulePage() {
         >
           <ArrowLeft size={14} /> Settings
         </Link>
-        <h1 className="text-xl font-semibold tracking-tight">Working hours</h1>
+        <h1 className="text-[26px] font-semibold leading-tight tracking-tight">Working hours</h1>
         <p className="mt-1 text-sm text-muted">
           Tick the days you work and set your hours. The calendar shades
           everything else as unavailable.
@@ -37,7 +37,7 @@ export default async function SchedulePage() {
       </div>
 
       <form action={saveScheduleAction} className="flex flex-col gap-5">
-        <div className="flex flex-col divide-y divide-border rounded-xl border border-border bg-surface">
+        <div className="flex flex-col divide-y divide-border card">
           {ORDER.map((weekday) => {
             const day = byDay.get(weekday);
             return (
@@ -73,7 +73,7 @@ export default async function SchedulePage() {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover"
+            className="btn-primary px-5"
           >
             Save working hours
           </button>

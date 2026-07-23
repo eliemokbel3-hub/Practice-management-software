@@ -47,7 +47,7 @@ export default async function RecallTypesPage() {
           <input
             name="message"
             placeholder="Message to the patient (optional)"
-            className="rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-faint focus:border-ring"
+            className="input-base"
           />
         </div>
       }
