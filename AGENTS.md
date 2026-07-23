@@ -75,14 +75,16 @@ with templates and revisions, billing/invoices, online bookings, a message board
 measures, and a large clinic-settings suite (appointment types, billable items, taxes, payment/
 recall/concession types, referral sources, custom fields, note/form/letter/message templates,
 users, branding). Recent work: a "premium clinical SaaS" UI facelift (design-token +
-component-class system in `globals.css`, applied app-wide), auto-branding theme generation
-from logo upload, logo watermark, optional dark-mode logo, clinical-note archiving, and
-owner-driven team-member password reset.
+component-class system in `globals.css`, applied app-wide) and a full mobile pass —
+app-shell top bar + nav drawer below 768px, calendar day view fitting phone viewports,
+and 375px fixes across staff and public booking flows. The app is intended as a
+multi-clinic SaaS product (Cliniko-style) — build every feature for a fresh clinic
+setting up from scratch, never hard-coding this clinic's specifics.
 
 ## Last Session
 - Date: 2026-07-24
-- Worked on: Premium UI facelift across the app (new shadow/gradient tokens, `.card`/`.btn-*`/`.input-base` classes, 26px title scale, restyled login/shell/dashboard/patients/invoices/settings); fixed double-encoded seed text (mojibake) via `scripts/fix-mojibake.mjs` and a `client_encoding` guard in the seed file.
-- Next priority: —
+- Worked on: Mobile experience (plan-mobile-experience, now Completed — Follow-ups Retained): `src/components/mobile-nav.tsx` top bar + drawer, shell `min-w-0` overflow fix, calendar week-only min-width, patient-detail text wrapping, responsive chat dock; verified 375/768/1280.
+- Next priority: Vercel deployment (retained follow-up in `.cursor/plans/plan-mobile-experience.md`; key findings in `.cursor/plans/explore-deploy-vercel-mobile-nav.md` — cron GET handler, Node runtime, APP_URL, new prod Supabase project).
 
 ## Known Issues / Next Tasks
 - [ ]

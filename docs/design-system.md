@@ -49,6 +49,29 @@ component classes; this doc records the conventions and where each one is anchor
 - Hovers: color/shadow/translate transitions ~150–200ms; nav items nudge
   (`hover:translate-x-0.5`), chevrons slide (`group-hover:translate-x-0.5`).
 
+## Mobile (below `md` / 768px)
+
+- **Cutover**: `md` (768px) is the mobile/desktop boundary app-wide. Mobile adds
+  below-`md` behaviour only — desktop markup must stay untouched.
+- **Shell nav**: fixed 56px top bar (brand mark + hamburger) and a slide-over drawer
+  reusing `SidebarNav`, with theme toggle + sign-out; Esc / overlay / navigation close,
+  body scroll lock, `motion-reduce`-safe transitions. Canonical:
+  `src/components/mobile-nav.tsx` (mounted in `src/app/(app)/layout.tsx`, whose content
+  column carries `pt-14 md:pt-0`).
+- **Overflow rule**: the shell content column has `min-w-0` — required so wide content
+  (week calendar, tables) scrolls inside its own `overflow-x-auto` wrapper instead of
+  inflating the page. Wide grids opt in per view: the calendar applies `min-w-[640px]`
+  only in week view (`src/app/(app)/calendar/page.tsx`); day view fills the viewport.
+- **Text in detail grids**: value cells wrap with `min-w-0` + `break-words` so long
+  emails can't force horizontal scroll (canonical: `Item` in
+  `src/app/(app)/patients/[id]/page.tsx`).
+- **Dialogs**: the centered dialog pattern (`max-h-[90vh] w-full max-w-lg` inside a
+  `p-4` overlay) is verified mobile-safe — no bottom-sheet variant exists (decision
+  2026-07-24, plan-mobile-experience).
+- **Chat dock on mobile**: only the newest window shows (`hidden md:flex` on older
+  ones), windows size to `w-[min(18rem,calc(100vw-6.5rem))]`, and the contacts panel
+  hides while a window is open (`src/components/chat-dock.tsx`).
+
 ## Patterns
 
 - **App shell**: frosted sidebar (`bg-surface/80 backdrop-blur-xl`), gradient logo chip,
