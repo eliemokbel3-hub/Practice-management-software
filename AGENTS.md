@@ -61,6 +61,11 @@ Data-access helpers are in `src/lib/data/`.
 Other commands: `npm run build`, `npm start`, `npm run lint`. Database migrations are managed
 with the Supabase CLI (`supabase` dev dependency) against `supabase/migrations/`.
 
+Gotcha — seeding on Windows: run seed SQL with UTF-8 client encoding (the seed file
+sets `client_encoding` itself). psql otherwise defaults to the console codepage
+(WIN1252) and double-encodes em-dashes etc.; `scripts/fix-mojibake.mjs` repairs
+affected rows (dry-run by default, `--apply` to write).
+
 Machine-specific run notes (local absolute paths, personal DB endpoints, machine-local ports)
 belong in a gitignored `AGENTS.local.md` — never secrets.
 
@@ -69,13 +74,14 @@ Substantially built. Core phases are in place: patients, calendar/appointments, 
 with templates and revisions, billing/invoices, online bookings, a message board, outcome
 measures, and a large clinic-settings suite (appointment types, billable items, taxes, payment/
 recall/concession types, referral sources, custom fields, note/form/letter/message templates,
-users, branding). Recent work: auto-branding theme generation from logo upload (with background
-removal + trim), logo watermark, optional dark-mode logo, clinical-note archiving, and
+users, branding). Recent work: a "premium clinical SaaS" UI facelift (design-token +
+component-class system in `globals.css`, applied app-wide), auto-branding theme generation
+from logo upload, logo watermark, optional dark-mode logo, clinical-note archiving, and
 owner-driven team-member password reset.
 
 ## Last Session
-- Date: 2026-07-22
-- Worked on: Installed the Cursor/Claude Code/Codex workflow bootstrap (v30) and reconciled project documentation.
+- Date: 2026-07-24
+- Worked on: Premium UI facelift across the app (new shadow/gradient tokens, `.card`/`.btn-*`/`.input-base` classes, 26px title scale, restyled login/shell/dashboard/patients/invoices/settings); fixed double-encoded seed text (mojibake) via `scripts/fix-mojibake.mjs` and a `client_encoding` guard in the seed file.
 - Next priority: —
 
 ## Known Issues / Next Tasks
@@ -83,6 +89,7 @@ owner-driven team-member password reset.
 
 ## Subsystem Documentation
 - If working on appointment types, billing, note/form templates, comms, or clinic settings, read `docs/cliniko-customisation-map.md` (Cliniko feature survey driving the profession-generic data model).
+- If doing UI work, read `docs/design-system.md` (tokens, component classes, type scale, motion — `src/app/globals.css` owns the literal values).
 
 ## Documentation Status
 - Structure version: v22
