@@ -2,6 +2,10 @@
 -- it as owner, and add fictional sample patients for testing.
 -- Run AFTER creating the auth user (Authentication → Add user) in Supabase.
 
+-- This file is UTF-8. Without this, psql on Windows defaults client_encoding
+-- to the console codepage (WIN1252) and double-encodes em-dashes etc.
+set client_encoding to 'utf8';
+
 do $$
 declare
   v_user uuid;
