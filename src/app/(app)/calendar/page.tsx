@@ -130,7 +130,7 @@ export default async function CalendarPage({
       </div>
 
       <div className="overflow-x-auto card">
-        <div className="min-w-[640px]">
+        <div className={view === "week" ? "min-w-[640px]" : undefined}>
           <div
             className="grid border-b border-border"
             style={{

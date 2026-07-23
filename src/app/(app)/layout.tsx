@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Activity, LogOut } from "lucide-react";
 import { SidebarNav } from "@/components/sidebar-nav";
+import { MobileNav } from "@/components/mobile-nav";
 import { ChatDock } from "@/components/chat-dock";
 import { LogoWatermark } from "@/components/logo-watermark";
 import { ThemedLogo } from "@/components/themed-logo";
@@ -28,6 +29,14 @@ export default async function AppLayout({
         logo={branding.logo}
         logoDark={branding.logoDark}
         offsetSidebar
+      />
+      <MobileNav
+        branding={branding}
+        profileName={
+          profile ? `${profile.first_name} ${profile.last_name}` : null
+        }
+        profileTitle={profile?.title ?? null}
+        signOutAction={signOutAction}
       />
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-60 flex-col border-r border-border bg-surface/80 px-4 py-5 backdrop-blur-xl md:flex print:hidden">
         <Link href="/" className="mb-8 flex items-center gap-2.5 px-2">
@@ -80,7 +89,7 @@ export default async function AppLayout({
           </div>
         </div>
       </aside>
-      <div className="flex flex-1 flex-col md:pl-60 print:pl-0">
+      <div className="flex min-w-0 flex-1 flex-col pt-14 md:pl-60 md:pt-0 print:pl-0 print:pt-0">
         <main className="mx-auto w-full max-w-5xl flex-1 px-5 py-8 md:px-10">
           {children}
         </main>

@@ -27,9 +27,11 @@ import { setArchivedAction } from "../actions";
 
 function Item({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div>
+    <div className="min-w-0">
       <dt className="text-xs uppercase tracking-wide text-faint">{label}</dt>
-      <dd className="mt-0.5 text-sm">{value ?? <span className="text-faint">—</span>}</dd>
+      <dd className="mt-0.5 break-words text-sm">
+        {value ?? <span className="text-faint">—</span>}
+      </dd>
     </div>
   );
 }

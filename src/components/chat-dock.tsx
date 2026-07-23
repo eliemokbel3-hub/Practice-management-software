@@ -145,10 +145,15 @@ export function ChatDock() {
         if (!member) return null;
         const isMin = minimized.has(partnerId);
         const msgs = threads[partnerId] ?? [];
+        // Below md only the most recent window shows and it shrinks to leave
+        // room for the launcher; desktop keeps the classic side-by-side row.
+        const isNewest = partnerId === open[open.length - 1];
         return (
           <div
             key={partnerId}
-            className="flex w-72 flex-col overflow-hidden rounded-t-xl border border-border bg-surface shadow-xl"
+            className={`w-[min(18rem,calc(100vw-6.5rem))] flex-col overflow-hidden rounded-t-xl border border-border bg-surface shadow-xl md:w-72 ${
+              isNewest ? "flex" : "hidden md:flex"
+            }`}
           >
             <div className="flex items-center justify-between gap-2 border-b border-border bg-surface px-3 py-2">
               <button
@@ -261,7 +266,11 @@ export function ChatDock() {
       {/* Contacts + launcher column */}
       <div className="flex flex-col items-end gap-3">
         {listOpen && (
-          <div className="w-64 overflow-hidden card shadow-xl">
+          <div
+            className={`w-64 overflow-hidden card shadow-xl ${
+              open.length > 0 ? "hidden md:block" : ""
+            }`}
+          >
             <div className="border-b border-border px-4 py-3">
               <p className="text-sm font-semibold">Clinic chat</p>
               <p className="text-xs text-faint">Message your team</p>

@@ -1,14 +1,14 @@
 # Feature Implementation Plan
 **Feature:** mobile-experience
-**Overall Progress:** `0%`
+**Overall Progress:** `100%`
 
 ## Lifecycle State
-- Active
+- Completed — Follow-ups Retained
 
 ## Completion Status
-- Completion timestamp:
-- Main implementation complete: No
-- Ready for archive: No
+- Completion timestamp: 2026-07-24
+- Main implementation complete: Yes
+- Ready for archive: No (follow-ups retained)
 
 ## Plan Lineage
 - Parent plan: None
@@ -120,6 +120,7 @@ the existing design system.
 - Public: `src/app/book/[slug]/page.tsx`, `book/components/booking-flow.tsx` + `slot-picker.tsx`, `book/manage/[token]/`, `measure/[token]/` — own layouts, unaudited at 375px
 
 ### Codebase Integration Notes
+- Execution finding (2026-07-24): the shell content column (`(app)/layout.tsx`) needed `min-w-0` — as a `flex-1` child of the row-flex shell, `min-width:auto` let wide children (week calendar grid) inflate the page instead of scrolling inside their `overflow-x-auto` wrappers. This fix also protects all wide tables at mobile widths.
 - Design system: `.card`, `.btn-primary/.btn-secondary`, `.input-base`, `.section-label`, fade-up motion — all in `src/app/globals.css`; conventions in `docs/design-system.md`
 - Clinic branding overrides `--primary` family via `brandThemeCss` — new UI must use tokens, never literal colors
 - The drawer needs a small client component (open/close state); the shell layout is a server component — keep the boundary clean (drawer = client, layout stays server)
@@ -170,9 +171,9 @@ the existing design system.
 See `Planning Extraction Summary` → Deferred / Excluded (single source; not duplicated here).
 
 ## Current State / Handoff Note
-- Last completed step: Planning complete
+- Last completed step: Step 5 — all tasks verified (375/768/1280, dark mode, lint clean); screenshots captured for day view + drawer
 - Current in-progress step: None
-- Immediate next action: Start Task 1 via `/execute`
+- Immediate next action: commit; run /document to sync durable docs; next plan = Vercel deployment (consume explore scratch)
 - Open blockers / open questions: None
 - Last plan sync: 2026-07-24 (hardened via /review-plan — login + patient-form added to audit; chat-dock w-72 overflow fact recorded; watermark task verify-only)
 
@@ -184,31 +185,48 @@ See `Planning Extraction Summary` → Deferred / Excluded (single source; not du
 
 ## Tasks
 
-- [ ] 🟥 Step 1: Mobile shell navigation
-  - [ ] 🟥 1.1: Create `src/components/mobile-nav.tsx` (client): fixed top bar shown below `md` (logo/clinic mark left, hamburger right, `bg-surface/80 backdrop-blur-xl border-b border-border`, `print:hidden`); slide-over drawer rendering `<SidebarNav />` + theme-toggle row + user block with sign-out (props for profile/branding passed from the server layout); overlay dismiss, Esc close, reduced-motion respected
+- [x] 🟩 Step 1: Mobile shell navigation
+  - [x] 🟩 1.1: Create `src/components/mobile-nav.tsx` (client): fixed top bar shown below `md` (logo/clinic mark left, hamburger right, `bg-surface/80 backdrop-blur-xl border-b border-border`, `print:hidden`); slide-over drawer rendering `<SidebarNav />` + theme-toggle row + user block with sign-out (props for profile/branding passed from the server layout); overlay dismiss, Esc close, reduced-motion respected
     - Expected: below 768px a top bar is always visible and the drawer reaches every nav item; ≥768px renders nothing
-  - [ ] 🟥 1.2: Mount it in `src/app/(app)/layout.tsx`; add mobile top padding to the content column (e.g. `pt-14 md:pt-0`). `LogoWatermark` is already mobile-correct (`md:pl-60` only applies ≥768px) — verify-only, no change expected
+  - [x] 🟩 1.2: Mount it in `src/app/(app)/layout.tsx`; add mobile top padding to the content column (e.g. `pt-14 md:pt-0`). `LogoWatermark` is already mobile-correct (`md:pl-60` only applies ≥768px) — verify-only, no change expected
     - Expected: dashboard usable at 375px with no layout overlap; desktop pixel-identical
   - Verification: this step verifies inline (Browser pane at 375px + 1280px) — see Validation
-- [ ] 🟥 Step 2: Calendar mobile fit — `src/app/(app)/calendar/page.tsx`
-  - [ ] 🟥 2.1: Apply `min-w-[640px]` only when `view === "week"`; day view fills the viewport width (56px gutter + 1 fluid column)
-  - [ ] 🟥 2.2: Verify header controls (title, Block/New buttons, prev/today/next, day/week toggle) wrap cleanly at 375px; adjust spacing only if broken
+- [x] 🟩 Step 2: Calendar mobile fit — `src/app/(app)/calendar/page.tsx`
+  - [x] 🟩 2.1: Apply `min-w-[640px]` only when `view === "week"`; day view fills the viewport width (56px gutter + 1 fluid column)
+  - [x] 🟩 2.2: Verify header controls (title, Block/New buttons, prev/today/next, day/week toggle) wrap cleanly at 375px; adjust spacing only if broken
   - Expected: day view has no horizontal scroll at 375px; week view scrolls horizontally inside its card only
-- [ ] 🟥 Step 3: Staff-flow audit + fixes at 375px
-  - [ ] 🟥 3.1: Audit pass (no fixes yet): login page (`src/app/login/page.tsx`), patients list + `[id]` detail, patient create/edit form (`src/components/patient-form.tsx` via `/patients/new` and `[id]/edit`), `notes/[id]` editor, `invoices` list + `[id]`, `settings` hub + one settings form, `messages`, chat dock — record concrete defects (`file:line`) in this plan under 3.3
-  - [ ] 🟥 3.2: `[decision]` Booking-dialog mobile presentation
+- [x] 🟩 Step 3: Staff-flow audit + fixes at 375px
+  - [x] 🟩 3.1: Audit pass (no fixes yet): login page (`src/app/login/page.tsx`), patients list + `[id]` detail, patient create/edit form (`src/components/patient-form.tsx` via `/patients/new` and `[id]/edit`), `notes/[id]` editor, `invoices` list + `[id]`, `settings` hub + one settings form, `messages`, chat dock — record concrete defects (`file:line`) in this plan under 3.3
+  - [x] 🟩 3.2: `[decision]` Booking-dialog mobile presentation
     - Options: keep centered w/ mobile tweaks (`p-4`, full-width inputs) / convert to bottom-sheet below `md`
     - Decide after: 3.1 audit shows the dialog live at 375px
     - Blocks: 3.3 dialog fixes
-  - [ ] 🟥 3.3: Apply fixes from 3.1 + the 3.2 decision (incl. `manage-dialog.tsx` alongside `booking-dialog.tsx`). Known code fact for `chat-dock.tsx`: chat windows are fixed `w-72` and multiple render side-by-side in a `fixed bottom-0 right-0` row — multiple open windows WILL overflow 375px; cap open windows or stack on mobile
+    - Chosen: keep centered (2026-07-24); rationale: audit measured 343×574px, zero internal overflows — already fits, no structural change needed
+  - Audit results (2026-07-24, 375px): PASS — patients list, /patients/new (patient-form), /notes/:id editor, /invoices + /invoices/:id, /settings + /settings/clinic, /messages (stacks below md), chat dock closed (88px bubble), booking dialog (343px wide, 0 internal overflows, grid-cols-2 rows intact). Login code-audited (max-w-sm + px-4 — fine; live view unreachable while authenticated). DEFECTS: (1) /patients/:id — `section.card` overflows to 497px: `dl.grid.grid-cols-2` value cells with unwrappable content (long email) force min-content width; fix = `break-words`/`min-w-0` on the dl cells. (2) chat dock with an open window + member panel extends to left:-13 offscreen at 375px; fix = close member panel when a window opens on mobile and/or responsive window width.
+  - [x] 🟩 3.3: Apply fixes from 3.1 + the 3.2 decision (incl. `manage-dialog.tsx` alongside `booking-dialog.tsx`). Known code fact for `chat-dock.tsx`: chat windows are fixed `w-72` and multiple render side-by-side in a `fixed bottom-0 right-0` row — multiple open windows WILL overflow 375px; cap open windows or stack on mobile
   - Expected: every audited flow completable at 375px without horizontal body scroll
-- [ ] 🟥 Step 4: Public pages audit + fixes at 375px — `/book/[slug]` flow (`booking-flow.tsx`, `slot-picker.tsx`), `/book/manage/[token]`, `/measure/[token]` (`measure-form.tsx`)
+- [x] 🟩 Step 4: Public pages audit + fixes at 375px — `/book/[slug]` flow (`booking-flow.tsx`, `slot-picker.tsx`), `/book/manage/[token]`, `/measure/[token]` (`measure-form.tsx`)
   - Expected: a patient can book, manage, and fill an outcome form comfortably on a phone
-- [ ] 🟥 Step 5: Cross-width verification pass (375 / 768 / 1280, light + dark) per Validation / Verification; screenshot proof; fix stragglers
+- [x] 🟩 Step 5: Cross-width verification pass (375 / 768 / 1280, light + dark) per Validation / Verification; screenshot proof; fix stragglers
   - Expected: all success criteria met; desktop unchanged
 
 ## Retained Follow-Up Items
-- N/A — plan is Active (populated at completion review)
+Completion review 2026-07-24 (user-confirmed category classifications).
+
+### Deferred — Actionable Later
+- Vercel deployment — Status: Carried Forward. All context unchanged from `Planning Extraction Summary` (new prod Supabase project; cron GET handler; Node runtime; APP_URL; see explore scratch). Risk if deferred: blocked-work: app remains local-only. Revisit by: now (this plan is complete — the stated trigger has fired). Reconciliation notes: [2026-07-24 reconciliation] Still valid — next priority.
+- Email/AI end-to-end verification — Status: Carried Forward. Risk if deferred: ux-degradation: reminders/tidying untested. Revisit by: deployment plan kickoff. Reconciliation notes: [2026-07-24 reconciliation] Still valid.
+- Test safety net — Status: Carried Forward. Risk if deferred: correctness: no regression protection. Revisit by: after deployment ships. Reconciliation notes: [2026-07-24 reconciliation] Still valid.
+- Clinic self-serve onboarding wizard — Status: Carried Forward. Risk if deferred: blocked-work: cannot sell to other clinics without it. Revisit by: when a second clinic is ready to trial. Reconciliation notes: [2026-07-24 reconciliation] Still valid — SaaS vision constraint recorded in Key Design Decisions.
+
+### Excluded — Revisit Only If Needed
+- Custom domain + DNS + Resend domain verification — Status: Carried Forward. When to revisit: deployment plan.
+- SMS reminders, per-appointment-type comms, staging environment — Status: Carried Forward. When to revisit: post-deployment feature planning.
+- Bottom-tab navigation — Status: Carried Forward. When to revisit: only if real mobile usage shows the drawer is too slow for daily front-desk use.
+
+### Accepted Assumptions — Revalidate Later
+- `md` (768px) cutover — Status: Superseded (validated). Held at every audited surface; now an established convention (recorded in docs/design-system.md territory).
+- Purely client/UI work — Status: Superseded (validated). No server/schema change was needed anywhere in scope.
 
 ## Follow-Up Continuation Notes
 - Next follow-up after this plan: the Vercel deployment plan (consume the Deferred item + `.cursor/plans/explore-deploy-vercel-mobile-nav.md` Key Findings)
