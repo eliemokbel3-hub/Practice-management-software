@@ -174,7 +174,7 @@ See `Planning Extraction Summary` → Deferred / Excluded (single source; not du
 - Current in-progress step: None
 - Immediate next action: Start Task 1 via `/execute`
 - Open blockers / open questions: None
-- Last plan sync: 2026-07-24
+- Last plan sync: 2026-07-24 (hardened via /review-plan — login + patient-form added to audit; chat-dock w-72 overflow fact recorded; watermark task verify-only)
 
 ## Review History
 - (no reviews yet)
@@ -187,7 +187,7 @@ See `Planning Extraction Summary` → Deferred / Excluded (single source; not du
 - [ ] 🟥 Step 1: Mobile shell navigation
   - [ ] 🟥 1.1: Create `src/components/mobile-nav.tsx` (client): fixed top bar shown below `md` (logo/clinic mark left, hamburger right, `bg-surface/80 backdrop-blur-xl border-b border-border`, `print:hidden`); slide-over drawer rendering `<SidebarNav />` + theme-toggle row + user block with sign-out (props for profile/branding passed from the server layout); overlay dismiss, Esc close, reduced-motion respected
     - Expected: below 768px a top bar is always visible and the drawer reaches every nav item; ≥768px renders nothing
-  - [ ] 🟥 1.2: Mount it in `src/app/(app)/layout.tsx`; add mobile top padding to the content column (e.g. `pt-14 md:pt-0`); verify `LogoWatermark` placement without sidebar at mobile widths
+  - [ ] 🟥 1.2: Mount it in `src/app/(app)/layout.tsx`; add mobile top padding to the content column (e.g. `pt-14 md:pt-0`). `LogoWatermark` is already mobile-correct (`md:pl-60` only applies ≥768px) — verify-only, no change expected
     - Expected: dashboard usable at 375px with no layout overlap; desktop pixel-identical
   - Verification: this step verifies inline (Browser pane at 375px + 1280px) — see Validation
 - [ ] 🟥 Step 2: Calendar mobile fit — `src/app/(app)/calendar/page.tsx`
@@ -195,12 +195,12 @@ See `Planning Extraction Summary` → Deferred / Excluded (single source; not du
   - [ ] 🟥 2.2: Verify header controls (title, Block/New buttons, prev/today/next, day/week toggle) wrap cleanly at 375px; adjust spacing only if broken
   - Expected: day view has no horizontal scroll at 375px; week view scrolls horizontally inside its card only
 - [ ] 🟥 Step 3: Staff-flow audit + fixes at 375px
-  - [ ] 🟥 3.1: Audit pass (no fixes yet): patients list + `[id]` detail, `notes/[id]` editor, `invoices` list + `[id]`, `settings` hub + one settings form, `messages`, chat dock — record concrete defects (`file:line`) in this plan under 3.3
+  - [ ] 🟥 3.1: Audit pass (no fixes yet): login page (`src/app/login/page.tsx`), patients list + `[id]` detail, patient create/edit form (`src/components/patient-form.tsx` via `/patients/new` and `[id]/edit`), `notes/[id]` editor, `invoices` list + `[id]`, `settings` hub + one settings form, `messages`, chat dock — record concrete defects (`file:line`) in this plan under 3.3
   - [ ] 🟥 3.2: `[decision]` Booking-dialog mobile presentation
     - Options: keep centered w/ mobile tweaks (`p-4`, full-width inputs) / convert to bottom-sheet below `md`
     - Decide after: 3.1 audit shows the dialog live at 375px
     - Blocks: 3.3 dialog fixes
-  - [ ] 🟥 3.3: Apply fixes from 3.1 + the 3.2 decision (incl. `chat-dock.tsx` if it blocks content and `manage-dialog.tsx` alongside `booking-dialog.tsx`)
+  - [ ] 🟥 3.3: Apply fixes from 3.1 + the 3.2 decision (incl. `manage-dialog.tsx` alongside `booking-dialog.tsx`). Known code fact for `chat-dock.tsx`: chat windows are fixed `w-72` and multiple render side-by-side in a `fixed bottom-0 right-0` row — multiple open windows WILL overflow 375px; cap open windows or stack on mobile
   - Expected: every audited flow completable at 375px without horizontal body scroll
 - [ ] 🟥 Step 4: Public pages audit + fixes at 375px — `/book/[slug]` flow (`booking-flow.tsx`, `slot-picker.tsx`), `/book/manage/[token]`, `/measure/[token]` (`measure-form.tsx`)
   - Expected: a patient can book, manage, and fill an outcome form comfortably on a phone
