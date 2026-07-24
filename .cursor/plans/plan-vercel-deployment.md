@@ -137,9 +137,9 @@ See `Planning Extraction Summary` → Deferred / Excluded (single source; not du
 ## Current State / Handoff Note
 - Last completed step: Planning complete
 - Current in-progress step: None
-- Immediate next action: `/review-plan` hardening pass, then `/execute`
+- Immediate next action: `/execute`
 - Open blockers / open questions: None
-- Last plan sync: 2026-07-24
+- Last plan sync: 2026-07-24 (hardened via /review-plan — runtime pin verified against Next 16 docs; maxDuration guard added; env-before-first-deploy note added to Step 5)
 
 ## Review History
 - (no reviews yet)
@@ -150,7 +150,7 @@ See `Planning Extraction Summary` → Deferred / Excluded (single source; not du
 ## Tasks
 
 - [ ] 🟥 Step 1: Code fixes for Vercel
-  - [ ] 🟥 1.1: `src/app/api/reminders/route.ts` — add `GET` export sharing the exact bearer-secret check (secret-only; no signed-in-user path on GET), keep POST unchanged; add `export const runtime = "nodejs"`
+  - [ ] 🟥 1.1: `src/app/api/reminders/route.ts` — add `GET` export sharing the exact bearer-secret check (secret-only; no signed-in-user path on GET), keep POST unchanged; add `export const runtime = "nodejs"` and `export const maxDuration = 60` (verified in Next 16 route-segment-config docs; the duration guard keeps a busy sequential reminder run from being killed by the platform default)
     - Expected: `curl` GET with the secret returns the run-result JSON; without it, 401
   - [ ] 🟥 1.2: `src/lib/email/templates.ts` — `appBaseUrl()` fallback → `http://localhost:3000`
   - [ ] 🟥 1.3: Create `vercel.json` with a cron entry for `/api/reminders`. Schedule note: Hobby tier allows daily only (e.g. `0 8 * * *` ≈ morning AEST reminder run); hourly (`0 * * * *`) needs Pro — pick at execution based on the user's Vercel tier and record inline
@@ -158,7 +158,7 @@ See `Planning Extraction Summary` → Deferred / Excluded (single source; not du
   - Verification: build exits 0; no new lint errors
 - [ ] 🟥 Step 3: Production clinic bootstrap — new `scripts/bootstrap-clinic.mjs` (or documented SQL in `docs/`): creates `clinics` row + owner `profiles` row bound to an existing auth user (id via arg/env); idempotent; ZERO sample patients; usage documented in the script header (see Design Decision 2)
 - [ ] 🟥 Step 4: [user] Production Supabase — create project; `supabase link` + push migrations 0001–0011; add vercel.app origin to Auth redirect URLs; create the owner auth user; run the Step 3 bootstrap. Agent provides the exact command checklist; user executes and reports back
-- [ ] 🟥 Step 5: [user] Vercel — create project from the GitHub repo; enter all env vars from Config / Environment; deploy. Agent provides the checklist; user reports the deployed URL
+- [ ] 🟥 Step 5: [user] Vercel — create project from the GitHub repo; enter ALL env vars from Config / Environment BEFORE triggering the first deploy (`NEXT_PUBLIC_*` values are baked at build time — deploying first means an immediate redeploy); deploy. Agent provides the checklist; user reports the deployed URL
 - [ ] 🟥 Step 6: Live verification — run the Validation / Verification live-smoke + email/AI checks against the deployed URL; fix anything found (code fixes loop through Steps 1–2 conventions)
 - [ ] 🟥 Step 7: Close-out — update `AGENTS.md` Hosting row to Vercel (`source=config:vercel.json` once the file exists and the deploy is confirmed), Links section (live URL), Current Status; `CHANGELOG.md` entry
 
