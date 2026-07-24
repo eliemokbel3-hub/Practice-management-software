@@ -12,7 +12,7 @@
 
 ## Plan Lineage
 - Parent plan: None
-- Follow-up plans: None
+- Follow-up plans: plan-vercel-deployment.md (consumes the retained Vercel-deployment + email/AI-verification follow-ups)
 
 ## Goal
 Make PracticeHub genuinely usable on phones (375px) for both staff and patients: add the
